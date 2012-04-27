@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lampshade</string>
+    
+    <string name="dialog_open">Open</string>
+    <string name="dialog_save">Save</string>
+    <string name="dialog_copy">Copy</string>
+    
+	<string name="enter_page">Enter trope:</string>
+	<string name="btn_load">Go!</string>
+	<string name="btn_random">Random</string>
+	<string name="show_saved_articles">Saved</string>
+	
+	<string name="article_title">Title</string>
+	<string name="article_content">content</string>
+	<string name="refresh_article">Refresh</string>
+	<string name="article_action_save">Save</string>
+	
+	<string name="saved_action_delete">Delete</string>
+</resources>
