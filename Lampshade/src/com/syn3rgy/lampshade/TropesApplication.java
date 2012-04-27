@@ -6,6 +6,7 @@ import android.app.Application;
 public class TropesApplication extends Application {
 	public final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
 	public final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
+	public final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
 	
 	public SavedArticlesSource articlesSource = null;
 	

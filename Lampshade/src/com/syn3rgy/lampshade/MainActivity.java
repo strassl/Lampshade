@@ -51,6 +51,8 @@ public class MainActivity extends Activity {
     	case R.id.btn_random:
     		loadPage(application.randomUrl);
     		break;
+    	case R.id.btn_tropes:
+    		loadPage(application.tropesUrl);
     	}
     }
     

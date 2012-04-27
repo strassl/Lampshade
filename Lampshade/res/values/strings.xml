@@ -9,6 +9,7 @@
 	<string name="enter_page">Enter trope:</string>
 	<string name="btn_load">Go!</string>
 	<string name="btn_random">Random</string>
+	<string name="btn_tropes">Tropes</string>
 	<string name="show_saved_articles">Saved</string>
 	
 	<string name="article_title">Title</string>

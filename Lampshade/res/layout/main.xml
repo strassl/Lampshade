@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" >
-
         <requestFocus />
     </EditText>
 
@@ -31,5 +30,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_random"
+        android:onClick="clickHandler" />
+    
+    <Button
+        android:id="@+id/btn_tropes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_tropes"
         android:onClick="clickHandler" />	
 </LinearLayout>
