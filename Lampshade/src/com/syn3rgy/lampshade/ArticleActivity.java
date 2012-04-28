@@ -42,25 +42,10 @@ public class ArticleActivity extends Activity {
 		setContentView(R.layout.article_activity);
 		
 		ActionBar ab = getActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
 		this.application = (TropesApplication) getApplication();
-		
-		WebView wv = (WebView) findViewById(R.id.wv_content);
-		wv.setOnTouchListener(new OnTouchListener() {
-			
-			// Disable the ActionMode when the WebView is touched
-			public boolean onTouch(View v, MotionEvent event) {
-				if(mActionMode != null) {
-					mActionMode.finish();
-					return true;
-				}
-				else {
-					return false;
-				}
-			}
-			
-		});
 		
 		Uri data = getIntent().getData();
 		if(data != null) {
@@ -110,8 +95,9 @@ public class ArticleActivity extends Activity {
     private boolean startLinkMode(String url) {
     	selectedLink = url;
     	
+    	// If ActionMode is already active finish it
     	if (mActionMode != null) {
-            return false;
+    		mActionMode.finish();
         }
 
         mActionMode = this.startActionMode(mActionModeCallback);
