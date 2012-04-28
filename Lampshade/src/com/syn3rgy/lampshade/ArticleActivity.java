@@ -76,7 +76,10 @@ public class ArticleActivity extends Activity {
         	return true;
         case R.id.refresh_article:
         	loadPage(passedUrl.toString());
-        	return true;        	
+        	return true;   
+        case R.id.save_article:
+        	saveArticle(trueUrl.toString());
+        	return true;
         default:
         	return super.onOptionsItemSelected(item);
         }

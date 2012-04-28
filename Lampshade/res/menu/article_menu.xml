@@ -5,6 +5,11 @@
     	  android:title="@string/refresh_article"
     	  android:showAsAction="always"
 	/>
+    <item android:id="@+id/save_article"
+          android:icon="@drawable/ic_menu_save"
+    	  android:title="@string/save_article"
+    	  android:showAsAction="ifRoom"
+	/>
     <item android:id="@+id/share_article"
     	  android:title="@string/share_article"
     	  android:showAsAction="ifRoom"
