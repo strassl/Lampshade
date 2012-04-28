@@ -93,12 +93,12 @@ public class ArticleActivity extends Activity {
 	
     /** Does all preparations and initialises the ActionMode */
     private boolean startLinkMode(String url) {
-    	selectedLink = url;
-    	
     	// If ActionMode is already active finish it
     	if (mActionMode != null) {
     		mActionMode.finish();
         }
+    	
+    	selectedLink = url;
 
         mActionMode = this.startActionMode(mActionModeCallback);
         return true;
