@@ -35,7 +35,7 @@ public class TropesArticle {
 		Element wikibody = doc.getElementById("wikibody");
 		
 		//Split the document into title and content
-		Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first();
+		Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first().getElementsByTag("span").first();
 		this.title = title.text();
 		
 		Element content = wikibody.getElementById("wikitext");
