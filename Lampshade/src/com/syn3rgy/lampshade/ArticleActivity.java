@@ -32,7 +32,10 @@ import com.syn3rgy.tropeswrapper.TropesHelper;
 /** Shows a single TvTropes article */
 public class ArticleActivity extends Activity {
 	TropesApplication application;
-	Uri url;
+	// The url that was passed to the activity
+	Uri passedUrl;
+	// Where we actually ended up
+	Uri trueUrl;
 	ActionMode mActionMode = null;
 	// Used to pass the selected link to the ActionBar
 	String selectedLink = null;
@@ -51,8 +54,8 @@ public class ArticleActivity extends Activity {
 		
 		Uri data = getIntent().getData();
 		if(data != null) {
-			this.url = data;
-			new loadArticleTask(this).execute(data);
+			this.passedUrl = data;
+			new loadArticleTask(this).execute(this.passedUrl);
 		}
 	}
 	
@@ -61,8 +64,7 @@ public class ArticleActivity extends Activity {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.article_menu, menu);
     	shareProvider = (ShareActionProvider) menu.findItem(R.id.share_article).getActionProvider();
-    	setShareIntent();
-        return true;
+    	return true;
     }
     
     @Override
@@ -73,7 +75,7 @@ public class ArticleActivity extends Activity {
         	openActivity(MainActivity.class);
         	return true;
         case R.id.refresh_article:
-        	loadPage(url.toString());
+        	loadPage(passedUrl.toString());
         	return true;        	
         default:
         	return super.onOptionsItemSelected(item);
@@ -83,7 +85,7 @@ public class ArticleActivity extends Activity {
     private void setShareIntent() {
     	Intent intent = new Intent(Intent.ACTION_SEND);
     	intent.setType("text/plain");
-    	intent.putExtra(Intent.EXTRA_TEXT, url);
+    	intent.putExtra(Intent.EXTRA_TEXT, trueUrl.toString());
     	shareProvider.setShareIntent(intent);
     }
     
@@ -165,6 +167,9 @@ public class ArticleActivity extends Activity {
 						return true;
 					}
 				});
+				trueUrl = Uri.parse(article.url);
+				// Only now can we set the url of the share intent
+				setShareIntent();
 			}
 		}
 	}

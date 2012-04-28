@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,14 +24,16 @@ public class TropesArticle {
 		loadArticle(url);
 	}
 	
-	public TropesArticle(String title, String url, String content) {
+	/*public TropesArticle(String title, String url, String content) {
 		this.title = title;
 		this.url = url;
 		this.content = content;
-	}
+	}*/
 	
 	private void loadArticle(Uri url) throws IOException {
-		Document doc = Jsoup.connect(url.toString()).get();
+		Response resp = Jsoup.connect(url.toString()).execute();
+		this.url = resp.url().toString();
+		Document doc = resp.parse();
 				
 		Element wikibody = doc.getElementById("wikibody");
 		
