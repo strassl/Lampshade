@@ -23,6 +23,7 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.syn3rgy.tropeswrapper.TropesArticle;
@@ -35,6 +36,7 @@ public class ArticleActivity extends Activity {
 	ActionMode mActionMode = null;
 	// Used to pass the selected link to the ActionBar
 	String selectedLink = null;
+	ShareActionProvider shareProvider;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class ArticleActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.article_menu, menu);
+    	shareProvider = (ShareActionProvider) menu.findItem(R.id.share_article).getActionProvider();
+    	setShareIntent();
         return true;
     }
     
@@ -70,10 +74,17 @@ public class ArticleActivity extends Activity {
         	return true;
         case R.id.refresh_article:
         	loadPage(url.toString());
-        	return true;
+        	return true;        	
         default:
         	return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private void setShareIntent() {
+    	Intent intent = new Intent(Intent.ACTION_SEND);
+    	intent.setType("text/plain");
+    	intent.putExtra(Intent.EXTRA_TEXT, url);
+    	shareProvider.setShareIntent(intent);
     }
     
     private void loadPage(String url) {
