@@ -1,6 +1,8 @@
 package com.syn3rgy.tropeswrapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,7 +16,9 @@ public class TropesArticle {
 	public String title;
 	public String content;
 	
-
+	private String linkColor = "#33B5E5";
+	private String spoilerColor = "#000000";
+	
 	public TropesArticle(Uri url) throws IOException {
 		loadArticle(url);
 	}
@@ -35,14 +39,35 @@ public class TropesArticle {
 		this.title = title.text();
 		
 		Element content = wikibody.getElementById("wikitext");
-		content = hideSpoilers(content);
+		changeLinkStyle(content);
+		hideSpoilers(content);
+		
 		this.content = content.html();
 	}
+		
+	private void insertStylesheet(Element element, List<String> selectors) {
+		String style = "";
+		for(String selector : selectors) {
+			style += selector;
+		}
+		
+		String style_tag = "<style type=\"text/css\">" + style + "</style>";
+		element.prepend(style_tag);
+	}
 	
-	private Element hideSpoilers(Element content) {
+	private void changeLinkStyle(Element content) {
+		ArrayList<String> selectors = new ArrayList<String>();
+		selectors.add("a { color:" + linkColor + ";" + " }");
+		insertStylesheet(content, selectors);
+	}
+	
+	private void hideSpoilers(Element content) {
 		// The hover style is triggered on touch and thus a viable workaround for onClick
-		String style = "<style type=\"text/css\">.spoiler { background-color:black; } .spoiler:hover { background-color:transparent; } </style>";
-		content.prepend(style);
-		return content;
+		ArrayList<String> selectors = new ArrayList<String>();
+		selectors.add(".spoiler { background-color:" + spoilerColor + ";" + "color:" + spoilerColor + "; }");
+		selectors.add(".spoiler a { color:" + spoilerColor + "; }");
+		selectors.add(".spoiler:hover { background-color:transparent; }");
+		selectors.add(".spoiler:hover a { color:" + linkColor + "; }");
+		insertStylesheet(content, selectors);
 	}
 }
