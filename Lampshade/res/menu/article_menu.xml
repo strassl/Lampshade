@@ -12,7 +12,7 @@
 	/>
     <item android:id="@+id/share_article"
     	  android:title="@string/share_article"
-    	  android:showAsAction="ifRoom"
+    	  android:showAsAction="never"
     	  android:actionProviderClass="android.widget.ShareActionProvider"
 	/>
 </menu>
