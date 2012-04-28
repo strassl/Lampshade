@@ -1,5 +1,9 @@
 package com.syn3rgy.lampshade;
 
+import java.util.Arrays;
+
+import com.syn3rgy.tropeswrapper.TropesHelper;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,14 +49,14 @@ public class MainActivity extends Activity {
     	case R.id.btn_load:
     		// Constructs the url of the article
     		EditText page_selection = (EditText) findViewById(R.id.et_enter_page);
-    		String url = application.baseUrl + page_selection.getText().toString();
+    		String url = TropesApplication.baseUrl + page_selection.getText().toString();
     		loadPage(url);
     		break;
     	case R.id.btn_random:
-    		loadPage(application.randomUrl);
+    		loadPage(TropesApplication.randomUrl);
     		break;
     	case R.id.btn_tropes:
-    		loadPage(application.tropesUrl);
+    		loadPage(TropesApplication.tropesUrl);
     	}
     }
     
@@ -60,10 +64,18 @@ public class MainActivity extends Activity {
     
     private void loadPage(String url) {
     	Intent pageIntent = new Intent(getApplicationContext(), ArticleActivity.class);
+    	
+    	String page = TropesHelper.titleFromUrl(Uri.parse(url));
+    	for(String p : TropesApplication.indexPages) {
+    		if(p.equalsIgnoreCase(page)) {
+    			pageIntent = new Intent(getApplicationContext(), TropesIndexActivity.class);
+    		}
+    	}
+    	
     	pageIntent.setData(Uri.parse(url));
     	startActivity(pageIntent);
     }
-    
+        
     private void openActivity(Class cls) {
     	Intent intent = new Intent(getApplicationContext(), cls);
     	startActivity(intent);

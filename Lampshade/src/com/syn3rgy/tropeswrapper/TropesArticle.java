@@ -24,17 +24,15 @@ public class TropesArticle {
 		loadArticle(url);
 	}
 	
-	/*public TropesArticle(String title, String url, String content) {
-		this.title = title;
-		this.url = url;
-		this.content = content;
-	}*/
-	
-	private void loadArticle(Uri url) throws IOException {
+	protected void loadArticle(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).execute();
 		this.url = resp.url().toString();
 		Document doc = resp.parse();
 				
+		parseArticle(doc);
+	}
+	
+	protected void parseArticle(Document doc) {
 		Element wikibody = doc.getElementById("wikibody");
 		
 		//Split the document into title and content
@@ -48,7 +46,7 @@ public class TropesArticle {
 		this.content = content.html();
 	}
 		
-	private void insertStylesheet(Element element, List<String> selectors) {
+	protected void insertStylesheet(Element element, List<String> selectors) {
 		String style = "";
 		for(String selector : selectors) {
 			style += selector;
@@ -58,13 +56,13 @@ public class TropesArticle {
 		element.prepend(style_tag);
 	}
 	
-	private void changeLinkStyle(Element content) {
+	protected void changeLinkStyle(Element content) {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add("a { color:" + linkColor + ";" + " }");
 		insertStylesheet(content, selectors);
 	}
 	
-	private void hideSpoilers(Element content) {
+	protected void hideSpoilers(Element content) {
 		// The hover style is triggered on touch and thus a viable workaround for onClick
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add(".spoiler { background-color:" + spoilerColor + ";" + "color:" + spoilerColor + "; }");

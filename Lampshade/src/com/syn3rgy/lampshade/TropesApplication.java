@@ -4,9 +4,11 @@ import android.app.Application;
 
 /** Provides cross-activity data */
 public class TropesApplication extends Application {
-	public final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
-	public final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
-	public final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
+	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
+	public static final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
+	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
+	
+	public static final String[] indexPages = {"Tropes", "NarrativeTropes", "GenreTropes" };
 	
 	public SavedArticlesSource articlesSource = null;
 	
