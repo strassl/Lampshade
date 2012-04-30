@@ -16,8 +16,7 @@ public class TropesApplication extends Application {
 	public static final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
 	
-	List<TropesIndexSelector> indexPages;
-	public static final String[] abc = {"Tropes", "NarrativeTropes", "GenreTropes" };
+	public List<TropesIndexSelector> indexPages;
 		
 	public SavedArticlesSource articlesSource = null;
 	
@@ -25,28 +24,36 @@ public class TropesApplication extends Application {
 	public void onCreate() {
 		articlesSource = new SavedArticlesSource(this);
 		indexPages =  new ArrayList<TropesIndexSelector>();
+		// TODO A horrible way to add all the items, maybe some kind of xml file would be a better idea
+		// TODO Automation would be even better
 		indexPages.add(new TropesIndexSelector("Tropes", "li"));
 		indexPages.add(new TropesIndexSelector("NarrativeTropes", "li"));
 		indexPages.add(new TropesIndexSelector("GenreTropes", "li"));
+		indexPages.add(new TropesIndexSelector("CharacterizationTropes", "li"));
 	}
 	
 	public void loadPage(String url) {
 		String page = TropesHelper.titleFromUrl(Uri.parse(url));
-		
-		Boolean isIndex = false;
-    	for(TropesIndexSelector selector : indexPages) {
-    		if(selector.page.equals(page)) {
-    			isIndex = true;
-    			break;
-    		}
-    	}
-    	
-    	if(isIndex) {
+
+    	if(isIndex(page)) {
     		loadIndex(url);
     	}
     	else {
     		loadArticle(url);
     	}
+	}
+	
+	private Boolean isIndex(String title) {
+		if(title.matches(".*(Index|index|Tropes|tropes).*")) {
+			indexPages.add(new TropesIndexSelector(title, "li"));
+			return true;
+		}
+    	for(TropesIndexSelector selector : indexPages) {
+    		if(selector.page.equals(title)) {
+    			return true;
+    		}
+    	}
+    	return false;
 	}
 	
 	public void loadArticle(String url) {

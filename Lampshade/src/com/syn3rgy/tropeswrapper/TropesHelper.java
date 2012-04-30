@@ -19,13 +19,16 @@ public class TropesHelper {
 	}
 	
 	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, String title) {
+		// Check if a predefined selector exists for this page
 		for(TropesIndexSelector s : selectors) {
 			if(title.equals(s.page)) {
+				// If it exists, return it
 				return s;
 			}
 		}
 		
-		return null;
+		// Else return a generic selector for the index page
+		return new TropesIndexSelector(title, "li");
 	}
 	
 	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, Uri url) {
