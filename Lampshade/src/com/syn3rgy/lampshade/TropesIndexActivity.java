@@ -14,6 +14,8 @@ import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -42,11 +44,21 @@ public class TropesIndexActivity extends ListActivity {
 	}
 	
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.index_menu, menu);
+        return true;
+    }
+	
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
         	application.openActivity(MainActivity.class);
+        	return true;
+        case R.id.index_as_article:
+        	application.loadArticle(this.trueUrl.toString());
         	return true;
         default:
         	return super.onOptionsItemSelected(item);

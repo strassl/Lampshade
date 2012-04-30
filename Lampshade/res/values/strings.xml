@@ -20,4 +20,6 @@
 	<string name="article_action_save">Save</string>
 	
 	<string name="saved_action_delete">Delete</string>
+	
+	<string name="index_as_article">Show article</string>
 </resources>
