@@ -1,12 +1,6 @@
 package com.syn3rgy.lampshade;
 
-import java.util.Arrays;
-
-import com.syn3rgy.tropeswrapper.TropesHelper;
-
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +31,7 @@ public class MainActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.show_saved_articles:
-        	openActivity(SavedArticlesActivity.class);
+        	application.openActivity(SavedArticlesActivity.class);
         	return true;
         default:
         	return super.onOptionsItemSelected(item);
@@ -50,34 +44,17 @@ public class MainActivity extends Activity {
     		// Constructs the url of the article
     		EditText page_selection = (EditText) findViewById(R.id.et_enter_page);
     		String url = TropesApplication.baseUrl + page_selection.getText().toString();
-    		loadPage(url);
+    		application.loadPage(url);
     		break;
     	case R.id.btn_random:
-    		loadPage(TropesApplication.randomUrl);
+    		application.loadPage(TropesApplication.randomUrl);
     		break;
     	case R.id.btn_tropes:
-    		loadPage(TropesApplication.tropesUrl);
+    		application.loadPage(TropesApplication.tropesUrl);
     	}
     }
     
     //TODO Copy&Paste is a horrible way to share these functions, I need a better way
     
-    private void loadPage(String url) {
-    	Intent pageIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-    	
-    	String page = TropesHelper.titleFromUrl(Uri.parse(url));
-    	for(String p : TropesApplication.indexPages) {
-    		if(p.equalsIgnoreCase(page)) {
-    			pageIntent = new Intent(getApplicationContext(), TropesIndexActivity.class);
-    		}
-    	}
-    	
-    	pageIntent.setData(Uri.parse(url));
-    	startActivity(pageIntent);
-    }
-        
-    private void openActivity(Class cls) {
-    	Intent intent = new Intent(getApplicationContext(), cls);
-    	startActivity(intent);
-    }
+
 }

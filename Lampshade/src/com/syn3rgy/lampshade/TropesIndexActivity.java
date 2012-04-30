@@ -9,7 +9,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,7 +44,7 @@ public class TropesIndexActivity extends ListActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-        	openActivity(MainActivity.class);
+        	application.openActivity(MainActivity.class);
         	return true;
         default:
         	return super.onOptionsItemSelected(item);
@@ -54,7 +53,7 @@ public class TropesIndexActivity extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		TropeListItem item = (TropeListItem) getListAdapter().getItem(position);
-		loadPage(item.url.toString());
+		application.loadPage(item.url.toString());
 	}
 	
 	
@@ -103,16 +102,4 @@ public class TropesIndexActivity extends ListActivity {
 	private void setTrueUrl(Uri url) {
 		this.trueUrl = url;
 	}
-
-	
-    private void loadPage(String url) {
-    	Intent pageIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-    	pageIntent.setData(Uri.parse(url));
-    	startActivity(pageIntent);
-    }
-	
-    private void openActivity(Class cls) {
-    	Intent intent = new Intent(getApplicationContext(), cls);
-    	startActivity(intent);
-    }
 }

@@ -5,10 +5,6 @@ import java.io.IOException;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipData.Item;
-import android.content.ClipboardManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,10 +13,8 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.ShareActionProvider;
@@ -72,10 +66,10 @@ public class ArticleActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-        	openActivity(MainActivity.class);
+        	application.openActivity(MainActivity.class);
         	return true;
         case R.id.refresh_article:
-        	loadPage(passedUrl.toString());
+        	application.loadPage(passedUrl.toString());
         	return true;   
         case R.id.save_article:
         	saveArticle(trueUrl.toString());
@@ -90,17 +84,6 @@ public class ArticleActivity extends Activity {
     	intent.setType("text/plain");
     	intent.putExtra(Intent.EXTRA_TEXT, trueUrl.toString());
     	shareProvider.setShareIntent(intent);
-    }
-    
-    private void loadPage(String url) {
-    	Intent pageIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-    	pageIntent.setData(Uri.parse(url));
-    	startActivity(pageIntent);
-    }
-    
-    private void openActivity(Class cls) {
-    	Intent intent = new Intent(getApplicationContext(), cls);
-    	startActivity(intent);
     }
     
     private void saveArticle(String url) {
