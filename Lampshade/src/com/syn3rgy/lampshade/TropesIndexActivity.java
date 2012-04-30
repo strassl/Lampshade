@@ -3,7 +3,9 @@ package com.syn3rgy.lampshade;
 import java.io.IOException;
 
 import com.syn3rgy.tropeswrapper.TropeListItem;
+import com.syn3rgy.tropeswrapper.TropesHelper;
 import com.syn3rgy.tropeswrapper.TropesIndex;
+import com.syn3rgy.tropeswrapper.TropesIndexSelector;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -76,8 +78,9 @@ public class TropesIndexActivity extends ListActivity {
 		protected TropesIndex doInBackground(Uri... params) {
 			TropesIndex tropesIndex = null;
 			try {
-				// params[0] is the URL
-				tropesIndex = new TropesIndex(params[0]);
+				Uri url = params[0];
+				TropesIndexSelector selector = TropesHelper.findMatchingSelector(application.indexPages, url);
+				tropesIndex = new TropesIndex(url, selector);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

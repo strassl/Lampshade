@@ -18,4 +18,18 @@ public class TropesHelper {
 		return title;
 	}
 	
+	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, String title) {
+		for(TropesIndexSelector s : selectors) {
+			if(title.equals(s.page)) {
+				return s;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, Uri url) {
+		return findMatchingSelector(selectors, titleFromUrl(url));
+	}
+	
 }

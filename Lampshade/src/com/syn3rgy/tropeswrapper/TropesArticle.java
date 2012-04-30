@@ -21,15 +21,16 @@ public class TropesArticle {
 	private String spoilerColor = "#000000";
 	
 	public TropesArticle(Uri url) throws IOException {
-		loadArticle(url);
+		Document doc = loadArticle(url);
+		parseArticle(doc);
 	}
 	
-	protected void loadArticle(Uri url) throws IOException {
+	protected Document loadArticle(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).execute();
 		this.url = resp.url().toString();
 		Document doc = resp.parse();
 				
-		parseArticle(doc);
+		return doc;
 	}
 	
 	protected void parseArticle(Document doc) {

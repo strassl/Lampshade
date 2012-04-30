@@ -1,6 +1,10 @@
 package com.syn3rgy.lampshade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.syn3rgy.tropeswrapper.TropesHelper;
+import com.syn3rgy.tropeswrapper.TropesIndexSelector;
 
 import android.app.Application;
 import android.content.Intent;
@@ -12,21 +16,26 @@ public class TropesApplication extends Application {
 	public static final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
 	
-	public static final String[] indexPages = {"Tropes", "NarrativeTropes", "GenreTropes" };
-	
+	List<TropesIndexSelector> indexPages;
+	public static final String[] abc = {"Tropes", "NarrativeTropes", "GenreTropes" };
+		
 	public SavedArticlesSource articlesSource = null;
 	
 	@Override
 	public void onCreate() {
 		articlesSource = new SavedArticlesSource(this);
+		indexPages =  new ArrayList<TropesIndexSelector>();
+		indexPages.add(new TropesIndexSelector("Tropes", "li"));
+		indexPages.add(new TropesIndexSelector("NarrativeTropes", "li"));
+		indexPages.add(new TropesIndexSelector("GenreTropes", "li"));
 	}
 	
 	public void loadPage(String url) {
 		String page = TropesHelper.titleFromUrl(Uri.parse(url));
 		
 		Boolean isIndex = false;
-    	for(String p : TropesApplication.indexPages) {
-    		if(p.equalsIgnoreCase(page)) {
+    	for(TropesIndexSelector selector : indexPages) {
+    		if(selector.page.equals(page)) {
     			isIndex = true;
     			break;
     		}
@@ -48,7 +57,7 @@ public class TropesApplication extends Application {
 	}
 	
 	public void loadIndex(String url) {
-		Intent indexIntent = new Intent(getApplicationContext(), ArticleActivity.class);
+		Intent indexIntent = new Intent(getApplicationContext(), TropesIndexActivity.class);
 		indexIntent.setData(Uri.parse(url));
 		indexIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(indexIntent);
