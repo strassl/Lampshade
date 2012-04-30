@@ -4,9 +4,10 @@ import java.util.List;
 
 import android.net.Uri;
 
-/** Provides helper functions */
+/** Provides helper functions*/
 public class TropesHelper {
 	
+	/** Gets the page's title from the url */
 	public static String titleFromUrl(Uri url) {
 		List<String> segments = url.getPathSegments();
 		String title = segments.get(segments.size() - 1);
@@ -18,6 +19,7 @@ public class TropesHelper {
 		return title;
 	}
 	
+	/** Finds a matching selector or returns a generic one */
 	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, String title) {
 		// Check if a predefined selector exists for this page
 		for(TropesIndexSelector s : selectors) {
@@ -31,6 +33,7 @@ public class TropesHelper {
 		return new TropesIndexSelector(title, "li");
 	}
 	
+	/** Finds a matching selector for the url or returns a generic one */
 	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, Uri url) {
 		return findMatchingSelector(selectors, titleFromUrl(url));
 	}

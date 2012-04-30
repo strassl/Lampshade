@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 
 import android.net.Uri;
 
+/** Wrapper for a TvTropes article */
 public class TropesArticle {
 	public String url = null;
 	
@@ -25,6 +26,7 @@ public class TropesArticle {
 		parseArticle(doc);
 	}
 	
+	/** Return the Jsoup document of the url */
 	protected Document loadArticle(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).execute();
 		this.url = resp.url().toString();
@@ -33,6 +35,7 @@ public class TropesArticle {
 		return doc;
 	}
 	
+	/** Splits the document into title and content */
 	protected void parseArticle(Document doc) {
 		Element wikibody = doc.getElementById("wikibody");
 		
@@ -46,7 +49,8 @@ public class TropesArticle {
 		
 		this.content = content;
 	}
-		
+	
+	/** Combines a List of css selectors into a stylesheet and inserts it into the page */
 	protected void insertStylesheet(Element element, List<String> selectors) {
 		String style = "";
 		for(String selector : selectors) {
@@ -57,12 +61,14 @@ public class TropesArticle {
 		element.prepend(style_tag);
 	}
 	
+	/** Inserts a stylesheet that changes the colour of links */
 	protected void changeLinkStyle(Element content) {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add("a { color:" + linkColor + ";" + " }");
 		insertStylesheet(content, selectors);
 	}
 	
+	/** Modifies the hover state of .spoiler elements */
 	protected void hideSpoilers(Element content) {
 		// The hover style is triggered on touch and thus a viable workaround for onClick
 		ArrayList<String> selectors = new ArrayList<String>();

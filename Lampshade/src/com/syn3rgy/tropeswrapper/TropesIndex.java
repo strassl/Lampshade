@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import android.net.Uri;
 
+/**  A wrapper for TvTropes articles that server mainly as an index page */
 public class TropesIndex extends TropesArticle {
 	
 	public List<TropeListItem> tropes;
@@ -18,20 +19,7 @@ public class TropesIndex extends TropesArticle {
 		parseTropeList(content, selector.selector);
 	}
 	
-/*	@Override
-	protected void parseArticle(Document doc) {
-		Element wikibody = doc.getElementById("wikibody");
-		
-		//Split the document into title and content
-		Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first().getElementsByTag("span").first();
-		this.title = title.text();
-		
-		Element content = wikibody.getElementById("wikitext");
-		changeLinkStyle(content);
-		hideSpoilers(content);
-		this.content = content;
-	}*/
-	
+	/** Finds the items matching the selector and returns the attributes of a link in those items */
 	private void parseTropeList(Element content, String selector) {
 		ArrayList<TropeListItem> tropes = new ArrayList<TropeListItem>();
 		

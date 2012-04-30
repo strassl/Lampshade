@@ -112,6 +112,7 @@ public class SavedArticlesActivity extends ListActivity{
 		loadArticles();
 	}
 	
+	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
 		application.articlesSource.open();
 		List<ArticleItem> savedArticles = application.articlesSource.getAllArticles();

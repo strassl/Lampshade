@@ -15,7 +15,6 @@ public class TropesApplication extends Application {
 	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
 	public static final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
-	
 	public List<TropesIndexSelector> indexPages;
 		
 	public SavedArticlesSource articlesSource = null;
@@ -44,6 +43,8 @@ public class TropesApplication extends Application {
 	}
 	
 	private Boolean isIndex(String title) {
+		//Dirty, but it works and the failure rate is pretty low
+		//If it should fail, the user can still view the page as an article
 		if(title.matches(".*(Index|index|Tropes|tropes).*")) {
 			indexPages.add(new TropesIndexSelector(title, "li"));
 			return true;
