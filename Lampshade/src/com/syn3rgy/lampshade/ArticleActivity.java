@@ -155,7 +155,7 @@ public class ArticleActivity extends Activity {
 			if(article != null) {
 				activity.getActionBar().setTitle(article.title);
 				WebView wv = (WebView) findViewById(R.id.wv_content);
-				wv.loadData(article.content, "text/html", null);
+				wv.loadData(article.content.html(), "text/html", null);
 				
 				wv.setOnLongClickListener(new OnLongClickListener() {
 					public boolean onLongClick(View v) {

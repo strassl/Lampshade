@@ -15,7 +15,7 @@ public class TropesArticle {
 	public String url = null;
 	
 	public String title;
-	public String content;
+	public Element content;
 	
 	private String linkColor = "#33B5E5";
 	private String spoilerColor = "#000000";
@@ -43,7 +43,7 @@ public class TropesArticle {
 		changeLinkStyle(content);
 		hideSpoilers(content);
 		
-		this.content = content.html();
+		this.content = content;
 	}
 		
 	protected void insertStylesheet(Element element, List<String> selectors) {

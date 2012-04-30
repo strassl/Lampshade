@@ -32,7 +32,7 @@ public class TropesIndex extends TropesArticle {
 		
 		parseTropeList(content);
 		
-		this.content = content.html();
+		this.content = content;
 	}
 	
 	private void parseTropeList(Element content) {
@@ -49,5 +49,4 @@ public class TropesIndex extends TropesArticle {
 		
 		this.tropes = tropes;
 	}
-
 }
