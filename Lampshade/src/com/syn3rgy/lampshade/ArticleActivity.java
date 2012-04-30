@@ -101,7 +101,6 @@ public class ArticleActivity extends Activity {
     		
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
     		builder.setTitle("Info");
-    		builder.setIcon(R.drawable.ic_menu_info);
     		builder.setMessage(info);
     		builder.setCancelable(true);
     		builder.setPositiveButton("Thanks!", new OnClickListener() {
