@@ -4,7 +4,11 @@ import java.io.IOException;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,11 +29,14 @@ import com.syn3rgy.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
 public class ArticleActivity extends Activity {
+	static final int DIALOG_INFO_ID = 0;
+	
 	TropesApplication application;
 	// The url that was passed to the activity
 	Uri passedUrl;
 	// Where we actually ended up
 	Uri trueUrl;
+	String title;
 	ActionMode mActionMode = null;
 	// Used to pass the selected link to the ActionBar
 	String selectedLink = null;
@@ -74,9 +81,41 @@ public class ArticleActivity extends Activity {
         case R.id.save_article:
         	saveArticle(trueUrl.toString());
         	return true;
+        case R.id.info_article:
+        	showDialog(DIALOG_INFO_ID);
+        	return true;
         default:
         	return super.onOptionsItemSelected(item);
         }
+    }
+    
+    @Override
+    public Dialog onCreateDialog(int id, Bundle args) {
+    	Dialog dialog;
+    	switch(id) {
+    	case DIALOG_INFO_ID:
+    		String info = "";
+    		info += "Title: " + this.getActionBar().getTitle() + "\n\n"; // Eeewwww
+    		info += "True Url: " + trueUrl.toString() + "\n\n";
+    		info += "Passed Url: " + passedUrl.toString();
+    		
+    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    		builder.setTitle("Info");
+    		builder.setIcon(R.drawable.ic_menu_info);
+    		builder.setMessage(info);
+    		builder.setCancelable(true);
+    		builder.setPositiveButton("Thanks!", new OnClickListener() {
+    			public void onClick(DialogInterface dialog, int which) {
+    				dialog.dismiss();
+    			}
+    		});
+    		       
+    		dialog = builder.create();
+    		break;
+    	default:
+    		dialog = null;
+    	}
+    	return dialog;
     }
     
     private void setShareIntent() {

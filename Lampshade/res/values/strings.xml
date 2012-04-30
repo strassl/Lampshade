@@ -16,6 +16,7 @@
 	<string name="article_content">content</string>
 	<string name="refresh_article">Refresh</string>
 	<string name="save_article">Save</string>
+	<string name="info_article">Info</string>
 	<string name="share_article">Share</string>
 	<string name="article_action_save">Save</string>
 	
