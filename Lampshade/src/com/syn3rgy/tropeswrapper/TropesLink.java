@@ -1,11 +1,11 @@
 package com.syn3rgy.tropeswrapper;
 
 
-public class TropeListItem {
+public class TropesLink {
 	public String title;
 	public String url;
 	
-	public TropeListItem(String title, String url) {
+	public TropesLink(String title, String url) {
 		this.title = title;
 		this.url = url;
 	}

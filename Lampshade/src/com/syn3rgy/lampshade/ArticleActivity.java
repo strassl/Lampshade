@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,9 +24,12 @@ import android.view.View.OnLongClickListener;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.ShareActionProvider;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.syn3rgy.tools.ListFunctions;
 import com.syn3rgy.tropeswrapper.TropesArticle;
+import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
@@ -32,11 +37,12 @@ public class ArticleActivity extends Activity {
 	static final int DIALOG_INFO_ID = 0;
 	
 	TropesApplication application;
+	
+	TropesArticleInfo articleInfo;
 	// The url that was passed to the activity
 	Uri passedUrl;
 	// Where we actually ended up
 	Uri trueUrl;
-	String title;
 	ActionMode mActionMode = null;
 	// Used to pass the selected link to the ActionBar
 	String selectedLink = null;
@@ -95,13 +101,20 @@ public class ArticleActivity extends Activity {
     	switch(id) {
     	case DIALOG_INFO_ID:
     		String info = "";
-    		info += "Title: " + this.getActionBar().getTitle() + "\n\n"; // Eeewwww
-    		info += "True Url: " + trueUrl.toString() + "\n\n";
-    		info += "Passed Url: " + passedUrl.toString();
+    		info += "Title: " + articleInfo.title + "<br />";
+    		info += "Url: " + trueUrl.toString() + "<br /><br />";
+    		//info += "Passed Url: " + passedUrl.toString() + "<br /><br />";
+    		
+    		String buttons = TropesHelper.linkListToHtml(articleInfo.buttons, " | ");
+    		info += "Buttons: " + buttons;
+    		
+    		TextView tv = new TextView(this);
+    		tv.setMovementMethod(LinkMovementMethod.getInstance());
+    		tv.setText(Html.fromHtml(info));
     		
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
     		builder.setTitle("Info");
-    		builder.setMessage(info);
+    		builder.setView(tv);
     		builder.setCancelable(true);
     		builder.setPositiveButton("Thanks!", new OnClickListener() {
     			public void onClick(DialogInterface dialog, int which) {
@@ -192,6 +205,7 @@ public class ArticleActivity extends Activity {
 					}
 				});
 				trueUrl = Uri.parse(article.url);
+				articleInfo = new TropesArticleInfo(article.title, article.url, article.buttons);
 				// Only now can we set the url of the share intent
 				setShareIntent();
 			}

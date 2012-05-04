@@ -2,7 +2,7 @@ package com.syn3rgy.lampshade;
 
 import java.io.IOException;
 
-import com.syn3rgy.tropeswrapper.TropeListItem;
+import com.syn3rgy.tropeswrapper.TropesLink;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 import com.syn3rgy.tropeswrapper.TropesIndex;
 import com.syn3rgy.tropeswrapper.TropesIndexSelector;
@@ -66,7 +66,7 @@ public class TropesIndexActivity extends ListActivity {
     }
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		TropeListItem item = (TropeListItem) getListAdapter().getItem(position);
+		TropesLink item = (TropesLink) getListAdapter().getItem(position);
 		application.loadPage(item.url.toString());
 	}
 	
@@ -108,7 +108,7 @@ public class TropesIndexActivity extends ListActivity {
 				activity.getActionBar().setTitle(tropesIndex.title);
 				setTrueUrl(Uri.parse(tropesIndex.url));
 
-				ArrayAdapter<TropeListItem> tropeAdapter = new ArrayAdapter<TropeListItem>(activity, android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
+				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(activity, android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
 				setListAdapter(tropeAdapter);
 			}
 		}

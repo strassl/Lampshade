@@ -38,4 +38,18 @@ public class TropesHelper {
 		return findMatchingSelector(selectors, titleFromUrl(url));
 	}
 	
+	public static String linkListToHtml(List<TropesLink> links, String separator) {
+		String fullHtml = "";
+		
+		for(TropesLink link : links) {
+			fullHtml += linkToHtml(link) + separator;
+		}
+		
+		return fullHtml;
+	}
+	
+	public static String linkToHtml(TropesLink link) {
+		String html = "<a href =\"" + link.url + "\" >" + link.title + "</a>";
+		return html;
+	}
 }

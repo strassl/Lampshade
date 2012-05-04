@@ -8,6 +8,7 @@ import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.net.Uri;
 
@@ -18,15 +19,18 @@ public class TropesArticle {
 	public String title;
 	public Element content;
 	
+	public List<TropesLink> buttons;
+	
 	private String linkColor = "#33B5E5";
 	private String spoilerColor = "#000000";
 	
 	public TropesArticle(Uri url) throws IOException {
 		Document doc = loadArticle(url);
 		parseArticle(doc);
+		parseButtons(doc);
 	}
 	
-	/** Return the Jsoup document of the url */
+	/** Returns the Jsoup document of the url */
 	protected Document loadArticle(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).execute();
 		this.url = resp.url().toString();
@@ -48,6 +52,34 @@ public class TropesArticle {
 		hideSpoilers(content);
 		
 		this.content = content;
+	}
+	
+	protected void parseButtons(Document doc) {
+		Element wikititle = doc.getElementById("wikititle");
+		Element buttons = wikititle.getElementsByClass("namespacebuttons").first();
+		Elements links = buttons.getElementsByTag("a");
+		
+		this.buttons =  new ArrayList<TropesLink>();
+		
+		for(Element link : links) {
+			String title = link.text().trim();
+			
+			if(title.isEmpty()) {
+				Element img = link.getElementsByTag("img").first();
+				title = img.attr("title");
+				link.text(title);
+			}
+			String url = link.attr("href");
+			this.buttons.add(new TropesLink(title, url));
+		}
+	}
+	
+	protected void injectButtons(Elements links) {
+		content.prepend("<hr />");
+		for(Element link : links) {
+			link.text(link.text() + " |");
+			content.prependChild(link);
+		}
 	}
 	
 	/** Combines a List of css selectors into a stylesheet and inserts it into the page */
