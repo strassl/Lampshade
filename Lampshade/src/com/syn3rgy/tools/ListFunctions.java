@@ -1,5 +1,6 @@
 package com.syn3rgy.tools;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListFunctions {
@@ -14,5 +15,15 @@ public class ListFunctions {
 			str += list.get(i).toString();
 		}
 		return str;
+	}
+	
+	public static <T> List<String> listToStringList(List<T> list) {
+		List<String> strList = new ArrayList<String>();
+		
+		for(Object o : list) {
+			strList.add(o.toString());
+		}
+		
+		return strList;
 	}
 }

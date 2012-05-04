@@ -31,6 +31,13 @@ public class TropesApplication extends Application {
 		indexPages.add(new TropesIndexSelector("CharacterizationTropes", "li"));
 	}
 	
+	public void loadWebsite(String url) {
+		Intent websiteIntent = new Intent(Intent.ACTION_VIEW);
+		websiteIntent.setData(Uri.parse(url));
+		websiteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(websiteIntent);
+	}
+	
 	public void loadPage(String url) {
 		String page = TropesHelper.titleFromUrl(Uri.parse(url));
 

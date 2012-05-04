@@ -15,6 +15,10 @@
     	  android:title="@string/info_article"
     	  android:showAsAction="never"
 	/>
+    <item android:id="@+id/subpages_article"
+          android:title="@string/subpages_article"
+          android:showAsAction="never"
+    />
     <item android:id="@+id/share_article"
     	  android:title="@string/share_article"
     	  android:showAsAction="never"

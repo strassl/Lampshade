@@ -5,11 +5,11 @@ import java.util.List;
 public class TropesArticleInfo {
 	public String title;
 	public String url;
-	public List<TropesLink> buttons;
+	public List<TropesLink> subpages;
 	
-	public TropesArticleInfo(String title, String url, List<TropesLink> buttons) {
+	public TropesArticleInfo(String title, String url, List<TropesLink> subpages) {
 		this.title = title;
 		this.url = url;
-		this.buttons = buttons;
+		this.subpages = subpages;
 	}
 }

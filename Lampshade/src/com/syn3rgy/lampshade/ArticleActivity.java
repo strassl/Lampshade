@@ -1,6 +1,7 @@
 package com.syn3rgy.lampshade;
 
 import java.io.IOException;
+import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -35,6 +36,7 @@ import com.syn3rgy.tropeswrapper.TropesHelper;
 /** Shows a single TvTropes article */
 public class ArticleActivity extends Activity {
 	static final int DIALOG_INFO_ID = 0;
+	static final int DIALOG_SUBPAGES_ID = 1;
 	
 	TropesApplication application;
 	
@@ -90,6 +92,9 @@ public class ArticleActivity extends Activity {
         case R.id.info_article:
         	showDialog(DIALOG_INFO_ID);
         	return true;
+        case R.id.subpages_article:
+        	showDialog(DIALOG_SUBPAGES_ID);
+        	return true;
         default:
         	return super.onOptionsItemSelected(item);
         }
@@ -98,23 +103,16 @@ public class ArticleActivity extends Activity {
     @Override
     public Dialog onCreateDialog(int id, Bundle args) {
     	Dialog dialog;
+   		AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	switch(id) {
     	case DIALOG_INFO_ID:
     		String info = "";
     		info += "Title: " + articleInfo.title + "<br />";
     		info += "Url: " + trueUrl.toString() + "<br /><br />";
-    		//info += "Passed Url: " + passedUrl.toString() + "<br /><br />";
-    		
-    		String buttons = TropesHelper.linkListToHtml(articleInfo.buttons, " | ");
-    		info += "Buttons: " + buttons;
-    		
-    		TextView tv = new TextView(this);
-    		tv.setMovementMethod(LinkMovementMethod.getInstance());
-    		tv.setText(Html.fromHtml(info));
-    		
-    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    		info += "Passed Url: " + passedUrl.toString();
+    		    		
     		builder.setTitle("Info");
-    		builder.setView(tv);
+    		builder.setMessage(Html.fromHtml(info));
     		builder.setCancelable(true);
     		builder.setPositiveButton("Thanks!", new OnClickListener() {
     			public void onClick(DialogInterface dialog, int which) {
@@ -122,6 +120,24 @@ public class ArticleActivity extends Activity {
     			}
     		});
     		       
+    		dialog = builder.create();
+    		break;
+    	case DIALOG_SUBPAGES_ID:
+    		List<String> subpageStringList = ListFunctions.listToStringList(articleInfo.subpages);
+    		String[] subpageStringArray = subpageStringList.toArray(new String[subpageStringList.size()]);
+    		
+    		builder.setTitle("Subpages");
+    		builder.setItems(subpageStringArray,  new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					application.loadWebsite(articleInfo.subpages.get(which).url);
+				}
+			});
+    		builder.setCancelable(true);
+    		builder.setPositiveButton("Dismiss", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
     		dialog = builder.create();
     		break;
     	default:
