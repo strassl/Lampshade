@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.syn3rgy.tools.ListFunctions;
+import com.syn3rgy.tools.android.UIFunctions;
 import com.syn3rgy.tropeswrapper.TropesArticle;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 import com.syn3rgy.tropeswrapper.TropesHelper;
@@ -191,7 +192,7 @@ public class ArticleActivity extends Activity {
 			try {
 				// params[0] is the URL
 				article = new TropesArticle(params[0]);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return article;
@@ -221,9 +222,13 @@ public class ArticleActivity extends Activity {
 					}
 				});
 				trueUrl = Uri.parse(article.url);
-				articleInfo = new TropesArticleInfo(article.title, article.url, article.buttons);
+				articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
 				// Only now can we set the url of the share intent
 				setShareIntent();
+			}
+			else {
+				UIFunctions.showToast("Error loading article", getApplicationContext());
+				finish();
 			}
 		}
 	}
@@ -242,7 +247,7 @@ public class ArticleActivity extends Activity {
 		}
 		
 		@Override protected void onPostExecute(ArticleItem item) {
-			Toast.makeText(getApplicationContext(), "Added " + item.title, Toast.LENGTH_SHORT).show();
+			UIFunctions.showToast("Added " + item.title, getApplicationContext());
 		}
 	}
 	

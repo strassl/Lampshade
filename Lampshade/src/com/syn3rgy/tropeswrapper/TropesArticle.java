@@ -19,15 +19,15 @@ public class TropesArticle {
 	public String title;
 	public Element content;
 	
-	public List<TropesLink> buttons;
+	public List<TropesLink> subpages;
 	
 	private String linkColor = "#33B5E5";
 	private String spoilerColor = "#000000";
 	
-	public TropesArticle(Uri url) throws IOException {
+	public TropesArticle(Uri url) throws Exception {
 		Document doc = loadArticle(url);
 		parseArticle(doc);
-		parseButtons(doc);
+		parseSubpages(doc);
 	}
 	
 	/** Returns the Jsoup document of the url */
@@ -40,37 +40,48 @@ public class TropesArticle {
 	}
 	
 	/** Splits the document into title and content */
-	protected void parseArticle(Document doc) {
-		Element wikibody = doc.getElementById("wikibody");
-		
-		//Split the document into title and content
-		Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first().getElementsByTag("span").first();
-		this.title = title.text();
-		
-		Element content = wikibody.getElementById("wikitext");
-		changeLinkStyle(content);
-		hideSpoilers(content);
-		
-		this.content = content;
+	protected void parseArticle(Document doc) throws TropesArticleParseException{
+		try {
+			Element wikibody = doc.getElementById("wikibody");
+			
+			//Split the document into title and content
+			Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first().getElementsByTag("span").first();
+			this.title = title.text();
+			
+			Element content = wikibody.getElementById("wikitext");
+			changeLinkStyle(content);
+			hideSpoilers(content);
+			
+			this.content = content;
+		}
+		catch (Exception e) {
+			throw new TropesArticleParseException("parseArticle");
+		}
 	}
 	
-	protected void parseButtons(Document doc) {
-		Element wikititle = doc.getElementById("wikititle");
-		Element buttons = wikititle.getElementsByClass("namespacebuttons").first();
-		Elements links = buttons.getElementsByTag("a");
-		
-		this.buttons =  new ArrayList<TropesLink>();
-		
-		for(Element link : links) {
-			String title = link.text().trim();
+	/** Extracts the subpages from the page */
+	protected void parseSubpages(Document doc) throws TropesArticleParseException{
+		try {
+			Element wikititle = doc.getElementById("wikititle");
+			Element buttons = wikititle.getElementsByClass("namespacebuttons").first();
+			Elements links = buttons.getElementsByTag("a");
 			
-			if(title.isEmpty()) {
-				Element img = link.getElementsByTag("img").first();
-				title = img.attr("title");
-				link.text(title);
+			this.subpages =  new ArrayList<TropesLink>();
+			
+			for(Element link : links) {
+				String title = link.text().trim();
+				
+				if(title.isEmpty()) {
+					Element img = link.getElementsByTag("img").first();
+					title = img.attr("title");
+					link.text(title);
+				}
+				String url = link.attr("href");
+				this.subpages.add(new TropesLink(title, url));
 			}
-			String url = link.attr("href");
-			this.buttons.add(new TropesLink(title, url));
+		}
+		catch(Exception e) {
+			throw new TropesArticleParseException("parseSubpages");
 		}
 	}
 	

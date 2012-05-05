@@ -2,6 +2,7 @@ package com.syn3rgy.lampshade;
 
 import java.io.IOException;
 
+import com.syn3rgy.tools.android.UIFunctions;
 import com.syn3rgy.tropeswrapper.TropesLink;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 import com.syn3rgy.tropeswrapper.TropesIndex;
@@ -93,8 +94,10 @@ public class TropesIndexActivity extends ListActivity {
 				Uri url = params[0];
 				TropesIndexSelector selector = TropesHelper.findMatchingSelector(application.indexPages, url);
 				tropesIndex = new TropesIndex(url, selector);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				UIFunctions.showToast("Error loading index", getApplicationContext());
+				finish();
 			}
 			return tropesIndex;
 		}

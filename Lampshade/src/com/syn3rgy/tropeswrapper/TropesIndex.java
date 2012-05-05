@@ -14,24 +14,29 @@ public class TropesIndex extends TropesArticle {
 	
 	public List<TropesLink> tropes;
 
-	public TropesIndex(Uri url, TropesIndexSelector selector) throws IOException {
+	public TropesIndex(Uri url, TropesIndexSelector selector) throws Exception {
 		super(url);
 		parseTropeList(content, selector.selector);
 	}
 	
 	/** Finds the items matching the selector and returns the attributes of a link in those items */
-	private void parseTropeList(Element content, String selector) {
-		ArrayList<TropesLink> tropes = new ArrayList<TropesLink>();
-		
-		Elements items = content.select(selector);
-		
-		for(Element item : items) {
-			Element a = item.getElementsByTag("a").first();
-			String title = a.text();
-			String url = a.attr("href").toString();
-			tropes.add(new TropesLink(title, url));
+	private void parseTropeList(Element content, String selector) throws TropesArticleParseException {
+		try {
+			ArrayList<TropesLink> tropes = new ArrayList<TropesLink>();
+			
+			Elements items = content.select(selector);
+			
+			for(Element item : items) {
+				Element a = item.getElementsByTag("a").first();
+				String title = a.text();
+				String url = a.attr("href").toString();
+				tropes.add(new TropesLink(title, url));
+			}
+			
+			this.tropes = tropes;
 		}
-		
-		this.tropes = tropes;
+		catch(Exception e) {
+			throw new TropesArticleParseException("parseTropeList");
+		}
 	}
 }
