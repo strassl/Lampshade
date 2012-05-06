@@ -108,7 +108,7 @@ public class ArticleActivity extends Activity {
     	switch(id) {
     	case DIALOG_INFO_ID:
     		String info = "";
-    		info += "Title: " + articleInfo.title + "<br />";
+    		info += "Title: " + articleInfo.title + "<br /><br />";
     		info += "Url: " + trueUrl.toString() + "<br /><br />";
     		info += "Passed Url: " + passedUrl.toString();
     		    		
