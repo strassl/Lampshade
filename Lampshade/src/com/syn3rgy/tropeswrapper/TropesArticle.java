@@ -72,6 +72,11 @@ public class TropesArticle {
 				String title = link.text().trim();
 				
 				if(title.isEmpty()) {
+					title = link.attr("title").trim();
+					link.text(title);
+				}
+				
+				if(title.isEmpty()) {
 					Element img = link.getElementsByTag("img").first();
 					title = img.attr("title");
 					link.text(title);
