@@ -73,13 +73,11 @@ public class TropesArticle {
 				
 				if(title.isEmpty()) {
 					title = link.attr("title").trim();
-					link.text(title);
 				}
 				
 				if(title.isEmpty()) {
 					Element img = link.getElementsByTag("img").first();
 					title = img.attr("title");
-					link.text(title);
 				}
 				String url = link.attr("href");
 				this.subpages.add(new TropesLink(title, url));
