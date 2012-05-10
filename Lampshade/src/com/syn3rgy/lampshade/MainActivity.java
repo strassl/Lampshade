@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
     	case R.id.btn_load:
     		// Constructs the url of the article
     		EditText page_selection = (EditText) findViewById(R.id.et_enter_page);
-    		String url = TropesApplication.baseUrl + page_selection.getText().toString();
+    		String url = TropesApplication.baseUrl + page_selection.getText().toString().replace(" ", "");
     		application.loadPage(url);
     		break;
     	case R.id.btn_random:
@@ -53,8 +53,4 @@ public class MainActivity extends Activity {
     		application.loadPage(TropesApplication.tropesUrl);
     	}
     }
-    
-    //TODO Copy&Paste is a horrible way to share these functions, I need a better way
-    
-
 }
