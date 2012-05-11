@@ -19,6 +19,10 @@ public class TropesHelper {
 		return title;
 	}
 	
+	public static String titleFromUrl(String url) {
+		return titleFromUrl(Uri.parse(url));
+	}
+	
 	/** Finds a matching selector or returns a generic one */
 	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, String title) {
 		// Check if a predefined selector exists for this page

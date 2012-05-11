@@ -1,6 +1,5 @@
 package com.syn3rgy.lampshade;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -15,7 +14,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +23,6 @@ import android.view.View.OnLongClickListener;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.ShareActionProvider;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.syn3rgy.tools.ListFunctions;
 import com.syn3rgy.tools.android.UIFunctions;
@@ -65,7 +61,14 @@ public class ArticleActivity extends Activity {
 		Uri data = getIntent().getData();
 		if(data != null) {
 			this.passedUrl = data;
-			new loadArticleTask(this).execute(this.passedUrl);
+			
+			// There might be a better way to redirect the index pages
+			if(application.isIndex(TropesHelper.titleFromUrl(data))) {
+				application.loadIndex(data.toString());
+			}
+			else {
+				new loadArticleTask(this).execute(this.passedUrl);
+			}
 		}
 	}
 	

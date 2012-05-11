@@ -39,7 +39,7 @@ public class TropesApplication extends Application {
 	}
 	
 	public void loadPage(String url) {
-		String page = TropesHelper.titleFromUrl(Uri.parse(url));
+		String page = TropesHelper.titleFromUrl(url);
 
     	if(isIndex(page)) {
     		loadIndex(url);
@@ -49,7 +49,7 @@ public class TropesApplication extends Application {
     	}
 	}
 	
-	private Boolean isIndex(String title) {
+	public Boolean isIndex(String title) {
 		//Dirty, but it works and the failure rate is pretty low
 		//If it should fail, the user can still view the page as an article
 		if(title.matches(".*(Index|index|Tropes|tropes).*")) {

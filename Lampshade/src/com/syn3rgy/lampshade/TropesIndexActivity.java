@@ -1,7 +1,5 @@
 package com.syn3rgy.lampshade;
 
-import java.io.IOException;
-
 import com.syn3rgy.tools.android.UIFunctions;
 import com.syn3rgy.tropeswrapper.TropesLink;
 import com.syn3rgy.tropeswrapper.TropesHelper;
@@ -96,8 +94,6 @@ public class TropesIndexActivity extends ListActivity {
 				tropesIndex = new TropesIndex(url, selector);
 			} catch (Exception e) {
 				e.printStackTrace();
-				UIFunctions.showToast("Error loading index", getApplicationContext());
-				finish();
 			}
 			return tropesIndex;
 		}
@@ -113,6 +109,10 @@ public class TropesIndexActivity extends ListActivity {
 
 				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(activity, android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
 				setListAdapter(tropeAdapter);
+			}
+			else {
+				UIFunctions.showToast("Error loading index", getApplicationContext());
+				finish();
 			}
 		}
 	}

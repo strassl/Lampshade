@@ -1,6 +1,5 @@
 package com.syn3rgy.tropeswrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +27,11 @@ public class TropesIndex extends TropesArticle {
 			
 			for(Element item : items) {
 				Element a = item.getElementsByTag("a").first();
-				String title = a.text();
-				String url = a.attr("href").toString();
-				tropes.add(new TropesLink(title, url));
+				if(a != null) {
+					String title = a.text();
+					String url = a.attr("href").toString();
+					tropes.add(new TropesLink(title, url));
+				}
 			}
 			
 			this.tropes = tropes;
