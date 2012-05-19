@@ -12,6 +12,8 @@ import android.net.Uri;
 
 /** Provides cross-activity data */
 public class TropesApplication extends Application {
+	public static final String loadAsArticle = "ASARTICLE";
+	
 	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
 	public static final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
@@ -66,6 +68,7 @@ public class TropesApplication extends Application {
 	
 	public void loadArticle(String url) {
 		Intent articleIntent = new Intent(getApplicationContext(), ArticleActivity.class);
+		articleIntent.putExtra(TropesApplication.loadAsArticle, true)
 		articleIntent.setData(Uri.parse(url));
 		articleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(articleIntent);
