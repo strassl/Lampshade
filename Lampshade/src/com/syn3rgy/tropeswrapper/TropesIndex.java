@@ -30,7 +30,7 @@ public class TropesIndex extends TropesArticle {
 				if(a != null) {
 					String title = a.text();
 					String url = a.attr("href").toString();
-					tropes.add(new TropesLink(title, url));
+					tropes.add(new TropesLink(title, Uri.parse(url)));
 				}
 			}
 			

@@ -1,11 +1,13 @@
 package com.syn3rgy.tropeswrapper;
 
+import android.net.Uri;
+
 
 public class TropesLink {
 	public String title;
-	public String url;
+	public Uri url;
 	
-	public TropesLink(String title, String url) {
+	public TropesLink(String title, Uri url) {
 		this.title = title;
 		this.url = url;
 	}

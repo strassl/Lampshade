@@ -33,14 +33,14 @@ public class TropesApplication extends Application {
 		indexPages.add(new TropesIndexSelector("CharacterizationTropes", "li"));
 	}
 	
-	public void loadWebsite(String url) {
+	public void loadWebsite(Uri url) {
 		Intent websiteIntent = new Intent(Intent.ACTION_VIEW);
-		websiteIntent.setData(Uri.parse(url));
+		websiteIntent.setData(url);
 		websiteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(websiteIntent);
 	}
 	
-	public void loadPage(String url) {
+	public void loadPage(Uri url) {
 		String page = TropesHelper.titleFromUrl(url);
 
     	if(isIndex(page)) {
@@ -66,17 +66,17 @@ public class TropesApplication extends Application {
     	return false;
 	}
 	
-	public void loadArticle(String url) {
+	public void loadArticle(Uri url) {
 		Intent articleIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		articleIntent.putExtra(TropesApplication.loadAsArticle, true);
-		articleIntent.setData(Uri.parse(url));
+		articleIntent.setData(url);
 		articleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(articleIntent);
 	}
 	
-	public void loadIndex(String url) {
-		Intent indexIntent = new Intent(getApplicationContext(), TropesIndexActivity.class);
-		indexIntent.setData(Uri.parse(url));
+	public void loadIndex(Uri url) {
+		Intent indexIntent = new Intent(getApplicationContext(), ArticleActivity.class);
+		indexIntent.setData(url);
 		indexIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(indexIntent);
 	}

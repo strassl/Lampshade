@@ -14,7 +14,7 @@ import android.net.Uri;
 
 /** Wrapper for a TvTropes article */
 public class TropesArticle {
-	public String url = null;
+	public Uri url = null;
 	
 	public String title;
 	public Element content;
@@ -33,7 +33,8 @@ public class TropesArticle {
 	/** Returns the Jsoup document of the url */
 	protected Document loadArticle(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).execute();
-		this.url = resp.url().toString();
+		// We can only set this here due to possible redirects
+		this.url = Uri.parse(resp.url().toString());
 		Document doc = resp.parse();
 				
 		return doc;
@@ -80,7 +81,7 @@ public class TropesArticle {
 					title = img.attr("title");
 				}
 				String url = link.attr("href");
-				this.subpages.add(new TropesLink(title, url));
+				this.subpages.add(new TropesLink(title, Uri.parse(url)));
 			}
 		}
 		catch(Exception e) {

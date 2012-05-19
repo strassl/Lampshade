@@ -28,6 +28,7 @@ import android.widget.ShareActionProvider;
 
 import com.syn3rgy.lampshade.fragments.ArticleFragment;
 import com.syn3rgy.lampshade.fragments.IArticleFragment;
+import com.syn3rgy.lampshade.fragments.IndexFragment;
 import com.syn3rgy.tools.ListFunctions;
 import com.syn3rgy.tools.android.UIFunctions;
 import com.syn3rgy.tropeswrapper.TropesArticle;
@@ -75,7 +76,9 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 			
 			// There might be a better way to redirect the index pages
 			if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
-				application.loadIndex(data.toString());
+				this.fragment = new IndexFragment();
+				
+				getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
 			}
 			else {
 				this.fragment = new ArticleFragment();
@@ -101,7 +104,7 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
         	application.openActivity(MainActivity.class);
         	return true;
         case R.id.refresh_article:
-        	application.loadPage(passedUrl.toString());
+        	application.loadPage(passedUrl);
         	return true;   
         case R.id.save_article:
         	saveArticle(trueUrl.toString());
@@ -258,7 +261,7 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 	}
 
 	public void onLinkClicked(Uri url) {
-		application.loadPage(url.toString());
+		application.loadPage(url);
 	}
 
 	public Uri getUrl() {

@@ -41,6 +41,7 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 	
 	@Override
 	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 		this.application = (TropesApplication) getActivity().getApplication();
 		this.container = (IArticleFragmentContainer) getActivity();
 		
@@ -49,7 +50,6 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 	
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    	super.onCreateOptionsMenu(menu, inflater);
     	inflater.inflate(R.menu.index_menu, menu);
     }
 	
@@ -58,7 +58,7 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.index_as_article:
-        	application.loadArticle(this.trueUrl.toString());
+        	application.loadArticle(this.trueUrl);
         	return true;
         default:
         	return super.onOptionsItemSelected(item);
@@ -67,7 +67,7 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		TropesLink item = (TropesLink) getListAdapter().getItem(position);
-		container.onLinkClicked(Uri.parse(item.url));
+		container.onLinkClicked(item.url);
 	}
 	
 	
@@ -105,12 +105,12 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 				pDialog.dismiss();
 			}
 			if(tropesIndex != null) {
-				setTrueUrl(Uri.parse(tropesIndex.url));
+				setTrueUrl(tropesIndex.url);
 
 				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(activity, android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
 				setListAdapter(tropeAdapter);
 				
-				TropesArticleInfo info = new TropesArticleInfo(tropesIndex.title, Uri.parse(tropesIndex.url), tropesIndex.subpages);
+				TropesArticleInfo info = new TropesArticleInfo(tropesIndex.title, tropesIndex.url, tropesIndex.subpages);
 				articleInfo = info;
 				container.onLoadFinished(info);
 			}

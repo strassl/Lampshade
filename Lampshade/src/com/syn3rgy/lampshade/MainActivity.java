@@ -1,6 +1,7 @@
 package com.syn3rgy.lampshade;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,13 +45,13 @@ public class MainActivity extends Activity {
     		// Constructs the url of the article
     		EditText page_selection = (EditText) findViewById(R.id.et_enter_page);
     		String url = TropesApplication.baseUrl + page_selection.getText().toString().replace(" ", "");
-    		application.loadPage(url);
+    		application.loadPage(Uri.parse(url));
     		break;
     	case R.id.btn_random:
-    		application.loadPage(TropesApplication.randomUrl);
+    		application.loadPage(Uri.parse(TropesApplication.randomUrl));
     		break;
     	case R.id.btn_tropes:
-    		application.loadPage(TropesApplication.tropesUrl);
+    		application.loadPage(Uri.parse(TropesApplication.tropesUrl));
     	}
     }
 }

@@ -52,7 +52,6 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 	
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    	super.onCreateOptionsMenu(menu, inflater);
     }
     
     /** Loads an article in a different thread */
@@ -104,8 +103,8 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 						return true;
 					}
 				});
-				trueUrl = Uri.parse(article.url);
-				articleInfo = new TropesArticleInfo(article.title, Uri.parse(article.url), article.subpages);
+				trueUrl = article.url;
+				articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
 				container.onLoadFinished(articleInfo);
 			}
 			else {

@@ -42,7 +42,7 @@ public class SavedArticlesActivity extends ListActivity{
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		ArticleItem item = (ArticleItem) getListAdapter().getItem(position);
 		removeArticle(item);
-		application.loadPage(item.url.toString());
+		application.loadPage(item.url);
 	}
 	
 	// Function to remove the clutter from the onCreate method
