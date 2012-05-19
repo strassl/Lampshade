@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -19,11 +18,6 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.webkit.WebView;
-import android.webkit.WebView.HitTestResult;
-import android.widget.FrameLayout;
 import android.widget.ShareActionProvider;
 
 import com.syn3rgy.lampshade.fragments.ArticleFragment;
@@ -31,7 +25,6 @@ import com.syn3rgy.lampshade.fragments.IArticleFragment;
 import com.syn3rgy.lampshade.fragments.IndexFragment;
 import com.syn3rgy.tools.ListFunctions;
 import com.syn3rgy.tools.android.UIFunctions;
-import com.syn3rgy.tropeswrapper.TropesArticle;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 
@@ -39,6 +32,7 @@ import com.syn3rgy.tropeswrapper.TropesHelper;
 public class ArticleActivity extends Activity implements IArticleFragmentContainer{
 	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
+	static final int DIALOG_LOAD_FAILED = 2;
 	
 	TropesApplication application;
 	IArticleFragment fragment;
@@ -163,6 +157,24 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 			});
     		dialog = builder.create();
     		break;
+    	case DIALOG_LOAD_FAILED:
+    		builder.setTitle("Error");
+    		builder.setMessage("Could not load the page. Do you want to reload it?");
+    		
+    		builder.setPositiveButton("Reload", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					fragment.loadArticle(passedUrl);
+				}
+    		});
+    		
+    		builder.setNegativeButton("Close", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+    		});
+    		
+    		dialog = builder.create();
+    		break;
     	default:
     		dialog = null;
     	}
@@ -260,7 +272,7 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 	}
 
 	public void onLoadError(Exception e) {
-		UIFunctions.showToast("Error loading article", this);
+		showDialog(DIALOG_LOAD_FAILED);
 	}
 
 	public void onLinkClicked(Uri url) {
