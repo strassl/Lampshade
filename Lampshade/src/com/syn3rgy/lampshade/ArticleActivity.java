@@ -61,7 +61,13 @@ public class ArticleActivity extends Activity {
 		Uri data = getIntent().getData();
 		if(data != null) {
 			this.passedUrl = data;
-			Boolean loadAsArticle = getIntent().getExtras().getBoolean(TropesApplication.loadAsArticle);
+			
+			Boolean loadAsArticle = false;
+			Bundle extras = getIntent().getExtras();
+			if(extras != null) {
+				loadAsArticle = getIntent().getExtras().getBoolean(TropesApplication.loadAsArticle);
+			}
+			
 			// There might be a better way to redirect the index pages
 			if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
 				application.loadIndex(data.toString());

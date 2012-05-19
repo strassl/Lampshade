@@ -68,7 +68,7 @@ public class TropesApplication extends Application {
 	
 	public void loadArticle(String url) {
 		Intent articleIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-		articleIntent.putExtra(TropesApplication.loadAsArticle, true)
+		articleIntent.putExtra(TropesApplication.loadAsArticle, true);
 		articleIntent.setData(Uri.parse(url));
 		articleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(articleIntent);
