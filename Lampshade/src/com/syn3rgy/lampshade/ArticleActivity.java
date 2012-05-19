@@ -112,6 +112,9 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
         case R.id.info_article:
         	showDialog(DIALOG_INFO_ID);
         	return true;
+        case R.id.browser_article:
+        	application.loadWebsite(this.trueUrl);
+        	return true;
         case R.id.subpages_article:
         	showDialog(DIALOG_SUBPAGES_ID);
         	return true;
