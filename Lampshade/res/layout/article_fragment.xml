@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
 
-    <FrameLayout
-        android:id="@+id/article_fragment_container"
+    <WebView
+        android:id="@+id/wv_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </FrameLayout>
-
+        android:layout_height="match_parent" />
+    
 </LinearLayout>

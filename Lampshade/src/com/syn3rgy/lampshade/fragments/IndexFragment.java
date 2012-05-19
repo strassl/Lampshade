@@ -1,15 +1,16 @@
-package com.syn3rgy.lampshade;
+package com.syn3rgy.lampshade.fragments;
 
-import com.syn3rgy.tools.android.UIFunctions;
+import com.syn3rgy.lampshade.IArticleFragmentContainer;
+import com.syn3rgy.lampshade.R;
+import com.syn3rgy.lampshade.TropesApplication;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
-import com.syn3rgy.tropeswrapper.TropesLink;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 import com.syn3rgy.tropeswrapper.TropesIndex;
 import com.syn3rgy.tropeswrapper.TropesIndexSelector;
+import com.syn3rgy.tropeswrapper.TropesLink;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ListActivity;
+import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,8 +22,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class TropesIndexActivity extends ListActivity {
+public class IndexFragment extends ListFragment implements IArticleFragment{
 	TropesApplication application;
+	IArticleFragmentContainer container;
 	
 	TropesArticleInfo articleInfo;
 	Uri passedUrl;
@@ -31,34 +33,30 @@ public class TropesIndexActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setHasOptionsMenu(true);
 		
-		ActionBar ab = getActionBar();
-		ab.setHomeButtonEnabled(true);
-		ab.setDisplayHomeAsUpEnabled(true);
-				
-		application = (TropesApplication) getApplication();
+		this.application = (TropesApplication) getActivity().getApplication();
+		this.container = (IArticleFragmentContainer) getActivity();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		this.application = (TropesApplication) getActivity().getApplication();
+		this.container = (IArticleFragmentContainer) getActivity();
 		
-		Uri data = getIntent().getData();
-		if(data != null) {
-			this.passedUrl = data;
-			new loadTropesIndexTask(this).execute(this.passedUrl);
-		}
+		loadArticle(this.container.getUrl());
 	}
 	
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	super.onCreateOptionsMenu(menu, inflater);
     	inflater.inflate(R.menu.index_menu, menu);
-        return true;
     }
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case android.R.id.home:
-        	application.openActivity(MainActivity.class);
-        	return true;
         case R.id.index_as_article:
         	application.loadArticle(this.trueUrl.toString());
         	return true;
@@ -69,7 +67,7 @@ public class TropesIndexActivity extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		TropesLink item = (TropesLink) getListAdapter().getItem(position);
-		application.loadPage(item.url.toString());
+		container.onLinkClicked(Uri.parse(item.url));
 	}
 	
 	
@@ -107,20 +105,38 @@ public class TropesIndexActivity extends ListActivity {
 				pDialog.dismiss();
 			}
 			if(tropesIndex != null) {
-				activity.getActionBar().setTitle(tropesIndex.title);
 				setTrueUrl(Uri.parse(tropesIndex.url));
 
 				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(activity, android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
 				setListAdapter(tropeAdapter);
+				
+				TropesArticleInfo info = new TropesArticleInfo(tropesIndex.title, Uri.parse(tropesIndex.url), tropesIndex.subpages);
+				articleInfo = info;
+				container.onLoadFinished(info);
 			}
 			else {
-				UIFunctions.showToast("Error loading index", getApplicationContext());
-				finish();
+				container.onLoadError(null);
 			}
 		}
 	}
 	
 	private void setTrueUrl(Uri url) {
 		this.trueUrl = url;
+	}
+
+	public void loadArticle(Uri url) {
+		new loadTropesIndexTask(getActivity()).execute(url);
+	}
+
+	public Uri getTrueUrl() {
+		return this.trueUrl;
+	}
+
+	public Uri getPassedUrl() {
+		return this.passedUrl;
+	}
+
+	public TropesArticleInfo getArticleInfo() {
+		return this.articleInfo;
 	}
 }

@@ -2,12 +2,14 @@ package com.syn3rgy.tropeswrapper;
 
 import java.util.List;
 
+import android.net.Uri;
+
 public class TropesArticleInfo {
 	public String title;
-	public String url;
+	public Uri url;
 	public List<TropesLink> subpages;
 	
-	public TropesArticleInfo(String title, String url, List<TropesLink> subpages) {
+	public TropesArticleInfo(String title, Uri url, List<TropesLink> subpages) {
 		this.title = title;
 		this.url = url;
 		this.subpages = subpages;

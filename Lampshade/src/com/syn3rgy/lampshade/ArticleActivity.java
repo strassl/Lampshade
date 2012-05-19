@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -22,8 +23,11 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
+import android.widget.FrameLayout;
 import android.widget.ShareActionProvider;
 
+import com.syn3rgy.lampshade.fragments.ArticleFragment;
+import com.syn3rgy.lampshade.fragments.IArticleFragment;
 import com.syn3rgy.tools.ListFunctions;
 import com.syn3rgy.tools.android.UIFunctions;
 import com.syn3rgy.tropeswrapper.TropesArticle;
@@ -31,11 +35,12 @@ import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
-public class ArticleActivity extends Activity {
+public class ArticleActivity extends Activity implements IArticleFragmentContainer{
 	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
 	
 	TropesApplication application;
+	IArticleFragment fragment;
 	
 	TropesArticleInfo articleInfo;
 	// The url that was passed to the activity
@@ -44,7 +49,7 @@ public class ArticleActivity extends Activity {
 	Uri trueUrl;
 	ActionMode mActionMode = null;
 	// Used to pass the selected link to the ActionBar
-	String selectedLink = null;
+	Uri selectedLink = null;
 	ShareActionProvider shareProvider;
 	
 	@Override
@@ -73,7 +78,9 @@ public class ArticleActivity extends Activity {
 				application.loadIndex(data.toString());
 			}
 			else {
-				new loadArticleTask(this).execute(this.passedUrl);
+				this.fragment = new ArticleFragment();
+				
+				getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
 			}
 		}
 	}
@@ -168,7 +175,7 @@ public class ArticleActivity extends Activity {
     }
 	
     /** Does all preparations and initialises the ActionMode */
-    private boolean startLinkMode(String url) {
+    private boolean startLinkMode(Uri url) {
     	// If ActionMode is already active finish it
     	if (mActionMode != null) {
     		mActionMode.finish();
@@ -179,68 +186,6 @@ public class ArticleActivity extends Activity {
         mActionMode = this.startActionMode(mActionModeCallback);
         return true;
     }
-    
-    /** Loads an article in a different thread */
-	public class loadArticleTask extends AsyncTask<Uri, Integer, TropesArticle> {
-		public loadArticleTask(Activity activity) {
-			this.activity = activity;  
-		}
-		
-		private ProgressDialog pDialog = null;
-		private Activity activity;
-		
-		@Override
-		protected void onPreExecute() {
-			this.pDialog = ProgressDialog.show(this.activity, "", "Loading article...", true);
-			pDialog.show();
-		}
-		
-		@Override
-		protected TropesArticle doInBackground(Uri... params) {
-			TropesArticle article = null;
-			try {
-				// params[0] is the URL
-				article = new TropesArticle(params[0]);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return article;
-		}
-		
-		@Override
-		protected void onPostExecute(TropesArticle article) {
-			if(pDialog.isShowing()) {
-				pDialog.dismiss();
-			}
-			if(article != null) {
-				activity.getActionBar().setTitle(article.title);
-				WebView wv = (WebView) findViewById(R.id.wv_content);
-				wv.loadData(article.content.html(), "text/html", null);
-				
-				wv.setOnLongClickListener(new OnLongClickListener() {
-					public boolean onLongClick(View v) {
-						WebView wv = (WebView) v;
-						HitTestResult hr = wv.getHitTestResult();
-						
-						// If the clicked element is a link
-						if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
-							// hr.getExtra() is the link's target
-							startLinkMode(hr.getExtra());
-						}
-						return true;
-					}
-				});
-				trueUrl = Uri.parse(article.url);
-				articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
-				// Only now can we set the url of the share intent
-				setShareIntent();
-			}
-			else {
-				UIFunctions.showToast("Error loading article", getApplicationContext());
-				finish();
-			}
-		}
-	}
 	
 	// It is not strictly necessary to do this in a separate thread, but no need to (possibly) block the UI with the database
 	public class saveArticleTask extends AsyncTask<String, Integer, ArticleItem> {
@@ -275,7 +220,7 @@ public class ArticleActivity extends Activity {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.article_action_menu, menu);
 			if(selectedLink != null) {
-				mode.setTitle(TropesHelper.titleFromUrl(Uri.parse(selectedLink)));
+				mode.setTitle(TropesHelper.titleFromUrl(selectedLink));
 			}
 			return true;
 		}
@@ -284,7 +229,7 @@ public class ArticleActivity extends Activity {
 			switch(item.getItemId()) {
 			case R.id.article_action_save:
 				if(selectedLink != null) {
-					saveArticle(selectedLink);
+					saveArticle(selectedLink.toString());
 					mode.finish();
 					return true;
 				}
@@ -296,4 +241,27 @@ public class ArticleActivity extends Activity {
 			}
 		}
 	};
+
+	public void onLinkSelected(Uri url) {
+		startLinkMode(url);
+	}
+
+	public void onLoadFinished(TropesArticleInfo info) {
+		this.articleInfo = info;
+		getActionBar().setTitle(info.title);
+		this.trueUrl = info.url;
+		setShareIntent();
+	}
+
+	public void onLoadError(Exception e) {
+		UIFunctions.showToast("Error loading article", this);
+	}
+
+	public void onLinkClicked(Uri url) {
+		application.loadPage(url.toString());
+	}
+
+	public Uri getUrl() {
+		return this.passedUrl;
+	}
 }

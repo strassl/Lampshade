@@ -6,9 +6,9 @@ import com.syn3rgy.tropeswrapper.*;
 
 /** Represents a saved article from the database */
 public class ArticleItem {
-	long id;
-	String title;
-	Uri url;
+	public long id;
+	public String title;
+	public Uri url;
 	
 	public ArticleItem(long id, String title, Uri url) {
 		this.id = id;
