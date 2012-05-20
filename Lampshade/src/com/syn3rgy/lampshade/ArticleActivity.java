@@ -23,13 +23,15 @@ import android.widget.ShareActionProvider;
 import com.syn3rgy.lampshade.fragments.ArticleFragment;
 import com.syn3rgy.lampshade.fragments.IArticleFragment;
 import com.syn3rgy.lampshade.fragments.IndexFragment;
+import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
+import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
 import com.syn3rgy.tools.ListFunctions;
 import com.syn3rgy.tools.android.UIFunctions;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 import com.syn3rgy.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
-public class ArticleActivity extends Activity implements IArticleFragmentContainer{
+public class ArticleActivity extends Activity implements OnArticleLoadListener, OnInteractionListener{
 	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
@@ -70,12 +72,12 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 			
 			// There might be a better way to redirect the index pages
 			if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
-				this.fragment = new IndexFragment();
+				this.fragment = new IndexFragment(this.passedUrl);
 				
 				getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
 			}
 			else {
-				this.fragment = new ArticleFragment();
+				this.fragment = new ArticleFragment(this.passedUrl);
 				
 				getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
 			}
@@ -264,13 +266,6 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 		startLinkMode(url);
 	}
 
-	public void onLoadFinished(TropesArticleInfo info) {
-		this.articleInfo = info;
-		getActionBar().setTitle(info.title);
-		this.trueUrl = info.url;
-		setShareIntent();
-	}
-
 	public void onLoadError(Exception e) {
 		showDialog(DIALOG_LOAD_FAILED);
 	}
@@ -279,7 +274,13 @@ public class ArticleActivity extends Activity implements IArticleFragmentContain
 		application.loadPage(url);
 	}
 
-	public Uri getUrl() {
-		return this.passedUrl;
+	public void onLoadStart() {
+	}
+
+	public void onLoadFinish(TropesArticleInfo info) {
+		this.articleInfo = info;
+		getActionBar().setTitle(info.title);
+		this.trueUrl = info.url;
+		setShareIntent();
 	}
 }

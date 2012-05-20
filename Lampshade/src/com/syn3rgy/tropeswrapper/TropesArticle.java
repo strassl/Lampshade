@@ -91,14 +91,6 @@ public class TropesArticle {
 		}
 	}
 	
-	protected void injectButtons(Elements links) {
-		content.prepend("<hr />");
-		for(Element link : links) {
-			link.text(link.text() + " |");
-			content.prependChild(link);
-		}
-	}
-	
 	/** Combines a List of css selectors into a stylesheet and inserts it into the page */
 	protected void insertStylesheet(Element element, List<String> selectors) {
 		String style = "";
@@ -142,6 +134,7 @@ public class TropesArticle {
 		insertStylesheet(content, selectors);
 	}
 	
+	/** Prettier folders */
 	protected void styleFolders(Element content) {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add(".folderlabel { " + "color:" + linkColor + ";" + "width:100%;" + "height:1.5em;" + "margin-top:2em;" + "border-bottom:1px solid black;" + "}");

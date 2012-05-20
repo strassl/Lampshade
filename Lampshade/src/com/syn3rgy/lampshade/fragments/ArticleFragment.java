@@ -1,8 +1,9 @@
 package com.syn3rgy.lampshade.fragments;
 
-import com.syn3rgy.lampshade.IArticleFragmentContainer;
 import com.syn3rgy.lampshade.R;
 import com.syn3rgy.lampshade.TropesApplication;
+import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
+import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
 import com.syn3rgy.tropeswrapper.TropesArticle;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 
@@ -20,14 +21,20 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
+import android.webkit.WebViewClient;
 
 public class ArticleFragment extends Fragment implements IArticleFragment{
 	TropesApplication application;
-	IArticleFragmentContainer container;
+	OnArticleLoadListener loadListener;
+	OnInteractionListener interactionListener;
 	
 	TropesArticleInfo articleInfo;
 	Uri passedUrl;
 	Uri trueUrl;
+	
+	public ArticleFragment(Uri url) {
+		this.passedUrl = url;
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,9 +47,11 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 		super.onAttach(activity);
 		
 		this.application = (TropesApplication) getActivity().getApplication();
-		this.container = (IArticleFragmentContainer) getActivity();
 		
-		loadArticle(this.container.getUrl());
+		this.loadListener = (OnArticleLoadListener) getActivity();
+		this.interactionListener = (OnInteractionListener) getActivity();
+		
+		loadArticle(this.passedUrl);
 	}
 	
 	@Override
@@ -55,8 +64,8 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
     }
     
     /** Loads an article in a different thread */
-	public class loadArticleTask extends AsyncTask<Uri, Integer, TropesArticle> {
-		public loadArticleTask(Activity activity) {
+	public class LoadArticleTask extends AsyncTask<Uri, Integer, TropesArticle> {
+		public LoadArticleTask(Activity activity) {
 			this.activity = activity;  
 		}
 		
@@ -91,6 +100,7 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 				wv.getSettings().setJavaScriptEnabled(true);
 				wv.getSettings().setLoadsImagesAutomatically(true);
 				wv.loadData(article.content.html(), "text/html", null);
+				
 				wv.setOnLongClickListener(new OnLongClickListener() {
 					public boolean onLongClick(View v) {
 						WebView wv = (WebView) v;
@@ -99,23 +109,32 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 						// If the clicked element is a link
 						if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
 							// hr.getExtra() is the link's target
-							container.onLinkSelected(Uri.parse(hr.getExtra()));
+							interactionListener.onLinkSelected(Uri.parse(hr.getExtra()));
 						}
 						return true;
 					}
 				});
+				
+				wv.setWebViewClient(new WebViewClient() {
+					@Override
+					public boolean shouldOverrideUrlLoading(WebView view, String url) {
+						interactionListener.onLinkClicked(Uri.parse(url));
+						return true;
+					}
+				});
+				
 				trueUrl = article.url;
 				articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
-				container.onLoadFinished(articleInfo);
+				loadListener.onLoadFinish(articleInfo);
 			}
 			else {
-				container.onLoadError(null);
+				loadListener.onLoadError(null);
 			}
 		}
 	}
 	
 	public void loadArticle(Uri url) {
-		new loadArticleTask(getActivity()).execute(url);
+		new LoadArticleTask(getActivity()).execute(url);
 	}
 
 	public Uri getTrueUrl() {
