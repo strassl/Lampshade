@@ -52,6 +52,8 @@ public class TropesArticle {
 			Element content = wikibody.getElementById("wikitext");
 			changeLinkStyle(content);
 			hideSpoilers(content);
+			addMainJS(content);
+			styleFolders(content);
 			
 			this.content = content;
 		}
@@ -108,11 +110,49 @@ public class TropesArticle {
 		element.prepend(style_tag);
 	}
 	
+	/** Combines alist of functions and inserts them before the element */
+	protected void insertScript(Element element, List<String> functions) {
+		String script = "";
+		
+		for(String function : functions) {
+			script += function;
+		}
+		
+		String scriptTag = "<script type=\"text/javascript\">" + script + "</script>";
+		
+		element.prepend(scriptTag);
+	}
+	
+	/** Inserts an external JavaScript file into the page */
+	protected void insertExternalScript(Element element, Uri url) {
+		String scriptTag = "<script type=\"text/javascript\" src=\"" + url.toString() + "\">" + "</script>";
+		element.prepend(scriptTag);
+	}
+	
+	/** Inserts an external stylesheet into the page */
+	protected void insertExternalStylesheet(Element element, Uri url) {
+		String styleTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + url.toString() + "\" />";
+		element.prepend(styleTag);
+	}
+	
 	/** Inserts a stylesheet that changes the colour of links */
 	protected void changeLinkStyle(Element content) {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add("a { color:" + linkColor + ";" + " }");
 		insertStylesheet(content, selectors);
+	}
+	
+	protected void styleFolders(Element content) {
+		ArrayList<String> selectors = new ArrayList<String>();
+		selectors.add(".folderlabel { " + "color:" + linkColor + ";" + "width:100%;" + "height:1.5em;" + "margin-top:2em;" + "border-bottom:1px solid black;" + "}");
+		selectors.add(".folderlabelopen { color:" + linkColor + ";" + "font-weight:bold" + " }");
+		insertStylesheet(content, selectors);
+	}
+	
+	/** Inserts the main.js file from tvtropes.org */
+	protected void addMainJS(Element content) {
+		Uri mainJSUrl = Uri.parse("http://static.tvtropes.org/main.js");
+		insertExternalScript(content, mainJSUrl);
 	}
 	
 	/** Modifies the hover state of .spoiler elements */
@@ -123,6 +163,7 @@ public class TropesArticle {
 		selectors.add(".spoiler a { color:" + spoilerColor + "; }");
 		selectors.add(".spoiler:hover { background-color:transparent; }");
 		selectors.add(".spoiler:hover a { color:" + linkColor + "; }");
+		selectors.add("#folder0 { visiblity:hidden; }");
 		insertStylesheet(content, selectors);
 	}
 }

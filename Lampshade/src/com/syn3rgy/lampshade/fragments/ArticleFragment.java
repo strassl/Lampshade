@@ -88,8 +88,9 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 			}
 			if(article != null) {
 				WebView wv = (WebView) getView().findViewById(R.id.wv_content);
+				wv.getSettings().setJavaScriptEnabled(true);
+				wv.getSettings().setLoadsImagesAutomatically(true);
 				wv.loadData(article.content.html(), "text/html", null);
-				
 				wv.setOnLongClickListener(new OnLongClickListener() {
 					public boolean onLongClick(View v) {
 						WebView wv = (WebView) v;
