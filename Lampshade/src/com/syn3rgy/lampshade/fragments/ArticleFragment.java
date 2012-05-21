@@ -87,33 +87,17 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
     }
     
     /** Loads an article in a different thread */
-	public class LoadArticleTask extends AsyncTask<Uri, Integer, TropesArticle> {
-		public LoadArticleTask(Activity activity) {
-			this.activity = activity;  
-		}
+	public class LoadArticleTask extends LoadTropesTask {
 		
-		private Activity activity;
-		
-		@Override
-		protected void onPreExecute() {
-			loadListener.onLoadStart();
+		public LoadArticleTask(OnArticleLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+			super(tLoadListener, tInteractionListener);
 		}
 		
 		@Override
-		protected TropesArticle doInBackground(Uri... params) {
-			Uri url = params[0];
-			TropesArticle article = null;
-			try {
-				article = new TropesArticle(url);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return article;
-		}
-		
-		@Override
-		protected void onPostExecute(TropesArticle article) {
-			if(article != null) {
+		protected void onPostExecute(Object result) {
+			if(result.getClass() == TropesArticle.class) {
+				TropesArticle article = (TropesArticle) result;
+				
 				WebView wv = (WebView) getView().findViewById(R.id.wv_content);
 				wv.getSettings().setJavaScriptEnabled(true);
 				wv.getSettings().setLoadsImagesAutomatically(true);
@@ -127,7 +111,7 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 						// If the clicked element is a link
 						if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
 							// hr.getExtra() is the link's target
-							interactionListener.onLinkSelected(Uri.parse(hr.getExtra()));
+							tInteractionListener.onLinkSelected(Uri.parse(hr.getExtra()));
 						}
 						return true;
 					}
@@ -136,23 +120,25 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 				wv.setWebViewClient(new WebViewClient() {
 					@Override
 					public boolean shouldOverrideUrlLoading(WebView view, String url) {
-						interactionListener.onLinkClicked(Uri.parse(url));
+						tInteractionListener.onLinkClicked(Uri.parse(url));
 						return true;
 					}
 				});
 				
+				TropesArticleInfo tArticleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
 				trueUrl = article.url;
-				articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
-				loadListener.onLoadFinish(articleInfo);
+				articleInfo = tArticleInfo;
+				tLoadListener.onLoadFinish(tArticleInfo);
 			}
 			else {
-				loadListener.onLoadError(null);
+				Exception e = (Exception) result;
+				this.tLoadListener.onLoadError(e);
 			}
 		}
 	}
 	
 	public void loadArticle(Uri url) {
-		new LoadArticleTask(getActivity()).execute(url);
+		new LoadArticleTask(this.loadListener, this.interactionListener).execute(url);
 	}
 
 	public Uri getTrueUrl() {

@@ -12,9 +12,7 @@ import com.syn3rgy.tropeswrapper.TropesLink;
 
 import android.app.Activity;
 import android.app.ListFragment;
-import android.app.ProgressDialog;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -87,64 +85,56 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 		interactionListener.onLinkClicked(item.url);
 	}
 	
-    /** Loads an article in a different thread */
-	public class LoadIndexTask extends AsyncTask<Uri, Integer, TropesIndex> {
-		public LoadIndexTask(Activity activity) {
-			this.activity = activity;  
+    /** Loads an index in a different thread */
+	public class LoadIndexTask extends LoadTropesTask {
+		
+		public LoadIndexTask(OnArticleLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+			super(tLoadListener, tInteractionListener);
 		}
-		
-		private Activity activity;
-		
-		@Override
-		protected void onPreExecute() {
-			loadListener.onLoadStart();
-		}
-		
-		@Override
-		protected TropesIndex doInBackground(Uri... params) {
-			Uri url = params[0];
-			TropesIndex tropesIndex = null;
-			try {
-				TropesIndexSelector selector = TropesHelper.findMatchingSelector(application.indexPages, url);
-				tropesIndex = new TropesIndex(url, selector);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return tropesIndex;
-		}
-		
-		@Override
-		protected void onPostExecute(TropesIndex tropesIndex) {
-			if(tropesIndex != null) {
-				setTrueUrl(tropesIndex.url);
 
-				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(activity, android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
+		@Override
+		protected Object doInBackground(Uri... params) {
+			try {
+				Uri url = params[0];
+				TropesIndexSelector selector = TropesHelper.findMatchingSelector(application.indexPages, url);
+				TropesIndex tropesIndex = new TropesIndex(url, selector);
+				return tropesIndex;
+			} catch (Exception e) {
+				return e;
+			}
+		}
+		
+		@Override
+		protected void onPostExecute(Object result) {
+			
+			if(result.getClass() == TropesIndex.class) {
+				TropesIndex tropesIndex = (TropesIndex) result;
+
+				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(getActivity(), android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
 				setListAdapter(tropeAdapter);
 		
 				getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 						TropesLink link = (TropesLink) parent.getItemAtPosition(position);
-						interactionListener.onLinkSelected(link.url);
+						tInteractionListener.onLinkSelected(link.url);
 						return true;
 					}
 				});
 				
-				TropesArticleInfo info = new TropesArticleInfo(tropesIndex.title, tropesIndex.url, tropesIndex.subpages);
-				articleInfo = info;
-				loadListener.onLoadFinish(info);
+				TropesArticleInfo tArticleInfo = new TropesArticleInfo(tropesIndex.title, tropesIndex.url, tropesIndex.subpages);
+				articleInfo = tArticleInfo;
+				
+				tLoadListener.onLoadFinish(articleInfo);
 			}
 			else {
-				loadListener.onLoadError(null);
+				Exception e = (Exception) result;
+				tLoadListener.onLoadError(e);
 			}
 		}
 	}
-	
-	private void setTrueUrl(Uri url) {
-		this.trueUrl = url;
-	}
 
 	public void loadArticle(Uri url) {
-		new LoadIndexTask(getActivity()).execute(url);
+		new LoadIndexTask(this.loadListener, this.interactionListener).execute(url);
 	}
 
 	public Uri getTrueUrl() {
