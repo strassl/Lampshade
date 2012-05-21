@@ -26,6 +26,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class IndexFragment extends ListFragment implements IArticleFragment{
+	public static String EXTRA_URL = "URL";
+	
 	TropesApplication application;
 	OnArticleLoadListener loadListener;
 	OnInteractionListener interactionListener;
@@ -34,25 +36,32 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 	Uri passedUrl;
 	Uri trueUrl;
 	
-	public IndexFragment(Uri url) {
-		this.passedUrl = url;
+	public static IndexFragment newInstance(Uri url) {
+		IndexFragment f = new IndexFragment();
+		Bundle bundle = new Bundle(1);
+		bundle.putParcelable(EXTRA_URL, url);
+		f.setArguments(bundle);
+		return f;
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setHasOptionsMenu(true);
+		
+		Uri url = getArguments().getParcelable(EXTRA_URL);
+		this.passedUrl = url;
+		
+		loadArticle(this.passedUrl);
 	}
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.application = (TropesApplication) getActivity().getApplication();
+		this.application = (TropesApplication) activity.getApplication();
 		
-		this.loadListener = (OnArticleLoadListener) getActivity();
-		this.interactionListener = (OnInteractionListener) getActivity();
-		
-		loadArticle(this.passedUrl);
+		this.loadListener = (OnArticleLoadListener) activity;
+		this.interactionListener = (OnInteractionListener) activity;
 	}
 	
     @Override
@@ -84,20 +93,18 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 			this.activity = activity;  
 		}
 		
-		private ProgressDialog pDialog = null;
 		private Activity activity;
 		
 		@Override
 		protected void onPreExecute() {
-			this.pDialog = ProgressDialog.show(this.activity, "", "Loading tropes...", true);
-			pDialog.show();
+			loadListener.onLoadStart();
 		}
 		
 		@Override
 		protected TropesIndex doInBackground(Uri... params) {
+			Uri url = params[0];
 			TropesIndex tropesIndex = null;
 			try {
-				Uri url = params[0];
 				TropesIndexSelector selector = TropesHelper.findMatchingSelector(application.indexPages, url);
 				tropesIndex = new TropesIndex(url, selector);
 			} catch (Exception e) {
@@ -108,9 +115,6 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 		
 		@Override
 		protected void onPostExecute(TropesIndex tropesIndex) {
-			if(pDialog.isShowing()) {
-				pDialog.dismiss();
-			}
 			if(tropesIndex != null) {
 				setTrueUrl(tropesIndex.url);
 

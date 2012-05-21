@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -38,6 +39,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 	
 	TropesApplication application;
 	IArticleFragment fragment;
+	ProgressDialog loadDialog;
 	
 	TropesArticleInfo articleInfo;
 	// The url that was passed to the activity
@@ -70,16 +72,18 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 				loadAsArticle = getIntent().getExtras().getBoolean(TropesApplication.loadAsArticle);
 			}
 			
-			// There might be a better way to redirect the index pages
-			if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
-				this.fragment = new IndexFragment(this.passedUrl);
-				
-				getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
-			}
-			else {
-				this.fragment = new ArticleFragment(this.passedUrl);
-				
-				getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
+			if(savedInstanceState == null) {
+				// There might be a better way to redirect the index pages
+				if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
+					this.fragment = IndexFragment.newInstance(this.passedUrl);
+					
+					getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
+				}
+				else {
+					this.fragment = ArticleFragment.newInstance(this.passedUrl);
+					
+					getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
+				}
 			}
 		}
 	}
@@ -275,9 +279,14 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 	}
 
 	public void onLoadStart() {
+		this.loadDialog = ProgressDialog.show(this, "", "Loading article...", true);
 	}
 
 	public void onLoadFinish(TropesArticleInfo info) {
+		if(this.loadDialog != null && this.loadDialog.isShowing()) {
+			this.loadDialog.dismiss();
+		}
+		
 		this.articleInfo = info;
 		getActionBar().setTitle(info.title);
 		this.trueUrl = info.url;

@@ -9,7 +9,6 @@ import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +23,9 @@ import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
 
 public class ArticleFragment extends Fragment implements IArticleFragment{
+	public static String PASSED_URL = "PASSED_URL";
+	public static String TRUE_URL = "TRUE_URL";
+	
 	TropesApplication application;
 	OnArticleLoadListener loadListener;
 	OnInteractionListener interactionListener;
@@ -32,26 +34,47 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 	Uri passedUrl;
 	Uri trueUrl;
 	
-	public ArticleFragment(Uri url) {
-		this.passedUrl = url;
+	public static ArticleFragment newInstance(Uri url) {
+		ArticleFragment f = new ArticleFragment();
+		Bundle bundle = new Bundle(2);
+		bundle.putParcelable(PASSED_URL, url);
+		bundle.putParcelable(TRUE_URL, url);
+		f.setArguments(bundle);
+		return f;
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setHasOptionsMenu(true);
+		
+		if(savedInstanceState != null) {
+			this.passedUrl = savedInstanceState.getParcelable(PASSED_URL);
+			this.trueUrl = savedInstanceState.getParcelable(TRUE_URL);
+		}
+		else {
+			this.passedUrl = getArguments().getParcelable(PASSED_URL);
+			this.trueUrl = getArguments().getParcelable(TRUE_URL);
+		}
+		
+		loadArticle(this.trueUrl);
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(PASSED_URL, this.passedUrl);
+		outState.putParcelable(TRUE_URL, this.trueUrl);
 	}
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		this.application = (TropesApplication) getActivity().getApplication();
+		this.application = (TropesApplication) activity.getApplication();
 		
-		this.loadListener = (OnArticleLoadListener) getActivity();
-		this.interactionListener = (OnInteractionListener) getActivity();
-		
-		loadArticle(this.passedUrl);
+		this.loadListener = (OnArticleLoadListener) activity;
+		this.interactionListener = (OnInteractionListener) activity;
 	}
 	
 	@Override
@@ -69,21 +92,19 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 			this.activity = activity;  
 		}
 		
-		private ProgressDialog pDialog = null;
 		private Activity activity;
 		
 		@Override
 		protected void onPreExecute() {
-			this.pDialog = ProgressDialog.show(this.activity, "", "Loading article...", true);
-			pDialog.show();
+			loadListener.onLoadStart();
 		}
 		
 		@Override
 		protected TropesArticle doInBackground(Uri... params) {
+			Uri url = params[0];
 			TropesArticle article = null;
 			try {
-				// params[0] is the URL
-				article = new TropesArticle(params[0]);
+				article = new TropesArticle(url);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -92,9 +113,6 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 		
 		@Override
 		protected void onPostExecute(TropesArticle article) {
-			if(pDialog.isShowing()) {
-				pDialog.dismiss();
-			}
 			if(article != null) {
 				WebView wv = (WebView) getView().findViewById(R.id.wv_content);
 				wv.getSettings().setJavaScriptEnabled(true);
