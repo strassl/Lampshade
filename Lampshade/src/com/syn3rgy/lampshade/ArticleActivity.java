@@ -22,8 +22,8 @@ import android.view.MenuItem;
 import android.widget.ShareActionProvider;
 
 import com.syn3rgy.lampshade.fragments.ArticleFragment;
-import com.syn3rgy.lampshade.fragments.IArticleFragment;
 import com.syn3rgy.lampshade.fragments.IndexFragment;
+import com.syn3rgy.lampshade.fragments.TropesFragment;
 import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
 import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
 import com.syn3rgy.tools.ListFunctions;
@@ -38,7 +38,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 	static final int DIALOG_LOAD_FAILED = 2;
 	
 	TropesApplication application;
-	IArticleFragment fragment;
+	TropesFragment fragment;
 	ProgressDialog loadDialog;
 	
 	TropesArticleInfo articleInfo;
@@ -169,7 +169,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
     		
     		builder.setPositiveButton("Reload", new OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					fragment.loadArticle(passedUrl);
+					fragment.loadTropes(passedUrl);
 				}
     		});
     		
@@ -271,6 +271,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 	}
 
 	public void onLoadError(Exception e) {
+		closeProgressDialog();
 		showDialog(DIALOG_LOAD_FAILED);
 	}
 
@@ -283,13 +284,16 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 	}
 
 	public void onLoadFinish(TropesArticleInfo info) {
-		if(this.loadDialog != null && this.loadDialog.isShowing()) {
-			this.loadDialog.dismiss();
-		}
-		
+		closeProgressDialog();
 		this.articleInfo = info;
 		getActionBar().setTitle(info.title);
 		this.trueUrl = info.url;
 		setShareIntent();
+	}
+	
+	private void closeProgressDialog() {
+		if(this.loadDialog != null && this.loadDialog.isShowing()) {
+			this.loadDialog.dismiss();
+		}
 	}
 }
