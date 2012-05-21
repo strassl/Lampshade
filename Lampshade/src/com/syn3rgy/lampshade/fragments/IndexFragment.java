@@ -1,7 +1,6 @@
 package com.syn3rgy.lampshade.fragments;
 
 import com.syn3rgy.lampshade.R;
-import com.syn3rgy.lampshade.TropesApplication;
 import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
 import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
@@ -10,56 +9,34 @@ import com.syn3rgy.tropeswrapper.TropesIndex;
 import com.syn3rgy.tropeswrapper.TropesIndexSelector;
 import com.syn3rgy.tropeswrapper.TropesLink;
 
-import android.app.Activity;
-import android.app.ListFragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class IndexFragment extends ListFragment implements IArticleFragment{
-	public static String EXTRA_URL = "URL";
-	
-	TropesApplication application;
-	OnArticleLoadListener loadListener;
-	OnInteractionListener interactionListener;
-	
-	TropesArticleInfo articleInfo;
-	Uri passedUrl;
-	Uri trueUrl;
+public class IndexFragment extends TropesFragment{
 	
 	public static IndexFragment newInstance(Uri url) {
 		IndexFragment f = new IndexFragment();
-		Bundle bundle = new Bundle(1);
-		bundle.putParcelable(EXTRA_URL, url);
+		Bundle bundle = new Bundle(2);
+		bundle.putParcelable(PASSED_URL, url);
+		bundle.putParcelable(TRUE_URL, url);
 		f.setArguments(bundle);
 		return f;
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		this.setHasOptionsMenu(true);
-		
-		Uri url = getArguments().getParcelable(EXTRA_URL);
-		this.passedUrl = url;
-		
-		loadArticle(this.passedUrl);
-	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.application = (TropesApplication) activity.getApplication();
-		
-		this.loadListener = (OnArticleLoadListener) activity;
-		this.interactionListener = (OnInteractionListener) activity;
+	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
+		return inflater.inflate(R.layout.index_fragment, group, false);
 	}
 	
     @Override
@@ -79,11 +56,6 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
         }
     }
     
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		TropesLink item = (TropesLink) getListAdapter().getItem(position);
-		interactionListener.onLinkClicked(item.url);
-	}
 	
     /** Loads an index in a different thread */
 	public class LoadIndexTask extends LoadTropesTask {
@@ -111,15 +83,24 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 				TropesIndex tropesIndex = (TropesIndex) result;
 
 				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(getActivity(), android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
-				setListAdapter(tropeAdapter);
+				ListView lv = (ListView) getView();
+				lv.setAdapter(tropeAdapter);
+				
+				lv.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+						TropesLink item = (TropesLink) parent.getItemAtPosition(position);
+						tInteractionListener.onLinkClicked(item.url);
+					}
+				});
 		
-				getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+				lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 						TropesLink link = (TropesLink) parent.getItemAtPosition(position);
 						tInteractionListener.onLinkSelected(link.url);
 						return true;
 					}
 				});
+				
 				
 				TropesArticleInfo tArticleInfo = new TropesArticleInfo(tropesIndex.title, tropesIndex.url, tropesIndex.subpages);
 				articleInfo = tArticleInfo;
@@ -133,19 +114,8 @@ public class IndexFragment extends ListFragment implements IArticleFragment{
 		}
 	}
 
-	public void loadArticle(Uri url) {
+	@Override
+	public void loadTropes(Uri url) {
 		new LoadIndexTask(this.loadListener, this.interactionListener).execute(url);
-	}
-
-	public Uri getTrueUrl() {
-		return this.trueUrl;
-	}
-
-	public Uri getPassedUrl() {
-		return this.passedUrl;
-	}
-
-	public TropesArticleInfo getArticleInfo() {
-		return this.articleInfo;
 	}
 }

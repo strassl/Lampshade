@@ -272,6 +272,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 
 	public void onLoadError(Exception e) {
 		closeProgressDialog();
+		e.printStackTrace();
 		showDialog(DIALOG_LOAD_FAILED);
 	}
 

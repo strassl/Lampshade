@@ -1,20 +1,14 @@
 package com.syn3rgy.lampshade.fragments;
 
 import com.syn3rgy.lampshade.R;
-import com.syn3rgy.lampshade.TropesApplication;
 import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
 import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
 import com.syn3rgy.tropeswrapper.TropesArticle;
 import com.syn3rgy.tropeswrapper.TropesArticleInfo;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -22,17 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
 
-public class ArticleFragment extends Fragment implements IArticleFragment{
-	public static String PASSED_URL = "PASSED_URL";
-	public static String TRUE_URL = "TRUE_URL";
-	
-	TropesApplication application;
-	OnArticleLoadListener loadListener;
-	OnInteractionListener interactionListener;
-	
-	TropesArticleInfo articleInfo;
-	Uri passedUrl;
-	Uri trueUrl;
+public class ArticleFragment extends TropesFragment {
 	
 	public static ArticleFragment newInstance(Uri url) {
 		ArticleFragment f = new ArticleFragment();
@@ -44,48 +28,10 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		this.setHasOptionsMenu(true);
-		
-		if(savedInstanceState != null) {
-			this.passedUrl = savedInstanceState.getParcelable(PASSED_URL);
-			this.trueUrl = savedInstanceState.getParcelable(TRUE_URL);
-		}
-		else {
-			this.passedUrl = getArguments().getParcelable(PASSED_URL);
-			this.trueUrl = getArguments().getParcelable(TRUE_URL);
-		}
-		
-		loadArticle(this.trueUrl);
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putParcelable(PASSED_URL, this.passedUrl);
-		outState.putParcelable(TRUE_URL, this.trueUrl);
-	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		
-		this.application = (TropesApplication) activity.getApplication();
-		
-		this.loadListener = (OnArticleLoadListener) activity;
-		this.interactionListener = (OnInteractionListener) activity;
-	}
-	
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
 		return inflater.inflate(R.layout.article_fragment, group, false);
 	}
 	
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    }
-    
     /** Loads an article in a different thread */
 	public class LoadArticleTask extends LoadTropesTask {
 		
@@ -137,20 +83,7 @@ public class ArticleFragment extends Fragment implements IArticleFragment{
 		}
 	}
 	
-	public void loadArticle(Uri url) {
+	public void loadTropes(Uri url) {
 		new LoadArticleTask(this.loadListener, this.interactionListener).execute(url);
 	}
-
-	public Uri getTrueUrl() {
-		return this.trueUrl;
-	}
-
-	public Uri getPassedUrl() {
-		return this.passedUrl;
-	}
-
-	public TropesArticleInfo getArticleInfo() {
-		return this.articleInfo;
-	}
-
 }

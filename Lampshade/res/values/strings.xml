@@ -12,6 +12,8 @@
 	<string name="btn_tropes">Tropes</string>
 	<string name="show_saved_articles">Saved</string>
 	
+	<string name="not_used">Here there be dragons!</string>
+	
 	<string name="article_title">Title</string>
 	<string name="article_content">content</string>
 	<string name="refresh_article">Refresh</string>
