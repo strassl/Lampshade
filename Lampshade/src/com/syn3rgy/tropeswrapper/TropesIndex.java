@@ -15,11 +15,11 @@ public class TropesIndex extends TropesArticle {
 
 	public TropesIndex(Uri url, TropesIndexSelector selector) throws Exception {
 		super(url);
-		parseTropeList(content, selector.selector);
+		this.tropes = parseTropeList(content, selector.selector);
 	}
 	
 	/** Finds the items matching the selector and returns the attributes of a link in those items */
-	private void parseTropeList(Element content, String selector) throws TropesArticleParseException {
+	private List<TropesLink> parseTropeList(Element content, String selector) throws TropesArticleParseException {
 		try {
 			ArrayList<TropesLink> tropes = new ArrayList<TropesLink>();
 			
@@ -34,7 +34,7 @@ public class TropesIndex extends TropesArticle {
 				}
 			}
 			
-			this.tropes = tropes;
+			return tropes;
 		}
 		catch(Exception e) {
 			throw new TropesArticleParseException("parseTropeList");

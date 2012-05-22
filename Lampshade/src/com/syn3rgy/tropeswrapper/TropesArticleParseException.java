@@ -1,6 +1,7 @@
 package com.syn3rgy.tropeswrapper;
 
 public class TropesArticleParseException extends Exception {
+	private static final long serialVersionUID = 1L;
 
 	public TropesArticleParseException() {
 		// TODO Auto-generated constructor stub

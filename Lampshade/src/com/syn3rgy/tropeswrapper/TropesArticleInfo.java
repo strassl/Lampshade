@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.net.Uri;
 
+/** Contains all the important info about an article sans the content, which would need too much memory **/
 public class TropesArticleInfo {
 	public String title;
 	public Uri url;

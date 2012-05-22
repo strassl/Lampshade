@@ -2,7 +2,7 @@ package com.syn3rgy.tropeswrapper;
 
 import android.net.Uri;
 
-
+/** A simple link wrapper with title and url **/
 public class TropesLink {
 	public String title;
 	public Uri url;

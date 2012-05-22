@@ -26,8 +26,11 @@ public class TropesArticle {
 	
 	public TropesArticle(Uri url) throws Exception {
 		Document doc = loadArticle(url);
-		parseArticle(doc);
-		parseSubpages(doc);
+		this.title = getTitle(doc);
+		this.content = getContent(doc);
+		this.subpages = getSubpages(doc);
+		
+		manipulateStyle(this.content);
 	}
 	
 	/** Returns the Jsoup document of the url */
@@ -40,36 +43,40 @@ public class TropesArticle {
 		return doc;
 	}
 	
-	/** Splits the document into title and content */
-	protected void parseArticle(Document doc) throws TropesArticleParseException{
+	/** Extracts the article's title from the document **/
+	protected String getTitle(Document doc) throws TropesArticleParseException{
 		try {
 			Element wikibody = doc.getElementById("wikibody");
 			
-			//Split the document into title and content
 			Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first().getElementsByTag("span").first();
-			this.title = title.text();
-			
-			Element content = wikibody.getElementById("wikitext");
-			changeLinkStyle(content);
-			hideSpoilers(content);
-			addMainJS(content);
-			styleFolders(content);
-			
-			this.content = content;
+			return title.text();
 		}
 		catch (Exception e) {
-			throw new TropesArticleParseException("parseArticle");
+			throw new TropesArticleParseException("getTitle");
 		}
 	}
 	
-	/** Extracts the subpages from the page */
-	protected void parseSubpages(Document doc) throws TropesArticleParseException{
+	/** Extracts the article's content from the document **/
+	protected Element getContent(Document doc) throws TropesArticleParseException{
+		try {
+			Element wikibody = doc.getElementById("wikibody");
+			Element content = wikibody.getElementById("wikitext");
+			
+			return content;
+		}
+		catch (Exception e) {
+			throw new TropesArticleParseException("getContent");
+		}
+	}
+	
+	/** Extracts the subpages from the document */
+	protected List<TropesLink> getSubpages(Document doc) throws TropesArticleParseException{
 		try {
 			Element wikititle = doc.getElementById("wikititle");
 			Element buttons = wikititle.getElementsByClass("namespacebuttons").first();
 			Elements links = buttons.getElementsByTag("a");
 			
-			this.subpages =  new ArrayList<TropesLink>();
+			ArrayList<TropesLink> subpages =  new ArrayList<TropesLink>();
 			
 			for(Element link : links) {
 				String title = link.text().trim();
@@ -83,11 +90,26 @@ public class TropesArticle {
 					title = img.attr("title");
 				}
 				String url = link.attr("href");
-				this.subpages.add(new TropesLink(title, Uri.parse(url)));
+				subpages.add(new TropesLink(title, Uri.parse(url)));
 			}
+			
+			return subpages;
 		}
 		catch(Exception e) {
 			throw new TropesArticleParseException("parseSubpages");
+		}
+	}
+	
+	/** Performs all the necessary actions to make the page look pretty **/
+	protected void manipulateStyle(Element content) throws TropesArticleParseException{
+		try {
+			changeLinkStyle(content);
+			hideSpoilers(content);
+			addMainJS(content);
+			styleFolders(content);
+		}
+		catch (Exception e) {
+			throw new TropesArticleParseException("manipulateStyle");
 		}
 	}
 	

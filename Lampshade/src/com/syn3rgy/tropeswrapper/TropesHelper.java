@@ -1,5 +1,6 @@
 package com.syn3rgy.tropeswrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.net.Uri;
@@ -18,7 +19,8 @@ public class TropesHelper {
 		
 		return title;
 	}
-	
+
+	/** Gets the page's title from the url (in String form) **/
 	public static String titleFromUrl(String url) {
 		return titleFromUrl(Uri.parse(url));
 	}
@@ -42,16 +44,18 @@ public class TropesHelper {
 		return findMatchingSelector(selectors, titleFromUrl(url));
 	}
 	
-	public static String linkListToHtml(List<TropesLink> links, String separator) {
-		String fullHtml = "";
+	/** Converts a list of TropesLinks into List of <a> tags **/
+	public static List<String> linkListToHtmlList(List<TropesLink> links) {
+		List<String> tags = new ArrayList<String>();
 		
 		for(TropesLink link : links) {
-			fullHtml += linkToHtml(link) + separator;
+			tags.add(linkToHtml(link));
 		}
 		
-		return fullHtml;
+		return tags;
 	}
 	
+	/** Converts a TropesLink into an <a> tag **/
 	public static String linkToHtml(TropesLink link) {
 		String html = "<a href =\"" + link.url + "\" >" + link.title + "</a>";
 		return html;

@@ -187,6 +187,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
     	return dialog;
     }
     
+    /** Sets the share intent, should only be called after the true url is known **/
     private void setShareIntent() {
     	Intent intent = new Intent(Intent.ACTION_SEND);
     	intent.setType("text/plain");
@@ -265,7 +266,7 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 			}
 		}
 	};
-
+	
 	public void onLinkSelected(Uri url) {
 		startLinkMode(url);
 	}
