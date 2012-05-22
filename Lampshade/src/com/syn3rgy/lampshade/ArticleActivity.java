@@ -219,14 +219,25 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 		protected ArticleItem doInBackground(String... params) {
 			Uri url = Uri.parse(params[0]);
 			
-			application.articlesSource.open();
-			ArticleItem item = application.articlesSource.createArticleItem(TropesHelper.titleFromUrl(url), url);
-			application.articlesSource.close();
-			return item;
+			if(TropesHelper.isTropesLink(url)) {
+				application.articlesSource.open();
+				ArticleItem item = application.articlesSource.createArticleItem(TropesHelper.titleFromUrl(url), url);
+				application.articlesSource.close();
+				return item;
+			}
+			else {
+				return null;
+			}
 		}
 		
-		@Override protected void onPostExecute(ArticleItem item) {
-			UIFunctions.showToast("Added " + item.title, getApplicationContext());
+		@Override
+		protected void onPostExecute(ArticleItem item) {
+			if(item != null) {
+				UIFunctions.showToast("Added " + item.title, getApplicationContext());
+			}
+			else {
+				UIFunctions.showToast("Could not add this link (not a tvtropes link?)", getApplicationContext());
+			}
 		}
 	}
 	
