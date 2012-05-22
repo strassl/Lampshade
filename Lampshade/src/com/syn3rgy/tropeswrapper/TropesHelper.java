@@ -2,6 +2,8 @@ package com.syn3rgy.tropeswrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.net.Uri;
 
@@ -23,6 +25,14 @@ public class TropesHelper {
 	/** Gets the page's title from the url (in String form) **/
 	public static String titleFromUrl(String url) {
 		return titleFromUrl(Uri.parse(url));
+	}
+	
+	public static Boolean isTropesLink(Uri url) {
+		String host = url.getHost();
+		Pattern pattern = Pattern.compile("([.*]\\.)?tvtropes\\.org");
+		Matcher matcher = pattern.matcher(host);
+		
+		return matcher.matches();
 	}
 	
 	/** Finds a matching selector or returns a generic one */

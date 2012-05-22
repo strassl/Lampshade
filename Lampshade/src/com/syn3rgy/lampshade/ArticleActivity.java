@@ -245,7 +245,15 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.article_action_menu, menu);
 			if(selectedLink != null) {
-				mode.setTitle(TropesHelper.titleFromUrl(selectedLink));
+				
+				if(TropesHelper.isTropesLink(selectedLink)) {
+					String title = TropesHelper.titleFromUrl(selectedLink);
+					mode.setTitle(title);
+				}
+				else {
+					String host = selectedLink.getHost();
+					mode.setTitle(host);
+				}
 			}
 			return true;
 		}
@@ -278,7 +286,12 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 	}
 
 	public void onLinkClicked(Uri url) {
-		application.loadPage(url);
+		if(TropesHelper.isTropesLink(url)) {
+			application.loadPage(url);
+		}
+		else {
+			application.loadWebsite(url);
+		}
 	}
 
 	public void onLoadStart() {
