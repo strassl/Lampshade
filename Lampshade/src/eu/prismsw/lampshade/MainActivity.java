@@ -33,8 +33,8 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.show_saved_articles:
-        	application.openActivity(SavedArticlesActivity.class);
+        case R.id.show_about:
+        	application.openActivity(AboutActivity.class);
         	return true;
         default:
         	return super.onOptionsItemSelected(item);
@@ -54,6 +54,10 @@ public class MainActivity extends Activity {
     		break;
     	case R.id.btn_tropes:
     		application.loadPage(Uri.parse(TropesApplication.tropesUrl));
+    		break;
+    	case R.id.btn_saved:
+    		application.openActivity(SavedArticlesActivity.class);
+    		break;
     	}
     }
 }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Lampshade</string>
+    <string name="app_description">A TvTropes wrapper</string>
+    <string name="about_copyright">Copyright © 2012 Simon Strassl\n Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></string>
+    <string name="about_links">Source code available on <a href="https://github.com/prismsw/Lampshade">Github</a></string>
     
     <string name="dialog_open">Open</string>
     <string name="dialog_save">Save</string>
@@ -11,11 +14,12 @@
 	<string name="btn_random">Random</string>
 	<string name="btn_tropes">Tropes</string>
 	<string name="show_saved_articles">Saved</string>
+	<string name="show_about">About</string>
 	
 	<string name="not_used">Here there be dragons!</string>
 	
 	<string name="article_title">Title</string>
-	<string name="article_content">content</string>
+	<string name="article_content">Content</string>
 	<string name="refresh_article">Refresh</string>
 	<string name="save_article">Save</string>
 	<string name="info_article">Info</string>
