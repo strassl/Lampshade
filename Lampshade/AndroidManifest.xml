@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="14" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ArticleActivity">
+        <activity android:name=".ArticleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
