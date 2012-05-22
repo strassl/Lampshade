@@ -1,4 +1,6 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
+
+import eu.prismsw.lampshade.R;
 
 import android.app.Activity;
 import android.net.Uri;

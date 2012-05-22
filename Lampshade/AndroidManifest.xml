@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.syn3rgy.lampshade"
+    package="eu.prismsw.lampshade"
     android:versionCode="1"
     android:versionName="1.0" >
 

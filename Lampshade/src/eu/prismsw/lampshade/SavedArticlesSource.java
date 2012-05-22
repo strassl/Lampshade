@@ -1,4 +1,4 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
 
 import java.util.ArrayList;
 import java.util.List;

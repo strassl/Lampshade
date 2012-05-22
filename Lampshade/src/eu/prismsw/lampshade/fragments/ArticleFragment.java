@@ -1,10 +1,11 @@
-package com.syn3rgy.lampshade.fragments;
+package eu.prismsw.lampshade.fragments;
 
-import com.syn3rgy.lampshade.R;
-import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
-import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
-import com.syn3rgy.tropeswrapper.TropesArticle;
-import com.syn3rgy.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.lampshade.R;
+
+import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
+import eu.prismsw.tropeswrapper.TropesArticle;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 import android.net.Uri;
 import android.os.Bundle;

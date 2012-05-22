@@ -1,4 +1,4 @@
-package com.syn3rgy.tools.android;
+package eu.prismsw.tools.android;
 
 import android.content.Context;
 import android.widget.Toast;

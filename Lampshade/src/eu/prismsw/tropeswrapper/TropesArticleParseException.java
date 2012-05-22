@@ -1,4 +1,4 @@
-package com.syn3rgy.tropeswrapper;
+package eu.prismsw.tropeswrapper;
 
 public class TropesArticleParseException extends Exception {
 	private static final long serialVersionUID = 1L;

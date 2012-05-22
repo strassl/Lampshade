@@ -1,4 +1,4 @@
-package com.syn3rgy.tropeswrapper;
+package eu.prismsw.tropeswrapper;
 
 import android.net.Uri;
 

@@ -1,4 +1,4 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
 
 import java.util.List;
 
@@ -21,15 +21,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ShareActionProvider;
 
-import com.syn3rgy.lampshade.fragments.ArticleFragment;
-import com.syn3rgy.lampshade.fragments.IndexFragment;
-import com.syn3rgy.lampshade.fragments.TropesFragment;
-import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
-import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
-import com.syn3rgy.tools.ListFunctions;
-import com.syn3rgy.tools.android.UIFunctions;
-import com.syn3rgy.tropeswrapper.TropesArticleInfo;
-import com.syn3rgy.tropeswrapper.TropesHelper;
+import eu.prismsw.lampshade.R;
+
+import eu.prismsw.lampshade.fragments.ArticleFragment;
+import eu.prismsw.lampshade.fragments.IndexFragment;
+import eu.prismsw.lampshade.fragments.TropesFragment;
+import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
+import eu.prismsw.tools.ListFunctions;
+import eu.prismsw.tools.android.UIFunctions;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
 public class ArticleActivity extends Activity implements OnArticleLoadListener, OnInteractionListener{

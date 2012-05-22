@@ -1,6 +1,6 @@
-package com.syn3rgy.lampshade.fragments.listeners;
+package eu.prismsw.lampshade.fragments.listeners;
 
-import com.syn3rgy.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 /** 
  * Must be implement by any activity that wishes to use a subclass of TropesFragment 

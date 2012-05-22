@@ -1,6 +1,8 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
 
 import java.util.List;
+
+import eu.prismsw.lampshade.R;
 
 import android.app.ActionBar;
 import android.app.ListActivity;

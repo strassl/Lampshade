@@ -1,8 +1,8 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
 
 import android.net.Uri;
 
-import com.syn3rgy.tropeswrapper.*;
+import eu.prismsw.tropeswrapper.*;
 
 /** Represents a saved article from the database */
 public class ArticleItem {

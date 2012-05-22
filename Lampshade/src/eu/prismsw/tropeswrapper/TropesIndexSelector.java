@@ -1,4 +1,4 @@
-package com.syn3rgy.tropeswrapper;
+package eu.prismsw.tropeswrapper;
 
 /** Holds information about which element contains the list elements of a page **/
 public class TropesIndexSelector {

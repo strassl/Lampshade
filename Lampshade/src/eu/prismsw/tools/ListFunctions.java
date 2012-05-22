@@ -1,4 +1,4 @@
-package com.syn3rgy.tools;
+package eu.prismsw.tools;
 
 import java.util.ArrayList;
 import java.util.List;

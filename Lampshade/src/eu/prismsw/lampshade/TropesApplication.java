@@ -1,10 +1,10 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.syn3rgy.tropeswrapper.TropesHelper;
-import com.syn3rgy.tropeswrapper.TropesIndexSelector;
+import eu.prismsw.tropeswrapper.TropesHelper;
+import eu.prismsw.tropeswrapper.TropesIndexSelector;
 
 import android.app.Application;
 import android.content.Intent;

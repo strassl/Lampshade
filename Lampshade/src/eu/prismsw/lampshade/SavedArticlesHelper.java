@@ -1,4 +1,4 @@
-package com.syn3rgy.lampshade;
+package eu.prismsw.lampshade;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

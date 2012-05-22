@@ -1,12 +1,13 @@
-package com.syn3rgy.lampshade.fragments;
+package eu.prismsw.lampshade.fragments;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.syn3rgy.lampshade.fragments.listeners.OnArticleLoadListener;
-import com.syn3rgy.lampshade.fragments.listeners.OnInteractionListener;
-import com.syn3rgy.tropeswrapper.TropesArticle;
-import com.syn3rgy.tropeswrapper.TropesArticleInfo;
+
+import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
+import eu.prismsw.tropeswrapper.TropesArticle;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 /** Loads an article in a different thread */
 public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
