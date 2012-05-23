@@ -36,6 +36,9 @@ public class MainActivity extends Activity {
         case R.id.show_about:
         	application.openActivity(AboutActivity.class);
         	return true;
+        case R.id.show_help:
+        	application.openActivity(HelpActivity.class);
+        	return true;
         default:
         	return super.onOptionsItemSelected(item);
         }

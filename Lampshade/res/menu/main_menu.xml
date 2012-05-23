@@ -4,4 +4,8 @@
     	  android:title="@string/show_about"
     	  android:showAsAction="never"
 	/>
+    <item android:id="@+id/show_help"
+    	  android:title="@string/show_help"
+    	  android:showAsAction="never"
+	/>
 </menu>

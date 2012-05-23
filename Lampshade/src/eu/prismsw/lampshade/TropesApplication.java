@@ -14,6 +14,8 @@ import android.net.Uri;
 public class TropesApplication extends Application {
 	public static final String loadAsArticle = "ASARTICLE";
 	
+	public static final String helpUrl = "http://lampshade.prismsw.eu/help.html";
+	
 	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
 	public static final String baseUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
