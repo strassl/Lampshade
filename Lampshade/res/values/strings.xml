@@ -31,5 +31,7 @@
 	
 	<string name="saved_action_delete">Delete</string>
 	
+	<string name="article_find">Find on page</string>
+	
 	<string name="index_as_article">Show article</string>
 </resources>

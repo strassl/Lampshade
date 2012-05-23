@@ -10,6 +10,9 @@ import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -32,6 +35,24 @@ public class ArticleFragment extends TropesFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
 		return inflater.inflate(R.layout.article_fragment, group, false);
 	}
+	
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	inflater.inflate(R.menu.article_fragment_menu, menu);
+    }
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.article_find:
+        	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
+        	wv.showFindDialog("", true);
+        	return true;
+        default:
+        	return super.onOptionsItemSelected(item);
+        }
+    }
 	
     /** Loads an article in a different thread */
 	public class LoadArticleTask extends LoadTropesTask {
