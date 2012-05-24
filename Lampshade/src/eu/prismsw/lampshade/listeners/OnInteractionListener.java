@@ -1,4 +1,4 @@
-package eu.prismsw.lampshade.fragments.listeners;
+package eu.prismsw.lampshade.listeners;
 
 import android.net.Uri;
 
