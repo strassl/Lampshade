@@ -12,10 +12,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,10 +24,10 @@ import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
 import eu.prismsw.lampshade.fragments.TropesFragment;
-import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
-import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.lampshade.tasks.SaveArticleTask;
 import eu.prismsw.tools.ListFunctions;
-import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
@@ -48,9 +46,7 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
 	Uri passedUrl;
 	// Where we actually ended up
 	Uri trueUrl;
-	ActionMode mActionMode = null;
-	// Used to pass the selected link to the ActionBar
-	Uri selectedLink = null;
+	LinkActionMode linkActionMode;
 	ShareActionProvider shareProvider;
 	
 	@Override
@@ -61,6 +57,8 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
 		ActionBar ab = getActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
+		
+		this.linkActionMode = new LinkActionMode(this);
 		
 		this.application = (TropesApplication) getApplication();
 		
@@ -109,7 +107,7 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
         	application.loadPage(passedUrl);
         	return true;   
         case R.id.save_article:
-        	saveArticle(trueUrl.toString());
+        	saveArticle(trueUrl);
         	return true;
         case R.id.info_article:
         	showDialog(DIALOG_INFO_ID);
@@ -197,99 +195,12 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
     	shareProvider.setShareIntent(intent);
     }
     
-    private void saveArticle(String url) {
-    	new saveArticleTask().execute(url);
+    private void saveArticle(Uri url) {
+    	new SaveArticleTask(application).execute(url);
     }
-	
-    /** Does all preparations and initialises the ActionMode */
-    private boolean startLinkMode(Uri url) {
-    	// If ActionMode is already active finish it
-    	if (mActionMode != null) {
-    		mActionMode.finish();
-        }
-    	
-    	selectedLink = url;
-
-        mActionMode = this.startActionMode(mActionModeCallback);
-        return true;
-    }
-	
-	// It is not strictly necessary to do this in a separate thread, but no need to (possibly) block the UI with the database
-	public class saveArticleTask extends AsyncTask<String, Integer, ArticleItem> {
-
-		@Override
-		protected ArticleItem doInBackground(String... params) {
-			Uri url = Uri.parse(params[0]);
-			
-			if(TropesHelper.isTropesLink(url)) {
-				application.articlesSource.open();
-				ArticleItem item = application.articlesSource.createArticleItem(TropesHelper.titleFromUrl(url), url);
-				application.articlesSource.close();
-				return item;
-			}
-			else {
-				return null;
-			}
-		}
-		
-		@Override
-		protected void onPostExecute(ArticleItem item) {
-			if(item != null) {
-				UIFunctions.showToast("Added " + item.title, getApplicationContext());
-			}
-			else {
-				UIFunctions.showToast("Could not add this link (not a tvtropes link?)", getApplicationContext());
-			}
-		}
-	}
-	
-	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-		
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
-		}
-		
-		public void onDestroyActionMode(ActionMode mode) {
-			mActionMode = null;
-			selectedLink = null;
-		}
-		
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.article_action_menu, menu);
-			if(selectedLink != null) {
-				
-				if(TropesHelper.isTropesLink(selectedLink)) {
-					String title = TropesHelper.titleFromUrl(selectedLink);
-					mode.setTitle(title);
-				}
-				else {
-					String host = selectedLink.getHost();
-					mode.setTitle(host);
-				}
-			}
-			return true;
-		}
-		
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			switch(item.getItemId()) {
-			case R.id.article_action_save:
-				if(selectedLink != null) {
-					saveArticle(selectedLink.toString());
-					mode.finish();
-					return true;
-				}
-				else {
-					return false;
-				}
-			default:
-				return false;
-			}
-		}
-	};
 	
 	public void onLinkSelected(Uri url) {
-		startLinkMode(url);
+		this.linkActionMode.startActionMode(url);
 	}
 
 	public void onLoadError(Exception e) {

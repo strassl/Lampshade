@@ -49,10 +49,8 @@ public class MainActivity extends Activity {
     public void clickHandler(View v) {
     	switch(v.getId()) {
     	case R.id.btn_load:
-    		// Constructs the url of the article
-    		EditText page_selection = (EditText) findViewById(R.id.et_enter_page);
-    		/*String url = TropesApplication.baseUrl + page_selection.getText().toString().replace(" ", "");
-    		application.loadPage(Uri.parse(url));*/
+    		EditText page_selection = (EditText) findViewById(R.id.et_search);
+    		
 			Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
 			searchIntent.putExtra(SearchFragment.QUERY_KEY, page_selection.getText().toString());
 			searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,8 +1,8 @@
 package eu.prismsw.lampshade;
 
 import eu.prismsw.lampshade.fragments.SearchFragment;
-import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
-import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -15,9 +15,11 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 	TropesApplication application;
 	SearchFragment fragment;
 	
-	String query;
+	String passedQuery;
+	String fullQuery;
 	
 	ProgressDialog loadDialog;
+	LinkActionMode linkActionMode;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
+		this.linkActionMode = new LinkActionMode(this);
+		
 		this.application = (TropesApplication) getApplication();
 		
 		Bundle extras = getIntent().getExtras();
@@ -35,19 +39,22 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 			String query = extras.getString(SearchFragment.QUERY_KEY);
 			 
 			if(query != null) {
+				this.passedQuery = query;
+				ab.setTitle("Search: " + passedQuery);
 				query += " " + "site:tvtropes.org";
-				this.query = query;
+				this.fullQuery = query;
 				if(savedInstanceState == null) {
-					this.fragment = SearchFragment.newInstance(this.query);
+					this.fragment = SearchFragment.newInstance(this.fullQuery);
 						
 					getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
 				}
 			}
 		}
+		
 	}
-
+	
 	public void onLinkSelected(Uri url) {
-		// TODO Auto-generated method stub
+		this.linkActionMode.startActionMode(url);
 	}
 
 	public void onLinkClicked(Uri url) {

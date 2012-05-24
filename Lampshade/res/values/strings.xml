@@ -9,7 +9,7 @@
     <string name="dialog_save">Save</string>
     <string name="dialog_copy">Copy</string>
     
-	<string name="trope_name">Trope name</string>
+	<string name="et_search">Search</string>
 	<string name="btn_load">Go!</string>
 	<string name="btn_random">Random</string>
 	<string name="btn_tropes">Tropes</string>

@@ -18,8 +18,8 @@ import eu.prismsw.googlewrapper.GoogleSearch;
 import eu.prismsw.googlewrapper.GoogleSearchResult;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.TropesApplication;
-import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
-import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
 
 public class SearchFragment extends Fragment {
 	public static final String QUERY_KEY = "QUERY";

@@ -2,8 +2,9 @@ package eu.prismsw.lampshade.fragments;
 
 import eu.prismsw.lampshade.R;
 
-import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
-import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 

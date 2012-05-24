@@ -10,12 +10,12 @@
         android:layout_marginTop="10dp" >
 
         <EditText
-            android:id="@+id/et_enter_page"
+            android:id="@+id/et_search"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="@string/trope_name"/>
+            android:hint="@string/et_search"/>
 
         <Button
             android:id="@+id/btn_load"
