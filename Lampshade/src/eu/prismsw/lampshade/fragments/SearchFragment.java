@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -98,7 +97,7 @@ public class SearchFragment extends Fragment {
 		protected Object doInBackground(String... params) {
 			try {
 				String query = params[0];
-				GoogleSearch search = new GoogleSearch(query);
+				GoogleSearch search = new GoogleSearch(query, 2);
 				return search;
 			} catch (Exception e) {
 				return e;

@@ -20,12 +20,23 @@ public class GoogleSearch {
 	
 	public List<GoogleSearchResult> results;
 	
-	public GoogleSearch(String query) throws IOException {
+	public GoogleSearch(String query, Integer pages) throws IOException {
 		this.query = query;
+		this.results = new ArrayList<GoogleSearchResult>();
 		
 		String searchUrl = googleBaseUrl + "?q=" + URLEncoder.encode(query);
-		Document doc = loadSearch(Uri.parse(searchUrl));
-		this.results = parseSearchResults(doc);
+		
+		for(int i = 0; i < pages; i++) {
+			String pageUrl = searchUrl + "&start=" + Integer.toString(i * 10);
+			List<GoogleSearchResult> pageResults = getSearchResults(Uri.parse(pageUrl));
+			
+			this.results.addAll(pageResults);
+		}
+	}
+	
+	public List<GoogleSearchResult> getSearchResults(Uri searchUrl) throws IOException {
+		Document doc = loadSearch(searchUrl);
+		return parseSearchResults(doc);
 	}
 	
 	public Document loadSearch(Uri url) throws IOException {
