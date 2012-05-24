@@ -6,15 +6,15 @@ import eu.prismsw.tropeswrapper.TropesArticleInfo;
  * Must be implement by any activity that wishes to use a subclass of TropesFragment 
  * Handles any events related to the loading of the article
  **/
-public interface OnArticleLoadListener {
+public interface OnLoadListener {
 	/** Is called before the actual process of loading the page begins **/
 	public void onLoadStart();
 	
 	/**
 	 *  Is called if the loading completed successfully 
-	 * The TropesArticleInfo object contains information about the article (title, url, subpages) 
+	 *  The objects contains whatever information should be returned
 	 **/
-	public void onLoadFinish(TropesArticleInfo info);
+	public void onLoadFinish(Object result);
 	
 	/** 
 	 * Is called if an error occurred 

@@ -1,8 +1,10 @@
 package eu.prismsw.lampshade;
 
 import eu.prismsw.lampshade.R;
+import eu.prismsw.lampshade.fragments.SearchFragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -49,8 +51,12 @@ public class MainActivity extends Activity {
     	case R.id.btn_load:
     		// Constructs the url of the article
     		EditText page_selection = (EditText) findViewById(R.id.et_enter_page);
-    		String url = TropesApplication.baseUrl + page_selection.getText().toString().replace(" ", "");
-    		application.loadPage(Uri.parse(url));
+    		/*String url = TropesApplication.baseUrl + page_selection.getText().toString().replace(" ", "");
+    		application.loadPage(Uri.parse(url));*/
+			Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
+			searchIntent.putExtra(SearchFragment.QUERY_KEY, page_selection.getText().toString());
+			searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(searchIntent);
     		break;
     	case R.id.btn_random:
     		application.loadPage(Uri.parse(TropesApplication.randomUrl));

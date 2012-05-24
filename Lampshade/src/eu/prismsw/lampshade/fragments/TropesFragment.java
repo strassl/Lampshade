@@ -3,7 +3,7 @@ package eu.prismsw.lampshade.fragments;
 import eu.prismsw.lampshade.R;
 
 import eu.prismsw.lampshade.TropesApplication;
-import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
 import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
@@ -20,7 +20,7 @@ public class TropesFragment extends Fragment {
 	public static String TRUE_URL = "TRUE_URL";
 	
 	TropesApplication application;
-	OnArticleLoadListener loadListener;
+	OnLoadListener loadListener;
 	OnInteractionListener interactionListener;
 	
 	TropesArticleInfo articleInfo;
@@ -66,7 +66,7 @@ public class TropesFragment extends Fragment {
 		
 		this.application = (TropesApplication) activity.getApplication();
 		
-		this.loadListener = (OnArticleLoadListener) activity;
+		this.loadListener = (OnLoadListener) activity;
 		this.interactionListener = (OnInteractionListener) activity;
 	}
 	

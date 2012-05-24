@@ -26,7 +26,7 @@ import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
 import eu.prismsw.lampshade.fragments.TropesFragment;
-import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
 import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
 import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
@@ -34,7 +34,7 @@ import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
-public class ArticleActivity extends Activity implements OnArticleLoadListener, OnInteractionListener{
+public class ArticleActivity extends Activity implements OnLoadListener, OnInteractionListener{
 	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
@@ -311,7 +311,8 @@ public class ArticleActivity extends Activity implements OnArticleLoadListener, 
 		this.loadDialog = ProgressDialog.show(this, "", "Loading article...", true);
 	}
 
-	public void onLoadFinish(TropesArticleInfo info) {
+	public void onLoadFinish(Object result) {
+		TropesArticleInfo info = (TropesArticleInfo) result;
 		closeProgressDialog();
 		this.articleInfo = info;
 		getActionBar().setTitle(info.title);

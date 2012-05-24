@@ -4,17 +4,17 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 
-import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
 import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 /** Loads an article in a different thread */
 public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
-	OnArticleLoadListener tLoadListener;
+	OnLoadListener tLoadListener;
 	OnInteractionListener tInteractionListener;
 	
-	public LoadTropesTask(OnArticleLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
 		this.tLoadListener = tLoadListener;
 		this.tInteractionListener = tInteractionListener;
 	}

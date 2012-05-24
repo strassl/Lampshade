@@ -2,7 +2,7 @@ package eu.prismsw.lampshade.fragments;
 
 import eu.prismsw.lampshade.R;
 
-import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
 import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
@@ -57,7 +57,7 @@ public class ArticleFragment extends TropesFragment {
     /** Loads an article in a different thread */
 	public class LoadArticleTask extends LoadTropesTask {
 		
-		public LoadArticleTask(OnArticleLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
 			super(tLoadListener, tInteractionListener);
 		}
 		

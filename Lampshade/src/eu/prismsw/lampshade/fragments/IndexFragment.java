@@ -2,7 +2,7 @@ package eu.prismsw.lampshade.fragments;
 
 import eu.prismsw.lampshade.R;
 
-import eu.prismsw.lampshade.fragments.listeners.OnArticleLoadListener;
+import eu.prismsw.lampshade.fragments.listeners.OnLoadListener;
 import eu.prismsw.lampshade.fragments.listeners.OnInteractionListener;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
@@ -61,7 +61,7 @@ public class IndexFragment extends TropesFragment{
     /** Loads an index in a different thread */
 	public class LoadIndexTask extends LoadTropesTask {
 		
-		public LoadIndexTask(OnArticleLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+		public LoadIndexTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
 			super(tLoadListener, tInteractionListener);
 		}
 
