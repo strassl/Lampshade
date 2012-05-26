@@ -14,6 +14,11 @@ import android.net.Uri;
 
 /** Wrapper for a TvTropes article */
 public class TropesArticle {
+	public final static String ICS_BRIGHT_BLUE = "#33B5E5";
+	public final static String PURE_BLACK = "#000000";
+	public final static String PURE_WHITE = "#FFFFFF";
+	public final static String TRANSPARENT = "transparent";
+	
 	public Uri url = null;
 	
 	public String title;
@@ -21,16 +26,27 @@ public class TropesArticle {
 	
 	public List<TropesLink> subpages;
 	
-	private String linkColor = "#33B5E5";
-	private String spoilerColor = "#000000";
+	public String textColor;
+	public String linkColor;
+	public String spoilerColor;
+	public String backgroundColor;
 	
 	public TropesArticle(Uri url) throws Exception {
+		this(url, PURE_BLACK, ICS_BRIGHT_BLUE, PURE_BLACK, TRANSPARENT);
+	}
+	
+	public TropesArticle(Uri url, String textColor, String linkColor, String spoilerColor, String backgroundColor) throws Exception {
+		this.textColor = textColor;
+		this.linkColor = linkColor;
+		this.spoilerColor = spoilerColor;
+		this.backgroundColor = backgroundColor;
+		
 		Document doc = loadArticle(url);
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
 		this.subpages = getSubpages(doc);
 		
-		manipulateStyle(this.content);
+		manipulateStyle(this.content, textColor, linkColor, spoilerColor, backgroundColor);
 	}
 	
 	/** Returns the Jsoup document of the url */
@@ -69,6 +85,26 @@ public class TropesArticle {
 		}
 	}
 	
+	/** Performs all the necessary actions to make the page look pretty **/
+	public void manipulateStyle(Element content, String textColor, String linkColor, String spoilerColor, String backgroundColor) throws TropesArticleParseException{
+		try {
+			addMainJS(content);
+			
+			ArrayList<String> selectors = new ArrayList<String>();
+			
+			selectors.addAll(createBackgroundStyle(backgroundColor));
+			selectors.addAll(createTextStyle(textColor));
+			selectors.addAll(createLinkStyle(linkColor));
+			selectors.addAll(createSpoilerStyle(linkColor, spoilerColor));
+			selectors.addAll(createFolderStyle(linkColor, textColor));
+			
+			insertStylesheet(content, selectors);
+		}
+		catch (Exception e) {
+			throw new TropesArticleParseException("manipulateStyle");
+		}
+	}
+	
 	/** Extracts the subpages from the document */
 	protected List<TropesLink> getSubpages(Document doc) throws TropesArticleParseException{
 		try {
@@ -100,18 +136,6 @@ public class TropesArticle {
 		}
 	}
 	
-	/** Performs all the necessary actions to make the page look pretty **/
-	protected void manipulateStyle(Element content) throws TropesArticleParseException{
-		try {
-			changeLinkStyle(content);
-			hideSpoilers(content);
-			addMainJS(content);
-			styleFolders(content);
-		}
-		catch (Exception e) {
-			throw new TropesArticleParseException("manipulateStyle");
-		}
-	}
 	
 	/** Combines a List of css selectors into a stylesheet and inserts it into the page */
 	protected void insertStylesheet(Element element, List<String> selectors) {
@@ -149,19 +173,35 @@ public class TropesArticle {
 		element.prepend(styleTag);
 	}
 	
+	protected List<String> createBackgroundStyle(String backgroundColor) {
+		ArrayList<String> selectors = new ArrayList<String>();
+		selectors.add("body { background-color:" + backgroundColor + ";" + " }");
+		
+		return selectors;
+	}
+	
+	protected List<String> createTextStyle(String textColor) {
+		ArrayList<String> selectors = new ArrayList<String>();
+		selectors.add("body { color:" + textColor + ";" + " }");
+		
+		return selectors;
+	}
+	
 	/** Inserts a stylesheet that changes the colour of links */
-	protected void changeLinkStyle(Element content) {
+	protected List<String> createLinkStyle(String linkColor) {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add("a { color:" + linkColor + ";" + " }");
-		insertStylesheet(content, selectors);
+		
+		return selectors;
 	}
 	
 	/** Prettier folders */
-	protected void styleFolders(Element content) {
+	protected List<String> createFolderStyle(String linkColor, String lineColor) {
 		ArrayList<String> selectors = new ArrayList<String>();
-		selectors.add(".folderlabel { " + "color:" + linkColor + ";" + "width:100%;" + "height:1.5em;" + "margin-top:2em;" + "border-bottom:1px solid black;" + "}");
+		selectors.add(".folderlabel { " + "color:" + linkColor + ";" + "width:100%;" + "height:1.5em;" + "margin-top:2em;" + "border-bottom:1px solid " + lineColor + ";" + "}");
 		selectors.add(".folderlabelopen { color:" + linkColor + ";" + "font-weight:bold" + " }");
-		insertStylesheet(content, selectors);
+		
+		return selectors;
 	}
 	
 	/** Inserts the main.js file from tvtropes.org */
@@ -171,14 +211,14 @@ public class TropesArticle {
 	}
 	
 	/** Modifies the hover state of .spoiler elements */
-	protected void hideSpoilers(Element content) {
+	protected List<String> createSpoilerStyle(String linkColor, String spoilerColor) {
 		// The hover style is triggered on touch and thus a viable workaround for onClick
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add(".spoiler { background-color:" + spoilerColor + ";" + "color:" + spoilerColor + "; }");
 		selectors.add(".spoiler a { color:" + spoilerColor + "; }");
 		selectors.add(".spoiler:hover { background-color:transparent; }");
 		selectors.add(".spoiler:hover a { color:" + linkColor + "; }");
-		selectors.add("#folder0 { visiblity:hidden; }");
-		insertStylesheet(content, selectors);
+		
+		return selectors;
 	}
 }

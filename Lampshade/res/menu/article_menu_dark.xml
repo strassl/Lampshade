@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/refresh_article"
-          android:icon="@drawable/ic_menu_refresh"
+          android:icon="@drawable/ic_menu_refresh_dark"
     	  android:title="@string/refresh_article"
     	  android:showAsAction="always"
 	/>
     <item android:id="@+id/save_article"
-          android:icon="@drawable/ic_menu_save"
+          android:icon="@drawable/ic_menu_save_dark"
     	  android:title="@string/save_article"
     	  android:showAsAction="ifRoom"
 	/>
     <item android:id="@+id/info_article"
-          android:icon="@drawable/ic_menu_info"
     	  android:title="@string/info_article"
     	  android:showAsAction="never"
 	/>

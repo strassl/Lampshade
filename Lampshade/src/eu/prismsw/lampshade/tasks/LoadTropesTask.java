@@ -13,10 +13,16 @@ import eu.prismsw.tropeswrapper.TropesArticleInfo;
 public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	public OnLoadListener tLoadListener;
 	public OnInteractionListener tInteractionListener;
+	public String theme;
 	
-	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, String theme) {
 		this.tLoadListener = tLoadListener;
 		this.tInteractionListener = tInteractionListener;
+		this.theme = theme;
+	}
+	
+	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
+		this(tLoadListener, tInteractionListener, "HoloLight");
 	}
 	
 	@Override
@@ -28,7 +34,13 @@ public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	protected Object doInBackground(Uri... params) {
 		try {
 			Uri url = params[0];
-			TropesArticle article = new TropesArticle(url);
+			TropesArticle article = null;
+			if(theme.equalsIgnoreCase("HoloDark")) {
+				article = new TropesArticle(url,TropesArticle.PURE_WHITE, TropesArticle.ICS_BRIGHT_BLUE, TropesArticle.PURE_WHITE, TropesArticle.PURE_BLACK);
+			}
+			else {
+				article = new TropesArticle(url);
+			}
 			return article;
 		} catch (Exception e) {
 			return e;

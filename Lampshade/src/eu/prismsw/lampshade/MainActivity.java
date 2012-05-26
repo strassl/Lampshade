@@ -19,9 +19,11 @@ public class MainActivity extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        this.application = (TropesApplication) getApplication(); 
+        application.switchTheme(this);
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        this.application = (TropesApplication) getApplication(); 
     }
     
     @Override
@@ -35,6 +37,9 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        case R.id.show_preferences:
+        	application.openActivity(LampshadePreferenceActivity.class);
+        	return true;
         case R.id.show_about:
         	application.openActivity(AboutActivity.class);
         	return true;

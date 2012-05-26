@@ -11,10 +11,11 @@ public class AboutActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+        this.application = (TropesApplication) getApplication(); 
+        application.switchTheme(this);
+        
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about_activity);
-		
-		this.application = (TropesApplication) getApplication();
 		
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);

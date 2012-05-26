@@ -16,6 +16,7 @@
 	<string name="show_saved_articles">Saved</string>
 	<string name="show_about">About</string>
 	<string name="show_help">Help</string>
+	<string name="show_preferences">Preferences</string>
 	
 	<string name="not_used">Here there be dragons!</string>
 	
@@ -34,4 +35,16 @@
 	<string name="article_find">Find</string>
 	
 	<string name="index_as_article">Show article</string>
+	
+	<string name="preference_category_visual">Visual</string>
+	<string name="preference_theme_title">Theme</string>
+	<string name="preference_theme_summary">Requires an application restart</string>
+	<string-array name="preference_theme_entries">
+		<item name="HoloLight">Holo Light</item>
+		<item name="HoloDark">Holo Dark</item>
+	</string-array>
+	<string-array name="preference_theme_values">
+		<item name="HoloLight">HoloLight</item>
+		<item name="HoloDark">HoloDark</item>
+	</string-array>
 </resources>

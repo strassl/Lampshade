@@ -13,9 +13,11 @@ public class HelpActivity extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+		this.application = (TropesApplication) getApplication();
+		application.switchTheme(this);
+		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_activity);
-        this.application = (TropesApplication) getApplication(); 
         
         this.setTitle("Help");
         getActionBar().setHomeButtonEnabled(true);

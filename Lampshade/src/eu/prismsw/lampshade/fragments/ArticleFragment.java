@@ -7,6 +7,7 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesArticleParseException;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ArticleFragment extends TropesFragment {
 	
@@ -31,6 +33,7 @@ public class ArticleFragment extends TropesFragment {
 		f.setArguments(bundle);
 		return f;
 	}
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
@@ -60,6 +63,10 @@ public class ArticleFragment extends TropesFragment {
 		
 		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
 			super(tLoadListener, tInteractionListener);
+		}
+		
+		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, String theme) {
+			super(tLoadListener, tInteractionListener, theme);
 		}
 		
 		@Override
@@ -107,6 +114,6 @@ public class ArticleFragment extends TropesFragment {
 	}
 	
 	public void loadTropes(Uri url) {
-		new LoadArticleTask(this.loadListener, this.interactionListener).execute(url);
+		new LoadArticleTask(this.loadListener, this.interactionListener, application.getThemeName()).execute(url);
 	}
 }

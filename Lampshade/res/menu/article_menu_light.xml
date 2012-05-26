@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/refresh_article"
+          android:icon="@drawable/ic_menu_refresh_light"
+    	  android:title="@string/refresh_article"
+    	  android:showAsAction="always"
+	/>
+    <item android:id="@+id/save_article"
+          android:icon="@drawable/ic_menu_save_light"
+    	  android:title="@string/save_article"
+    	  android:showAsAction="ifRoom"
+	/>
+    <item android:id="@+id/info_article"
+    	  android:title="@string/info_article"
+    	  android:showAsAction="never"
+	/>
+    <item android:id="@+id/subpages_article"
+          android:title="@string/subpages_article"
+          android:showAsAction="never"
+    />
+    <item android:id="@+id/browser_article"
+          android:title="@string/browser_article"
+          android:showAsAction="never"
+    />
+    <item android:id="@+id/share_article"
+    	  android:title="@string/share_article"
+    	  android:showAsAction="never"
+    	  android:actionProviderClass="android.widget.ShareActionProvider"
+	/>  
+</menu>

@@ -3,7 +3,7 @@
     <item 
         android:id="@+id/saved_action_delete"
         android:title="@string/saved_action_delete"
-        android:icon="@drawable/ic_menu_delete" android:visible="true" android:enabled="true"/>
+        android:icon="@drawable/ic_menu_delete_dark" android:visible="true" android:enabled="true"/>
     
 
 </menu>

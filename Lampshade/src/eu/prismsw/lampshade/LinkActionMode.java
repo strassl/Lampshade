@@ -43,7 +43,12 @@ public class LinkActionMode {
 		
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.article_action_menu, menu);
+			if(((TropesApplication)activity.getApplication()).getThemeName().equalsIgnoreCase("HoloDark")) {
+		        inflater.inflate(R.menu.article_action_menu_dark, menu);
+			}
+			else {
+		        inflater.inflate(R.menu.article_action_menu_light, menu);
+			}
 			if(selectedLink != null) {
 				
 				if(TropesHelper.isTropesLink(selectedLink)) {

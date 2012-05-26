@@ -24,6 +24,8 @@ public class SavedArticlesActivity extends ListActivity{
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		this.application = (TropesApplication) getApplication();
+		application.switchTheme(this);
 		super.onCreate(savedInstanceState);
 		
 		prepare();
@@ -52,8 +54,6 @@ public class SavedArticlesActivity extends ListActivity{
 		ActionBar ab = getActionBar();
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
-				
-		application = (TropesApplication) getApplication();
 		
 		loadArticles();
 		registerForContextMenu(getListView());
@@ -74,7 +74,12 @@ public class SavedArticlesActivity extends ListActivity{
 
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 				MenuInflater inflater = mode.getMenuInflater();
-		        inflater.inflate(R.menu.saved_action_menu, menu);
+				if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
+			        inflater.inflate(R.menu.saved_action_menu_dark, menu);
+				}
+				else {
+			        inflater.inflate(R.menu.saved_action_menu_light, menu);
+				}
 		        mode.setTitle("Select items...");
 		        return true;
 			}

@@ -23,6 +23,9 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		this.application = (TropesApplication) getApplication();
+		application.switchTheme(this);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		
@@ -31,8 +34,6 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 		ab.setHomeButtonEnabled(true);
 		
 		this.linkActionMode = new LinkActionMode(this);
-		
-		this.application = (TropesApplication) getApplication();
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {

@@ -11,8 +11,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +53,9 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		this.application = (TropesApplication) getApplication();
+		application.switchTheme(this);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		
@@ -59,8 +64,6 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
 		ab.setHomeButtonEnabled(true);
 		
 		this.linkActionMode = new LinkActionMode(this);
-		
-		this.application = (TropesApplication) getApplication();
 		
 		Uri data = getIntent().getData();
 		if(data != null) {
@@ -91,7 +94,12 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.article_menu, menu);
+    	if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
+	    	inflater.inflate(R.menu.article_menu_dark, menu);
+    	}
+    	else {
+	    	inflater.inflate(R.menu.article_menu_light, menu);
+    	}
     	shareProvider = (ShareActionProvider) menu.findItem(R.id.share_article).getActionProvider();
     	return true;
     }
