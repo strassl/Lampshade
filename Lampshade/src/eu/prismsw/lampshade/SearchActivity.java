@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 public class SearchActivity extends Activity implements OnLoadListener, OnInteractionListener{
 	
@@ -52,6 +53,17 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 			}
 		}
 		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case android.R.id.home:
+			application.openActivity(MainActivity.class);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}	
 	}
 	
 	public void onLinkSelected(Uri url) {
