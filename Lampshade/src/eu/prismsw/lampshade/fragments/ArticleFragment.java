@@ -7,7 +7,6 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
-import eu.prismsw.tropeswrapper.TropesArticleParseException;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout.LayoutParams;
 
 public class ArticleFragment extends TropesFragment {
 	

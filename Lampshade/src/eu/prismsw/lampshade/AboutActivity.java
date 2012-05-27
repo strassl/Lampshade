@@ -1,19 +1,13 @@
 package eu.prismsw.lampshade;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class AboutActivity extends Activity {
-	TropesApplication application;
-
+public class AboutActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-        this.application = (TropesApplication) getApplication(); 
-        application.switchTheme(this);
-        
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about_activity);
 		

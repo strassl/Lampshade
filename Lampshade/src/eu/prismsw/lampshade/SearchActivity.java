@@ -4,16 +4,13 @@ import eu.prismsw.lampshade.fragments.SearchFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class SearchActivity extends Activity implements OnLoadListener, OnInteractionListener{
-	
-	TropesApplication application;
+public class SearchActivity extends BaseActivity implements OnLoadListener, OnInteractionListener{
 	SearchFragment fragment;
 	
 	String passedQuery;
@@ -24,9 +21,6 @@ public class SearchActivity extends Activity implements OnLoadListener, OnIntera
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		this.application = (TropesApplication) getApplication();
-		application.switchTheme(this);
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		

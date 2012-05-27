@@ -3,7 +3,6 @@ package eu.prismsw.lampshade;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -11,10 +10,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,12 +31,11 @@ import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
-public class ArticleActivity extends Activity implements OnLoadListener, OnInteractionListener{
+public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener{
 	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
 	
-	TropesApplication application;
 	TropesFragment fragment;
 	ProgressDialog loadDialog;
 	
@@ -53,9 +49,6 @@ public class ArticleActivity extends Activity implements OnLoadListener, OnInter
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		this.application = (TropesApplication) getApplication();
-		application.switchTheme(this);
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		

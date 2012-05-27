@@ -5,7 +5,6 @@ import java.util.List;
 import eu.prismsw.lampshade.R;
 
 import android.app.ActionBar;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -14,19 +13,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /** Shows a list of saved articles */
-public class SavedArticlesActivity extends ListActivity{
-	TropesApplication application;
-	ActionMode mActionMode = null;
+public class SavedArticlesActivity extends BaseActivity{
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		this.application = (TropesApplication) getApplication();
-		application.switchTheme(this);
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.saved_articles_activity);
 		
 		prepare();
 	}
@@ -42,12 +40,11 @@ public class SavedArticlesActivity extends ListActivity{
         	return super.onOptionsItemSelected(item);
         }
     }
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		ArticleItem item = (ArticleItem) getListAdapter().getItem(position);
-		removeArticle(item);
-		application.loadPage(item.url);
-	}
+    
+    public ListView getListView() {
+		ListView lv = (ListView) findViewById(R.id.lv_saved_articles);
+		return lv;
+    }
 	
 	// Function to remove the clutter from the onCreate method
 	private void prepare() {
@@ -56,10 +53,21 @@ public class SavedArticlesActivity extends ListActivity{
 		ab.setDisplayHomeAsUpEnabled(true);
 		
 		loadArticles();
-		registerForContextMenu(getListView());
+		ListView lv = getListView();
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				ListView lv = getListView();
+				ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
+				removeArticle(item);
+				application.loadPage(item.url);
+			}
+		});
+		
+		registerForContextMenu(lv);
 		// Implement multi-selection contextual ActionBar
-		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		getListView().setMultiChoiceModeListener(new MultiChoiceModeListener() {
+		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		lv.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				switch(item.getItemId()) {
@@ -126,6 +134,6 @@ public class SavedArticlesActivity extends ListActivity{
 		application.articlesSource.close();
 
 		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_activated_1, savedArticles);
-		setListAdapter(adapter);
+		getListView().setAdapter(adapter);
 	}
 }
