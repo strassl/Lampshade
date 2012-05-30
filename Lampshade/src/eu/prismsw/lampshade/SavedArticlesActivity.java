@@ -2,24 +2,21 @@ package eu.prismsw.lampshade;
 
 import java.util.List;
 
-import eu.prismsw.lampshade.R;
-
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
+
+
 /** Shows a list of saved articles */
-public class SavedArticlesActivity extends BaseActivity{
+public class SavedArticlesActivity extends BaseActivity {
+	DeleteActionMode deleteActionMode;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +45,7 @@ public class SavedArticlesActivity extends BaseActivity{
 	
 	// Function to remove the clutter from the onCreate method
 	private void prepare() {
-		ActionBar ab = getActionBar();
+		ActionBar ab = getSupportActionBar();
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
 		
@@ -64,62 +61,25 @@ public class SavedArticlesActivity extends BaseActivity{
 			}
 		});
 		
+		this.deleteActionMode = new DeleteActionMode(this);
+		
 		registerForContextMenu(lv);
-		// Implement multi-selection contextual ActionBar
-		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		lv.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				switch(item.getItemId()) {
-				case R.id.saved_action_delete:
-					deleteSelectedArticles();
-					mode.finish();
-					return true;
-				default:
-					return false;
-				}
-			}
-
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				MenuInflater inflater = mode.getMenuInflater();
-				if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
-			        inflater.inflate(R.menu.saved_action_menu_dark, menu);
-				}
-				else {
-			        inflater.inflate(R.menu.saved_action_menu_light, menu);
-				}
-		        mode.setTitle("Select items...");
-		        return true;
-			}
-
-			public void onDestroyActionMode(ActionMode mode) {				
-			}
-
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				return false;
-			}
-
-			public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {				
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
+				deleteActionMode.startActionMode(item);
+				return true;
 			}
 			
 		});
 	}
 	
-	private void deleteSelectedArticles() {
-		SparseBooleanArray checked = getListView().getCheckedItemPositions();
 		
-		for(int i = 0; i < checked.size(); i++) {
-			int key = checked.keyAt(i);
-			if(checked.get(key)) {
-				ArticleItem item = (ArticleItem) getListView().getItemAtPosition(key);
-				if(item != null) {
-					removeArticle(item);
-				}
-			}
-		}
-	}
-		
-	private void removeArticle(ArticleItem item) {
+	public void removeArticle(ArticleItem item) {
 		application.articlesSource.open();
 		application.articlesSource.removeArticle(item);
 		application.articlesSource.close();

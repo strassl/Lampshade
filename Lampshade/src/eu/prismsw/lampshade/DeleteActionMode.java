@@ -1,6 +1,5 @@
 package eu.prismsw.lampshade;
 
-import android.net.Uri;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -8,25 +7,23 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import eu.prismsw.lampshade.tasks.SaveArticleTask;
-import eu.prismsw.tropeswrapper.TropesHelper;
 
-public class LinkActionMode {
+public class DeleteActionMode {
 	public SherlockFragmentActivity activity; 
 	
 	public ActionMode mActionMode;
-	public Uri selectedLink;
+	public ArticleItem selectedItem;
 	
-	public LinkActionMode(SherlockFragmentActivity activity) {
+	public DeleteActionMode(SherlockFragmentActivity activity) {
 		this.activity = activity;
 	}
 	
-	public void startActionMode(Uri url) {
+	public void startActionMode(ArticleItem item) {
     	if (mActionMode != null) {
     		mActionMode.finish();
         }
     	
-    	selectedLink = url;
+    	selectedItem = item;
 
         mActionMode = activity.startActionMode(mActionModeCallback);
 	}
@@ -39,35 +36,27 @@ public class LinkActionMode {
 		
 		public void onDestroyActionMode(ActionMode mode) {
 			mActionMode = null;
-			selectedLink = null;
+			selectedItem = null;
 		}
 		
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			if(((TropesApplication)activity.getApplication()).getThemeName().equalsIgnoreCase("HoloDark")) {
-		        inflater.inflate(R.menu.article_action_menu_dark, menu);
+		        inflater.inflate(R.menu.saved_action_menu_dark, menu);
 			}
 			else {
-		        inflater.inflate(R.menu.article_action_menu_light, menu);
+		        inflater.inflate(R.menu.saved_action_menu_light, menu);
 			}
-			if(selectedLink != null) {
-				
-				if(TropesHelper.isTropesLink(selectedLink)) {
-					String title = TropesHelper.titleFromUrl(selectedLink);
-					mode.setTitle(title);
-				}
-				else {
-					String host = selectedLink.getHost();
-					mode.setTitle(host);
-				}
+			if(selectedItem != null) {
+				mode.setTitle(selectedItem.title);
 			}
 			return true;
 		}
 		
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			if(item.getItemId() == R.id.article_action_save) {
-				if(selectedLink != null) {
-					saveArticle(selectedLink);
+			if(item.getItemId() == R.id.saved_action_delete) {
+				if(selectedItem != null) {
+					deleteArticle(selectedItem);
 					mode.finish();
 					return true;
 				}
@@ -81,7 +70,8 @@ public class LinkActionMode {
 		}
 	};
 	
-	private void saveArticle(Uri url) {
-		new SaveArticleTask((TropesApplication) activity.getApplication()).execute(url);
+	private void deleteArticle(ArticleItem item) {
+		SavedArticlesActivity sActivity = (SavedArticlesActivity) activity;
+		sActivity.removeArticle(item);
 	}
 }

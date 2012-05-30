@@ -1,14 +1,15 @@
 package eu.prismsw.lampshade;
 
-import eu.prismsw.lampshade.fragments.SearchFragment;
-import eu.prismsw.lampshade.listeners.OnInteractionListener;
-import eu.prismsw.lampshade.listeners.OnLoadListener;
-import android.app.ActionBar;
-import android.app.Fragment;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
+import eu.prismsw.lampshade.fragments.SearchFragment;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
 
 public class SearchActivity extends BaseActivity implements OnLoadListener, OnInteractionListener{
 	SearchFragment fragment;
@@ -24,7 +25,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		
-		ActionBar ab = getActionBar();
+		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
@@ -42,7 +43,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 				if(savedInstanceState == null) {
 					this.fragment = SearchFragment.newInstance(this.fullQuery);
 						
-					getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
+					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
 				}
 			}
 		}

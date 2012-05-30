@@ -1,16 +1,25 @@
 package eu.prismsw.lampshade;
 
-import android.app.Activity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import android.os.Bundle;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends SherlockFragmentActivity {
 	TropesApplication application;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         this.application = (TropesApplication) getApplication(); 
-        application.switchTheme(this);
+        this.switchTheme();
 		
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void switchTheme() {
+		String theme = application.getThemeName();
+		
+		if(theme.equalsIgnoreCase("HoloDark")) {
+			this.setTheme(android.R.style.Theme_Holo);
+		}
 	}
 }

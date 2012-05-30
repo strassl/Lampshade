@@ -2,10 +2,8 @@ package eu.prismsw.lampshade;
 
 import java.util.List;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -13,12 +11,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.ShareActionProvider;
 
-import eu.prismsw.lampshade.R;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
@@ -52,7 +51,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		
-		ActionBar ab = getActionBar();
+		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
@@ -73,12 +72,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 				if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
 					this.fragment = IndexFragment.newInstance(this.passedUrl);
 					
-					getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
+					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
 				}
 				else {
 					this.fragment = ArticleFragment.newInstance(this.passedUrl);
 					
-					getFragmentManager().beginTransaction().add(android.R.id.content, (Fragment) fragment).commit();
+					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
 				}
 			}
 		}
@@ -86,42 +85,41 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
+    	MenuInflater inflater = getSupportMenuInflater();
     	if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
 	    	inflater.inflate(R.menu.article_menu_dark, menu);
     	}
     	else {
 	    	inflater.inflate(R.menu.article_menu_light, menu);
     	}
+    	
     	shareProvider = (ShareActionProvider) menu.findItem(R.id.share_article).getActionProvider();
-    	return true;
+        return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case android.R.id.home:
-        	application.openActivity(MainActivity.class);
-        	return true;
-        case R.id.refresh_article:
-        	application.loadPage(passedUrl);
-        	return true;   
-        case R.id.save_article:
-        	saveArticle(trueUrl);
-        	return true;
-        case R.id.info_article:
-        	showDialog(DIALOG_INFO_ID);
-        	return true;
-        case R.id.browser_article:
-        	application.loadWebsite(this.trueUrl);
-        	return true;
-        case R.id.subpages_article:
-        	showDialog(DIALOG_SUBPAGES_ID);
-        	return true;
-        default:
-        	return super.onOptionsItemSelected(item);
-        }
+        if (item.getItemId() == android.R.id.home) {
+			application.openActivity(MainActivity.class);
+			return true;
+		} else if (item.getItemId() == R.id.refresh_article) {
+			application.loadPage(passedUrl);
+			return true;
+		} else if (item.getItemId() == R.id.save_article) {
+			saveArticle(trueUrl);
+			return true;
+		} else if (item.getItemId() == R.id.info_article) {
+			showDialog(DIALOG_INFO_ID);
+			return true;
+		} else if (item.getItemId() == R.id.browser_article) {
+			application.loadWebsite(this.trueUrl);
+			return true;
+		} else if (item.getItemId() == R.id.subpages_article) {
+			showDialog(DIALOG_SUBPAGES_ID);
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
     }
     
     @Override
@@ -227,7 +225,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		TropesArticleInfo info = (TropesArticleInfo) result;
 		closeProgressDialog();
 		this.articleInfo = info;
-		getActionBar().setTitle(info.title);
+		getSupportActionBar().setTitle(info.title);
 		this.trueUrl = info.url;
 		setShareIntent();
 	}

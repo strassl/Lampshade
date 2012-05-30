@@ -1,6 +1,5 @@
 package eu.prismsw.lampshade.listeners;
 
-import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 /** 
  * Must be implement by any activity that wishes to use a subclass of TropesFragment 

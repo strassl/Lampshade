@@ -2,8 +2,9 @@ package eu.prismsw.lampshade;
 
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public class AboutActivity extends BaseActivity {
 	@Override
@@ -11,8 +12,8 @@ public class AboutActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about_activity);
 		
-		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		makeLinksClickable();
 	}
 	

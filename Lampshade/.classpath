@@ -13,5 +13,6 @@
 			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry exported="true" kind="src" path="/ActionBarSherlock"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

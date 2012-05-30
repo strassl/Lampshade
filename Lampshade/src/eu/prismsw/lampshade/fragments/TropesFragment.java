@@ -1,22 +1,22 @@
 package eu.prismsw.lampshade.fragments;
 
-import eu.prismsw.lampshade.R;
-
-import eu.prismsw.lampshade.TropesApplication;
-import eu.prismsw.lampshade.listeners.OnInteractionListener;
-import eu.prismsw.lampshade.listeners.OnLoadListener;
-import eu.prismsw.lampshade.tasks.LoadTropesTask;
-import eu.prismsw.tropeswrapper.TropesArticleInfo;
-
 import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TropesFragment extends Fragment {
+import com.actionbarsherlock.app.SherlockFragment;
+
+import eu.prismsw.lampshade.R;
+import eu.prismsw.lampshade.TropesApplication;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.lampshade.tasks.LoadTropesTask;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
+
+public class TropesFragment extends SherlockFragment {
 	public static String PASSED_URL = "PASSED_URL";
 	public static String TRUE_URL = "TRUE_URL";
 	

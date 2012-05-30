@@ -1,25 +1,25 @@
 package eu.prismsw.lampshade.fragments;
 
-import eu.prismsw.lampshade.R;
-
-import eu.prismsw.lampshade.listeners.OnInteractionListener;
-import eu.prismsw.lampshade.listeners.OnLoadListener;
-import eu.prismsw.lampshade.tasks.LoadTropesTask;
-import eu.prismsw.tropeswrapper.TropesArticle;
-import eu.prismsw.tropeswrapper.TropesArticleInfo;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+import eu.prismsw.lampshade.R;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
+import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.lampshade.tasks.LoadTropesTask;
+import eu.prismsw.tropeswrapper.TropesArticle;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 public class ArticleFragment extends TropesFragment {
 	
@@ -45,15 +45,13 @@ public class ArticleFragment extends TropesFragment {
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.article_find:
-        	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
-        	wv.showFindDialog("", true);
-        	return true;
-        default:
-        	return super.onOptionsItemSelected(item);
-        }
+        if (item.getItemId() == R.id.article_find) {
+			WebView wv = (WebView) getView().findViewById(R.id.wv_content);
+			wv.showFindDialog("", true);
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
     }
 	
     /** Loads an article in a different thread */

@@ -3,15 +3,15 @@ package eu.prismsw.lampshade;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.prismsw.tropeswrapper.TropesHelper;
-import eu.prismsw.tropeswrapper.TropesIndexSelector;
-
-import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+
+import eu.prismsw.tropeswrapper.TropesHelper;
+import eu.prismsw.tropeswrapper.TropesIndexSelector;
+
 
 /** Provides cross-activity data */
 public class TropesApplication extends Application {
@@ -36,14 +36,6 @@ public class TropesApplication extends Application {
 		indexPages.add(new TropesIndexSelector("NarrativeTropes", "li"));
 		indexPages.add(new TropesIndexSelector("GenreTropes", "li"));
 		indexPages.add(new TropesIndexSelector("CharacterizationTropes", "li"));
-	}
-	
-	public void switchTheme(Activity activity) {
-		String theme = getThemeName();
-		
-		if(theme.equalsIgnoreCase("HoloDark")) {
-			activity.setTheme(android.R.style.Theme_Holo);
-		}
 	}
 	
 	public String getThemeName() {

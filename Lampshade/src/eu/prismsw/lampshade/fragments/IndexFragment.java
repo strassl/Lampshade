@@ -1,7 +1,21 @@
 package eu.prismsw.lampshade.fragments;
 
-import eu.prismsw.lampshade.R;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
@@ -10,20 +24,6 @@ import eu.prismsw.tropeswrapper.TropesHelper;
 import eu.prismsw.tropeswrapper.TropesIndex;
 import eu.prismsw.tropeswrapper.TropesIndexSelector;
 import eu.prismsw.tropeswrapper.TropesLink;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class IndexFragment extends TropesFragment{
 	
@@ -48,14 +48,12 @@ public class IndexFragment extends TropesFragment{
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.index_as_article:
-        	application.loadArticle(this.trueUrl);
-        	return true;
-        default:
-        	return super.onOptionsItemSelected(item);
-        }
+        if (item.getItemId() == R.id.index_as_article) {
+			application.loadArticle(this.trueUrl);
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
     }
     
 	
