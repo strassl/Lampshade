@@ -19,6 +19,8 @@ public class TropesArticle {
 	public final static String PURE_WHITE = "#FFFFFF";
 	public final static String TRANSPARENT = "transparent";
 	
+	public final static Integer TIMEOUT = 0;
+	
 	public Uri url = null;
 	
 	public String title;
@@ -51,7 +53,7 @@ public class TropesArticle {
 	
 	/** Returns the Jsoup document of the url */
 	protected Document loadArticle(Uri url) throws IOException {
-		Response resp = Jsoup.connect(url.toString()).execute();
+		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute();
 		// We can only set this here due to possible redirects
 		this.url = Uri.parse(resp.url().toString());
 		Document doc = resp.parse();
@@ -117,11 +119,11 @@ public class TropesArticle {
 			for(Element link : links) {
 				String title = link.text().trim();
 				
-				if(title.isEmpty()) {
+				if(title.trim().equals("")) {
 					title = link.attr("title").trim();
 				}
 				
-				if(title.isEmpty()) {
+				if(title.trim().equals("")) {
 					Element img = link.getElementsByTag("img").first();
 					title = img.attr("title");
 				}
