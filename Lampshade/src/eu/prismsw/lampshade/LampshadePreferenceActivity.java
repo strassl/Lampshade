@@ -14,6 +14,8 @@ public class LampshadePreferenceActivity extends PreferenceActivity {
         this.switchTheme();
         
 		super.onCreate(savedInstanceState);
+		
+        addPreferencesFromResource(R.xml.preferences);
 	}
 	
 	public void switchTheme() {

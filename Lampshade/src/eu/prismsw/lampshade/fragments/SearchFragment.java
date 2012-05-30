@@ -112,8 +112,8 @@ public class SearchFragment extends SherlockFragment {
 			if(result.getClass() == GoogleSearch.class) {
 				GoogleSearch search = (GoogleSearch) result;
 				
-				ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_activated_1, fixSearchTitles(search.results));
-				ListView lv = (ListView) getView();
+				ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, fixSearchTitles(search.results));
+				ListView lv = (ListView) getActivity().findViewById(R.id.lv_search);
 				lv.setAdapter(searchAdapter);
 				
 				lv.setOnItemClickListener(new OnItemClickListener() {

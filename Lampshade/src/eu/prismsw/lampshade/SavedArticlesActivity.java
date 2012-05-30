@@ -93,7 +93,7 @@ public class SavedArticlesActivity extends BaseActivity {
 		List<ArticleItem> savedArticles = application.articlesSource.getAllArticles();
 		application.articlesSource.close();
 
-		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_activated_1, savedArticles);
+		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, savedArticles);
 		getListView().setAdapter(adapter);
 	}
 }

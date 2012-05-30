@@ -82,8 +82,8 @@ public class IndexFragment extends TropesFragment{
 			if(result.getClass() == TropesIndex.class) {
 				TropesIndex tropesIndex = (TropesIndex) result;
 
-				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(getActivity(), android.R.layout.simple_list_item_activated_1, tropesIndex.tropes);
-				ListView lv = (ListView) getView();
+				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(getActivity(), android.R.layout.simple_list_item_1, tropesIndex.tropes);
+				ListView lv = (ListView) getActivity().findViewById(R.id.lv_tropes);
 				lv.setAdapter(tropeAdapter);
 				
 				lv.setOnItemClickListener(new OnItemClickListener() {

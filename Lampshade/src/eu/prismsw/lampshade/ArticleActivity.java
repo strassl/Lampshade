@@ -93,7 +93,8 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	    	inflater.inflate(R.menu.article_menu_light, menu);
     	}
     	
-    	shareProvider = (ShareActionProvider) menu.findItem(R.id.share_article).getActionProvider();
+    	MenuItem shareItem = menu.findItem(R.id.share_article);
+    	shareProvider = (ShareActionProvider) shareItem.getActionProvider();
         return true;
     }
     
@@ -120,6 +121,11 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
+    }
+    
+    @Override
+    public Dialog onCreateDialog(int id) {
+    	return onCreateDialog(id, null);
     }
     
     @Override
@@ -188,10 +194,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     
     /** Sets the share intent, should only be called after the true url is known **/
     private void setShareIntent() {
-    	Intent intent = new Intent(Intent.ACTION_SEND);
-    	intent.setType("text/plain");
-    	intent.putExtra(Intent.EXTRA_TEXT, trueUrl.toString());
-    	shareProvider.setShareIntent(intent);
+    	if(shareProvider != null) {
+	    	Intent intent = new Intent(Intent.ACTION_SEND);
+	    	intent.setType("text/plain");
+	    	intent.putExtra(Intent.EXTRA_TEXT, trueUrl.toString());
+	    	shareProvider.setShareIntent(intent);
+    	}
     }
     
     private void saveArticle(Uri url) {
