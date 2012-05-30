@@ -73,7 +73,7 @@ public class ArticleFragment extends TropesFragment {
 				WebView wv = (WebView) getView().findViewById(R.id.wv_content);
 				wv.getSettings().setJavaScriptEnabled(true);
 				wv.getSettings().setLoadsImagesAutomatically(true);
-				wv.loadData(article.content.html(), "text/html", null);
+				wv.loadDataWithBaseURL("tvtropes.org", article.content.html(), "text/html", "utf-8", null);
 				
 				wv.setOnLongClickListener(new OnLongClickListener() {
 					public boolean onLongClick(View v) {

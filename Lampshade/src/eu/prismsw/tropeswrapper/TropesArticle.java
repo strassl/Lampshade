@@ -49,6 +49,7 @@ public class TropesArticle {
 		this.subpages = getSubpages(doc);
 		
 		manipulateStyle(this.content, textColor, linkColor, spoilerColor, backgroundColor);
+		
 	}
 	
 	/** Returns the Jsoup document of the url */
