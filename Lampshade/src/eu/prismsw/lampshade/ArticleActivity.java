@@ -51,8 +51,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	RemoveActionMode removeActionmode;
 	ShareActionProvider shareProvider;
 	
-	Boolean articleIsSaved = false;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -108,11 +106,13 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	if(articleIsSaved) {
-    		menu.findItem(R.id.save_article).setTitle("Remove article");
-    	}
-    	else {
-    		menu.findItem(R.id.save_article).setTitle("Save article");
+    	if(trueUrl != null) {
+	    	if(isArticleSaved(trueUrl)) {
+	    		menu.findItem(R.id.save_article).setTitle("Remove article");
+	    	}
+	    	else {
+	    		menu.findItem(R.id.save_article).setTitle("Save article");
+	    	}
     	}
     	
     	return super.onPrepareOptionsMenu(menu);
@@ -128,7 +128,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			application.loadPage(passedUrl);
 			return true;
 		} else if (item.getItemId() == R.id.save_article) {
-			if(articleIsSaved) {
+			if(isArticleSaved(trueUrl)) {
 				removeArticle(trueUrl);
 			}
 			else {
@@ -286,7 +286,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		this.articleInfo = info;
 		getSupportActionBar().setTitle(info.title);
 		this.trueUrl = info.url;
-		this.articleIsSaved = isArticleSaved(trueUrl);
 		setShareIntent();
 	}
 	
@@ -298,7 +297,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 
 	@Override
 	public void onRemoveSuccess(ArticleItem item) {
-		articleIsSaved = false;
 		invalidateOptionsMenu();
 		UIFunctions.showToast("Removed " + item.title, this);
 	}
@@ -310,7 +308,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 
 	@Override
 	public void onSaveSuccess(ArticleItem item) {
-		articleIsSaved = true;
 		invalidateOptionsMenu();
 		UIFunctions.showToast("Added " + item.title, this);
 	}
