@@ -1,30 +1,38 @@
 package eu.prismsw.lampshade;
 
 
+import android.net.Uri;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import eu.prismsw.lampshade.listeners.OnRemoveListener;
+import eu.prismsw.lampshade.tasks.RemoveArticleTask;
+import eu.prismsw.tools.android.UIFunctions;
+import eu.prismsw.tropeswrapper.TropesHelper;
 
-public class DeleteActionMode {
+
+public class RemoveActionMode implements OnRemoveListener {
 	public SherlockFragmentActivity activity; 
 	
 	public ActionMode mActionMode;
-	public ArticleItem selectedItem;
+	public Uri selectedUrl;
 	
-	public DeleteActionMode(SherlockFragmentActivity activity) {
+	
+	public RemoveActionMode(SherlockFragmentActivity activity) {
 		this.activity = activity;
 	}
 	
-	public void startActionMode(ArticleItem item) {
+	public void startActionMode(Uri url) {
     	if (mActionMode != null) {
     		mActionMode.finish();
         }
     	
-    	selectedItem = item;
-
+    	selectedUrl = url;
+    			
         mActionMode = activity.startActionMode(mActionModeCallback);
 	}
 	
@@ -36,7 +44,7 @@ public class DeleteActionMode {
 		
 		public void onDestroyActionMode(ActionMode mode) {
 			mActionMode = null;
-			selectedItem = null;
+			selectedUrl = null;
 		}
 		
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -47,16 +55,21 @@ public class DeleteActionMode {
 			else {
 		        inflater.inflate(R.menu.saved_action_menu_light, menu);
 			}
-			if(selectedItem != null) {
-				mode.setTitle(selectedItem.title);
+			if(selectedUrl != null) {
+				if(TropesHelper.isTropesLink(selectedUrl)) {
+					mode.setTitle(TropesHelper.titleFromUrl(selectedUrl));
+				}
+				else {
+					mode.setTitle(selectedUrl.getHost());
+				}
 			}
 			return true;
 		}
 		
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			if(item.getItemId() == R.id.saved_action_delete) {
-				if(selectedItem != null) {
-					deleteArticle(selectedItem);
+				if(selectedUrl != null) {
+					removeArticle(selectedUrl);
 					mode.finish();
 					return true;
 				}
@@ -70,8 +83,17 @@ public class DeleteActionMode {
 		}
 	};
 	
-	private void deleteArticle(ArticleItem item) {
-		SavedArticlesActivity sActivity = (SavedArticlesActivity) activity;
-		sActivity.removeArticle(item);
+	private void removeArticle(Uri url) {
+		new RemoveArticleTask((TropesApplication)activity.getApplication(), this).execute(url);
+	}
+
+	@Override
+	public void onRemoveSuccess(ArticleItem item) {
+		UIFunctions.showToast("Removed " + item.title, activity);
+	}
+
+	@Override
+	public void onRemoveError() {
+		UIFunctions.showToast("Could not remove this link",  activity);
 	}
 }

@@ -2,16 +2,18 @@ package eu.prismsw.lampshade.tasks;
 
 import eu.prismsw.lampshade.ArticleItem;
 import eu.prismsw.lampshade.TropesApplication;
-import eu.prismsw.tools.android.UIFunctions;
+import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 public class SaveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 	TropesApplication application;
+	OnSaveListener saveListener; 
 	
-	public SaveArticleTask(TropesApplication application) {
+	public SaveArticleTask(TropesApplication application, OnSaveListener saveListener) {
 		this.application = application;
+		this.saveListener = saveListener;
 	}
 
 	@Override
@@ -32,10 +34,10 @@ public class SaveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 	@Override
 	protected void onPostExecute(ArticleItem item) {
 		if(item != null) {
-			UIFunctions.showToast("Added " + item.title, application);
+			saveListener.onSaveSuccess(item);
 		}
 		else {
-			UIFunctions.showToast("Could not add this link (not a tvtropes link?)", application);
+			saveListener.onSaveError();
 		}
 	}
 }

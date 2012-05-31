@@ -1,5 +1,7 @@
 package eu.prismsw.lampshade;
 
+import java.util.List;
+
 import android.net.Uri;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -8,10 +10,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.tasks.SaveArticleTask;
+import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
-public class LinkActionMode {
+public class LinkActionMode implements OnSaveListener {
 	public SherlockFragmentActivity activity; 
 	
 	public ActionMode mActionMode;
@@ -82,6 +86,16 @@ public class LinkActionMode {
 	};
 	
 	private void saveArticle(Uri url) {
-		new SaveArticleTask((TropesApplication) activity.getApplication()).execute(url);
+		new SaveArticleTask((TropesApplication) activity.getApplication(), this).execute(url);
+	}
+	
+	@Override
+	public void onSaveSuccess(ArticleItem item) {
+		UIFunctions.showToast("Added " + item.title, activity);
+	}
+
+	@Override
+	public void onSaveError() {
+		UIFunctions.showToast("Could not add this link (not a tvtropes link?)", activity);
 	}
 }

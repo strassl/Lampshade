@@ -16,7 +16,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 /** Shows a list of saved articles */
 public class SavedArticlesActivity extends BaseActivity {
-	DeleteActionMode deleteActionMode;
+	RemoveActionMode removeActionMode;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class SavedArticlesActivity extends BaseActivity {
 			}
 		});
 		
-		this.deleteActionMode = new DeleteActionMode(this);
+		this.removeActionMode = new RemoveActionMode(this);
 		
 		registerForContextMenu(lv);
 		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -71,7 +71,7 @@ public class SavedArticlesActivity extends BaseActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
-				deleteActionMode.startActionMode(item);
+				removeActionMode.startActionMode(item.url);
 				return true;
 			}
 			

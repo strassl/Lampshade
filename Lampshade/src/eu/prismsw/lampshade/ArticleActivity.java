@@ -24,13 +24,17 @@ import eu.prismsw.lampshade.fragments.IndexFragment;
 import eu.prismsw.lampshade.fragments.TropesFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.lampshade.listeners.OnRemoveListener;
+import eu.prismsw.lampshade.listeners.OnSaveListener;
+import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 import eu.prismsw.lampshade.tasks.SaveArticleTask;
 import eu.prismsw.tools.ListFunctions;
+import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
-public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener{
+public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener, OnRemoveListener {
 	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
@@ -44,6 +48,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	// Where we actually ended up
 	Uri trueUrl;
 	LinkActionMode linkActionMode;
+	RemoveActionMode removeActionmode;
 	ShareActionProvider shareProvider;
 	
 	@Override
@@ -56,6 +61,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		ab.setHomeButtonEnabled(true);
 		
 		this.linkActionMode = new LinkActionMode(this);
+		this.removeActionmode = new RemoveActionMode(this);
 		
 		Uri data = getIntent().getData();
 		if(data != null) {
@@ -107,7 +113,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			application.loadPage(passedUrl);
 			return true;
 		} else if (item.getItemId() == R.id.save_article) {
-			saveArticle(trueUrl);
+			if(isArticleSaved(trueUrl)) {
+				removeArticle(trueUrl);
+			}
+			else {
+				saveArticle(trueUrl);
+			}
 			return true;
 		} else if (item.getItemId() == R.id.info_article) {
 			showDialog(DIALOG_INFO_ID);
@@ -202,12 +213,37 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	}
     }
     
+	// This still needs more work / can be done in a nicer way
+	private Boolean isArticleSaved(Uri url) {
+		application.articlesSource.open();
+		List<ArticleItem> articles = application.articlesSource.getAllArticles();
+		
+		for(ArticleItem article : articles) {
+			if(article.url.equals(url)) {
+				application.articlesSource.close();
+				return true;
+			}
+		}
+		
+		application.articlesSource.close();
+		return false;
+	}
+    
     private void saveArticle(Uri url) {
-    	new SaveArticleTask(application).execute(url);
+    	new SaveArticleTask(application, this).execute(url);
+    }
+    
+    private void removeArticle(Uri url) {
+    	new RemoveArticleTask(application, this).execute(url);
     }
 	
 	public void onLinkSelected(Uri url) {
-		this.linkActionMode.startActionMode(url);
+		if(isArticleSaved(url)) {
+			this.removeActionmode.startActionMode(url);
+		}
+		else {
+			this.linkActionMode.startActionMode(url);
+		}
 	}
 
 	public void onLoadError(Exception e) {
@@ -242,5 +278,25 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		if(this.loadDialog != null && this.loadDialog.isShowing()) {
 			this.loadDialog.dismiss();
 		}
+	}
+
+	@Override
+	public void onRemoveSuccess(ArticleItem item) {
+		UIFunctions.showToast("Removed " + item.title, this);
+	}
+
+	@Override
+	public void onRemoveError() {
+		UIFunctions.showToast("Could not remove this link",  this);
+	}
+
+	@Override
+	public void onSaveSuccess(ArticleItem item) {
+		UIFunctions.showToast("Added " + item.title, this);
+	}
+
+	@Override
+	public void onSaveError() {
+		UIFunctions.showToast("Could not add this link (not a tvtropes link?)", this);
 	}
 }
