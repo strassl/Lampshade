@@ -1,7 +1,9 @@
 package eu.prismsw.lampshade.fragments;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -20,6 +22,7 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesArticleSettings;
 
 public class ArticleFragment extends TropesFragment {
 	
@@ -61,8 +64,8 @@ public class ArticleFragment extends TropesFragment {
 			super(tLoadListener, tInteractionListener);
 		}
 		
-		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, String theme) {
-			super(tLoadListener, tInteractionListener, theme);
+		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, TropesArticleSettings articleSettings) {
+			super(tLoadListener, tInteractionListener, articleSettings);
 		}
 		
 		@Override
@@ -110,6 +113,22 @@ public class ArticleFragment extends TropesFragment {
 	}
 	
 	public void loadTropes(Uri url) {
-		new LoadArticleTask(this.loadListener, this.interactionListener, application.getThemeName()).execute(url);
+		String theme = application.getThemeName();
+		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
+		Integer fontSize = preferences.getInt("preference_font_size", 12);
+		String fontSizeStr = fontSize.toString() + "pt";
+		
+		TropesArticleSettings articleSettings;
+		if(theme.equalsIgnoreCase("HoloDark")) {
+			articleSettings = new TropesArticleSettings(true);
+		}
+		else {
+			articleSettings = new TropesArticleSettings(false);
+		}
+		articleSettings.fontSize = fontSizeStr;
+		
+		
+		new LoadArticleTask(this.loadListener, this.interactionListener, articleSettings).execute(url);
 	}
 }

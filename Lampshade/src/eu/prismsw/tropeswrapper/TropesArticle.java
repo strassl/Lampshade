@@ -14,10 +14,6 @@ import android.net.Uri;
 
 /** Wrapper for a TvTropes article */
 public class TropesArticle {
-	public final static String ICS_BRIGHT_BLUE = "#33B5E5";
-	public final static String PURE_BLACK = "#000000";
-	public final static String PURE_WHITE = "#FFFFFF";
-	public final static String TRANSPARENT = "transparent";
 	
 	public final static Integer TIMEOUT = 0;
 	
@@ -28,28 +24,20 @@ public class TropesArticle {
 	
 	public List<TropesLink> subpages;
 	
-	public String textColor;
-	public String linkColor;
-	public String spoilerColor;
-	public String backgroundColor;
+	public TropesArticleSettings settings;
 	
 	public TropesArticle(Uri url) throws Exception {
-		this(url, PURE_BLACK, ICS_BRIGHT_BLUE, PURE_BLACK, TRANSPARENT);
+		this(url, new TropesArticleSettings());
 	}
 	
-	public TropesArticle(Uri url, String textColor, String linkColor, String spoilerColor, String backgroundColor) throws Exception {
-		this.textColor = textColor;
-		this.linkColor = linkColor;
-		this.spoilerColor = spoilerColor;
-		this.backgroundColor = backgroundColor;
-		
+	public TropesArticle(Uri url, TropesArticleSettings settings) throws Exception {
+		this.settings = settings;
 		Document doc = loadArticle(url);
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
 		this.subpages = getSubpages(doc);
 		
-		manipulateStyle(this.content, textColor, linkColor, spoilerColor, backgroundColor);
-		
+		manipulateStyle(this.content, settings);
 	}
 	
 	/** Returns the Jsoup document of the url */
@@ -89,23 +77,18 @@ public class TropesArticle {
 	}
 	
 	/** Performs all the necessary actions to make the page look pretty **/
-	public void manipulateStyle(Element content, String textColor, String linkColor, String spoilerColor, String backgroundColor) throws TropesArticleParseException{
-		try {
-			addMainJS(content);
-			
-			ArrayList<String> selectors = new ArrayList<String>();
-			
-			selectors.addAll(createBackgroundStyle(backgroundColor));
-			selectors.addAll(createTextStyle(textColor));
-			selectors.addAll(createLinkStyle(linkColor));
-			selectors.addAll(createSpoilerStyle(linkColor, spoilerColor));
-			selectors.addAll(createFolderStyle(linkColor, textColor));
-			
-			insertStylesheet(content, selectors);
-		}
-		catch (Exception e) {
-			throw new TropesArticleParseException("manipulateStyle");
-		}
+	public void manipulateStyle(Element content, TropesArticleSettings settings) throws Exception {
+		addMainJS(content);
+		
+		ArrayList<String> selectors = new ArrayList<String>();
+		
+		selectors.addAll(createBackgroundStyle(settings.backgroundColor));
+		selectors.addAll(createTextStyle(settings.textColor, settings.fontSize));
+		selectors.addAll(createLinkStyle(settings.linkColor));
+		selectors.addAll(createSpoilerStyle(settings.linkColor, settings.spoilerColor));
+		selectors.addAll(createFolderStyle(settings.linkColor, settings.textColor));
+		
+		insertStylesheet(content, selectors);
 	}
 	
 	/** Extracts the subpages from the document */
@@ -183,9 +166,9 @@ public class TropesArticle {
 		return selectors;
 	}
 	
-	protected List<String> createTextStyle(String textColor) {
+	protected List<String> createTextStyle(String textColor, String fontSize) {
 		ArrayList<String> selectors = new ArrayList<String>();
-		selectors.add("body { color:" + textColor + ";" + " }");
+		selectors.add("body { color:" + textColor + ";" + "font-size:" + fontSize + ";" + "}");
 		
 		return selectors;
 	}

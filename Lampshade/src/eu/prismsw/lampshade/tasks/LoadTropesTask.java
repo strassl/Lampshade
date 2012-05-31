@@ -8,21 +8,23 @@ import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesArticleSettings;
 
 /** Loads an article in a different thread */
 public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	public OnLoadListener tLoadListener;
 	public OnInteractionListener tInteractionListener;
-	public String theme;
 	
-	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, String theme) {
+	public TropesArticleSettings articleSettings;
+	
+	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, TropesArticleSettings articleSettings) {
 		this.tLoadListener = tLoadListener;
 		this.tInteractionListener = tInteractionListener;
-		this.theme = theme;
+		this.articleSettings = articleSettings;
 	}
 	
 	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
-		this(tLoadListener, tInteractionListener, "HoloLight");
+		this(tLoadListener, tInteractionListener, new TropesArticleSettings(false));
 	}
 	
 	@Override
@@ -34,13 +36,7 @@ public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	protected Object doInBackground(Uri... params) {
 		try {
 			Uri url = params[0];
-			TropesArticle article = null;
-			if(theme.equalsIgnoreCase("HoloDark")) {
-				article = new TropesArticle(url,TropesArticle.PURE_WHITE, TropesArticle.ICS_BRIGHT_BLUE, TropesArticle.PURE_WHITE, TropesArticle.PURE_BLACK);
-			}
-			else {
-				article = new TropesArticle(url);
-			}
+			TropesArticle article = new TropesArticle(url, articleSettings);
 			return article;
 		} catch (Exception e) {
 			return e;
