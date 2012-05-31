@@ -8,7 +8,7 @@
     <item android:id="@+id/save_article"
           android:icon="@drawable/ic_menu_save_light"
     	  android:title="@string/save_article"
-    	  android:showAsAction="ifRoom"
+    	  android:showAsAction="never"
 	/>
     <item android:id="@+id/info_article"
     	  android:title="@string/info_article"
