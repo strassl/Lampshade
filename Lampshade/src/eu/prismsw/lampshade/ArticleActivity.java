@@ -51,7 +51,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	RemoveActionMode removeActionmode;
 	ShareActionProvider shareProvider;
 	
-	Boolean articleIsSaved;
+	Boolean articleIsSaved = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     		menu.findItem(R.id.save_article).setTitle("Save article");
     	}
     	
-    	return true;
+    	return super.onPrepareOptionsMenu(menu);
     }
     
     
@@ -299,6 +299,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	@Override
 	public void onRemoveSuccess(ArticleItem item) {
 		articleIsSaved = false;
+		invalidateOptionsMenu();
 		UIFunctions.showToast("Removed " + item.title, this);
 	}
 
@@ -310,6 +311,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	@Override
 	public void onSaveSuccess(ArticleItem item) {
 		articleIsSaved = true;
+		invalidateOptionsMenu();
 		UIFunctions.showToast("Added " + item.title, this);
 	}
 
