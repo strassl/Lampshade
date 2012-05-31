@@ -89,11 +89,13 @@ public class RemoveActionMode implements OnRemoveListener {
 
 	@Override
 	public void onRemoveSuccess(ArticleItem item) {
-		UIFunctions.showToast("Removed " + item.title, activity);
+		OnRemoveListener removeListener = (OnRemoveListener) activity;
+		removeListener.onRemoveSuccess(item);
 	}
 
 	@Override
 	public void onRemoveError() {
-		UIFunctions.showToast("Could not remove this link",  activity);
+		OnRemoveListener removeListener = (OnRemoveListener) activity;
+		removeListener.onRemoveError();
 	}
 }

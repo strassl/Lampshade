@@ -12,7 +12,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.tasks.SaveArticleTask;
-import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 public class LinkActionMode implements OnSaveListener {
@@ -91,11 +90,13 @@ public class LinkActionMode implements OnSaveListener {
 	
 	@Override
 	public void onSaveSuccess(ArticleItem item) {
-		UIFunctions.showToast("Added " + item.title, activity);
+		OnSaveListener saveListener = (OnSaveListener) activity;
+		saveListener.onSaveSuccess(item);
 	}
 
 	@Override
 	public void onSaveError() {
-		UIFunctions.showToast("Could not add this link (not a tvtropes link?)", activity);
+		OnSaveListener saveListener = (OnSaveListener) activity;
+		saveListener.onSaveError();
 	}
 }

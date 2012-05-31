@@ -34,10 +34,14 @@ public class SaveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 	@Override
 	protected void onPostExecute(ArticleItem item) {
 		if(item != null) {
-			saveListener.onSaveSuccess(item);
+			if(saveListener != null) {
+				saveListener.onSaveSuccess(item);
+			}
 		}
 		else {
-			saveListener.onSaveError();
+			if(saveListener != null) {
+				saveListener.onSaveError();
+			}
 		}
 	}
 }

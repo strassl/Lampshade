@@ -13,9 +13,13 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 
+import eu.prismsw.lampshade.listeners.OnRemoveListener;
+import eu.prismsw.lampshade.tasks.RemoveArticleTask;
+import eu.prismsw.tools.android.UIFunctions;
+
 
 /** Shows a list of saved articles */
-public class SavedArticlesActivity extends BaseActivity {
+public class SavedArticlesActivity extends BaseActivity implements OnRemoveListener {
 	RemoveActionMode removeActionMode;
 	
 	@Override
@@ -56,7 +60,7 @@ public class SavedArticlesActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				ListView lv = getListView();
 				ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
-				removeArticle(item);
+				new RemoveArticleTask(application, null).execute(item.url);
 				application.loadPage(item.url);
 			}
 		});
@@ -78,15 +82,6 @@ public class SavedArticlesActivity extends BaseActivity {
 		});
 	}
 	
-		
-	public void removeArticle(ArticleItem item) {
-		application.articlesSource.open();
-		application.articlesSource.removeArticle(item);
-		application.articlesSource.close();
-		
-		loadArticles();
-	}
-	
 	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
 		application.articlesSource.open();
@@ -95,5 +90,17 @@ public class SavedArticlesActivity extends BaseActivity {
 
 		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, savedArticles);
 		getListView().setAdapter(adapter);
+	}
+
+	@Override
+	public void onRemoveSuccess(ArticleItem item) {
+		loadArticles();
+		UIFunctions.showToast("Removed " + item.title, this);
+	}
+
+	@Override
+	public void onRemoveError() {
+		loadArticles();
+		UIFunctions.showToast("Could not remove this link",  this);
 	}
 }

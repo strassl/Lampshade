@@ -53,10 +53,14 @@ public class RemoveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 	@Override
 	protected void onPostExecute(ArticleItem item) {
 		if(item != null) {
-			this.removeListener.onRemoveSuccess(item);
+			if(this.removeListener != null) {
+				this.removeListener.onRemoveSuccess(item);
+			}
 		}
 		else {
-			this.removeListener.onRemoveError();
+			if(this.removeListener != null) {
+				this.removeListener.onRemoveError();
+			}
 		}
 	}
 }
