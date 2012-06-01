@@ -1,6 +1,5 @@
 package eu.prismsw.lampshade;
 
-
 import android.net.Uri;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -11,7 +10,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
-import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 

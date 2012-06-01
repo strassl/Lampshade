@@ -89,6 +89,11 @@ public class TropesArticle {
 		selectors.addAll(createFolderStyle(settings.linkColor, settings.textColor));
 		
 		insertStylesheet(content, selectors);
+		
+		ArrayList<String> functions = new ArrayList<String>();
+		functions.addAll(createSpoilerScript());
+		insertScript(content, functions);
+		prepareSpoilers(content.getElementsByClass("spoiler"));
 	}
 	
 	/** Extracts the subpages from the document */
@@ -173,12 +178,35 @@ public class TropesArticle {
 		return selectors;
 	}
 	
-	/** Inserts a stylesheet that changes the colour of links */
+	/** Creates a stylesheet that changes the colour of links */
 	protected List<String> createLinkStyle(String linkColor) {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add("a { color:" + linkColor + ";" + " }");
 		
 		return selectors;
+	}
+	
+	protected List<String> createSpoilerScript() {
+		ArrayList<String> functions = new ArrayList<String>();
+		
+		String makeLinksClickable = "function makeLinksClickable(element) { var links = element.getElementsByTagName('a'); for(i = 0; i < links.length; i++) { links[i].removeAttribute('onclick'); } }";
+		functions.add(makeLinksClickable);
+		String showSpoiler = "function showSpoiler(element) { element.className = ''; element.removeAttribute('onclick'); makeLinksClickable(element);}";
+		functions.add(showSpoiler);
+		
+		return functions;
+	}
+	
+	protected void prepareSpoilers(Elements spoilers) {
+		for(Element spoiler : spoilers) {
+			spoiler.attr("onclick", "showSpoiler(this);");
+			
+			Elements links = spoiler.getElementsByTag("a");
+			
+			for(Element link : links) {
+				link.attr("onclick", "return false;");
+			}
+		}
 	}
 	
 	/** Prettier folders */
@@ -202,8 +230,6 @@ public class TropesArticle {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add(".spoiler { background-color:" + spoilerColor + ";" + "color:" + spoilerColor + "; }");
 		selectors.add(".spoiler a { color:" + spoilerColor + "; }");
-		selectors.add(".spoiler:hover { background-color:transparent; }");
-		selectors.add(".spoiler:hover a { color:" + linkColor + "; }");
 		
 		return selectors;
 	}

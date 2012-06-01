@@ -1,5 +1,7 @@
 package eu.prismsw.lampshade.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
@@ -20,6 +23,7 @@ import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
+import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesArticleSettings;
@@ -77,6 +81,15 @@ public class ArticleFragment extends TropesFragment {
 				wv.getSettings().setJavaScriptEnabled(true);
 				wv.getSettings().setLoadsImagesAutomatically(true);
 				wv.loadDataWithBaseURL("tvtropes.org", article.content.html(), "text/html", "utf-8", null);
+				
+				wv.setWebChromeClient(new WebChromeClient() {
+				    @Override  
+				    public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result)  
+				    {  
+				    	UIFunctions.showToast(message, application);
+				    	return true;
+				    };  
+				});
 				
 				wv.setOnLongClickListener(new OnLongClickListener() {
 					public boolean onLongClick(View v) {
