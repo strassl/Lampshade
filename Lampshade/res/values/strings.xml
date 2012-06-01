@@ -33,6 +33,7 @@
 	<string name="saved_action_delete">Delete</string>
 	
 	<string name="article_find">Find</string>
+	<string name="article_show_spoilers">Show spoilers</string>
 	
 	<string name="index_as_article">Show article</string>
 	

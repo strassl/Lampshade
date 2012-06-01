@@ -56,9 +56,21 @@ public class ArticleFragment extends TropesFragment {
 			WebView wv = (WebView) getView().findViewById(R.id.wv_content);
 			wv.showFindDialog("", true);
 			return true;
-		} else {
+		}
+        else if(item.getItemId() == R.id.article_show_spoilers) {
+        	showAllSpoilers();
+        	return true;
+        }
+        else {
 			return super.onOptionsItemSelected(item);
 		}
+    }
+    
+    private void showAllSpoilers() {
+        	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
+        	
+        	String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { showSpoiler(spoilers[i]); } }";
+        	wv.loadUrl("javascript:(" + showSpoilers + ")()");
     }
 	
     /** Loads an article in a different thread */

@@ -191,7 +191,7 @@ public class TropesArticle {
 		
 		String makeLinksClickable = "function makeLinksClickable(element) { var links = element.getElementsByTagName('a'); for(i = 0; i < links.length; i++) { links[i].removeAttribute('onclick'); } }";
 		functions.add(makeLinksClickable);
-		String showSpoiler = "function showSpoiler(element) { element.className = ''; element.removeAttribute('onclick'); makeLinksClickable(element);}";
+		String showSpoiler = "function showSpoiler(element) { element.className = '.spoiler .visible'; element.removeAttribute('onclick'); makeLinksClickable(element);}";
 		functions.add(showSpoiler);
 		
 		return functions;
@@ -230,6 +230,8 @@ public class TropesArticle {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add(".spoiler { background-color:" + spoilerColor + ";" + "color:" + spoilerColor + "; }");
 		selectors.add(".spoiler a { color:" + spoilerColor + "; }");
+		selectors.add(".spoiler .visible { background-color:transparent; }");
+		selectors.add(".spoiler .visible a { color:" + linkColor + "; }");
 		
 		return selectors;
 	}

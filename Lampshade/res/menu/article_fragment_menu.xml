@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/article_find" android:title="@string/article_find" android:showAsAction="collapseActionView"></item>
+    <item android:id="@+id/article_show_spoilers" android:title="@string/article_show_spoilers" android:showAsAction="collapseActionView"></item>
 </menu>
