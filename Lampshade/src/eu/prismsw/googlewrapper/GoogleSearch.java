@@ -24,7 +24,7 @@ public class GoogleSearch {
 		this.query = query;
 		this.results = new ArrayList<GoogleSearchResult>();
 		
-		String searchUrl = googleBaseUrl + "?q=" + URLEncoder.encode(query);
+		String searchUrl = googleBaseUrl + "?q=" + URLEncoder.encode(query, "utf-8");
 		
 		for(int i = 0; i < pages; i++) {
 			String pageUrl = searchUrl + "&start=" + Integer.toString(i * 10);

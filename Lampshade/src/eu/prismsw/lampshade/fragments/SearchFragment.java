@@ -1,6 +1,7 @@
 package eu.prismsw.lampshade.fragments;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -112,7 +113,7 @@ public class SearchFragment extends SherlockFragment {
 			if(result.getClass() == GoogleSearch.class) {
 				GoogleSearch search = (GoogleSearch) result;
 				
-				ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, fixSearchTitles(search.results));
+				ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, enhanceSearchTitles(search.results));
 				ListView lv = (ListView) getActivity().findViewById(R.id.lv_search);
 				lv.setAdapter(searchAdapter);
 				
@@ -139,9 +140,25 @@ public class SearchFragment extends SherlockFragment {
 			}
 		}
 		
-		private List<GoogleSearchResult> fixSearchTitles(List<GoogleSearchResult> results) {
+		private List<GoogleSearchResult> enhanceSearchTitles(List<GoogleSearchResult> results) {
 			for(GoogleSearchResult result : results) {
-				result.title = result.title.split(" - ")[0];
+				String articleTitle = result.title;
+				String shortTitle = articleTitle.split(" - ")[0];
+				
+				List<String> pathSegments = result.url.getPathSegments();
+				
+				if(pathSegments.get(1).equalsIgnoreCase("pmwiki.php")) {
+					String prefix = pathSegments.get(pathSegments.size() - 2) + "/";
+					
+					if(shortTitle.contains(prefix)) {
+						articleTitle = shortTitle;
+					}
+					else {
+						articleTitle =  prefix + shortTitle;
+					}
+				}
+				
+				result.title = articleTitle;
 			}
 			
 			return results;
