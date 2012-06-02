@@ -1,7 +1,5 @@
 package eu.prismsw.lampshade;
 
-import java.util.List;
-
 import android.net.Uri;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -14,23 +12,27 @@ import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.tasks.SaveArticleTask;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
-public class LinkActionMode implements OnSaveListener {
+/** Wraps an ActionMode for selected links (that can be saved) into a nice handy package **/
+public class SaveActionMode implements OnSaveListener {
 	public SherlockFragmentActivity activity; 
 	
 	public ActionMode mActionMode;
 	public Uri selectedLink;
 	
-	public LinkActionMode(SherlockFragmentActivity activity) {
+	public SaveActionMode(SherlockFragmentActivity activity) {
 		this.activity = activity;
 	}
 	
+	/** Starts a "new" ActionMode for the passed url **/
 	public void startActionMode(Uri url) {
+		// Finish any old ActionMode
     	if (mActionMode != null) {
     		mActionMode.finish();
         }
     	
     	selectedLink = url;
 
+    	// Start the new ActionMode
         mActionMode = activity.startActionMode(mActionModeCallback);
 	}
 	
@@ -41,20 +43,24 @@ public class LinkActionMode implements OnSaveListener {
 		}
 		
 		public void onDestroyActionMode(ActionMode mode) {
+			// Unset all ActionMode specific variables
 			mActionMode = null;
 			selectedLink = null;
 		}
 		
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
+			
+			// Switch, depending on the theme color, to the light or dark icons
 			if(((TropesApplication)activity.getApplication()).getThemeName().equalsIgnoreCase("HoloDark")) {
 		        inflater.inflate(R.menu.article_action_menu_dark, menu);
 			}
 			else {
 		        inflater.inflate(R.menu.article_action_menu_light, menu);
 			}
+			
+			// Set the ActionMode title
 			if(selectedLink != null) {
-				
 				if(TropesHelper.isTropesLink(selectedLink)) {
 					String title = TropesHelper.titleFromUrl(selectedLink);
 					mode.setTitle(title);

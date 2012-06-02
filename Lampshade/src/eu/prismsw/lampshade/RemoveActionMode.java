@@ -12,7 +12,7 @@ import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
-
+/** Wraps an ActionMode for selected links (that can be removed) into a nice handy package **/
 public class RemoveActionMode implements OnRemoveListener {
 	public SherlockFragmentActivity activity; 
 	

@@ -15,20 +15,16 @@ public class LampshadePreferenceActivity extends PreferenceActivity {
         
 		super.onCreate(savedInstanceState);
 		
+		// TODO Replace this with a more modern implementation
         addPreferencesFromResource(R.xml.preferences);
 	}
 	
+	// Unfortunately this Activity has to inherit from PreferenceActivity and thus cannot be a subclass of BaseActivity
 	public void switchTheme() {
-		String theme = getThemeName();
+		String theme = application.getThemeName();
 		
 		if(theme.equalsIgnoreCase("HoloDark")) {
 			this.setTheme(android.R.style.Theme_Holo);
 		}
-	}
-	
-	public String getThemeName() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String theme = preferences.getString("preference_theme", "HoloLight");
-		return theme;
 	}
 }

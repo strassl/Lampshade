@@ -13,18 +13,19 @@ import eu.prismsw.tropeswrapper.TropesHelper;
 import eu.prismsw.tropeswrapper.TropesIndexSelector;
 
 
-/** Provides cross-activity data */
+/** Provides cross-activity data and functionality */
 public class TropesApplication extends Application {
 	public static final String loadAsArticle = "ASARTICLE";
-	
+
+	// Where the help page is located
 	public static final String helpUrl = "http://lampshade.prismsw.eu/help.html";
 	
 	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
 	public static final String baseUrl = "http://tvtropes.org/pmwiki/";
 	public static final String mainUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
+	
 	public List<TropesIndexSelector> indexPages;
-		
 	public SavedArticlesSource articlesSource = null;
 	
 	@Override
@@ -78,6 +79,7 @@ public class TropesApplication extends Application {
     	return false;
 	}
 	
+	/** Opens a page as an article, and only as an article **/
 	public void loadArticle(Uri url) {
 		Intent articleIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		articleIntent.putExtra(TropesApplication.loadAsArticle, true);

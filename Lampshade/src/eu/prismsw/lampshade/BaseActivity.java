@@ -4,6 +4,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.Bundle;
 
+/** Contains some functionality (such as theme switching) that is universal for all activities. All other activities are supposed to be subclass of this class. **/
 public class BaseActivity extends SherlockFragmentActivity {
 	TropesApplication application;
 	

@@ -1,7 +1,6 @@
 package eu.prismsw.lampshade.fragments;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -24,6 +23,7 @@ import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 
+/** Shows the results of a search in a ListView **/
 public class SearchFragment extends SherlockFragment {
 	public static final String QUERY_KEY = "QUERY";
 	
@@ -113,6 +113,7 @@ public class SearchFragment extends SherlockFragment {
 			if(result.getClass() == GoogleSearch.class) {
 				GoogleSearch search = (GoogleSearch) result;
 				
+				// Fix the titles (necessary for TvTropes) and show them in the ListView
 				ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, enhanceSearchTitles(search.results));
 				ListView lv = (ListView) getActivity().findViewById(R.id.lv_search);
 				lv.setAdapter(searchAdapter);

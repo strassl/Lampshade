@@ -5,8 +5,6 @@ import android.webkit.WebView;
 
 import com.actionbarsherlock.view.MenuItem;
 
-
-/** All other activities are accessed from this one */
 public class HelpActivity extends BaseActivity {
 	
     @Override

@@ -18,7 +18,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	String fullQuery;
 	
 	ProgressDialog loadDialog;
-	LinkActionMode linkActionMode;
+	SaveActionMode saveActionMode;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
-		this.linkActionMode = new LinkActionMode(this);
+		this.saveActionMode = new SaveActionMode(this);
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
@@ -62,7 +62,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	}
 	
 	public void onLinkSelected(Uri url) {
-		this.linkActionMode.startActionMode(url);
+		this.saveActionMode.startActionMode(url);
 	}
 
 	public void onLinkClicked(Uri url) {

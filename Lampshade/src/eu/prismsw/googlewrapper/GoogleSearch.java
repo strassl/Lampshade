@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 
 import android.net.Uri;
 
+/** Handles the loading and parsing of a Google search **/
 public class GoogleSearch {
 	public static final String googleBaseUrl="http://google.com/search";
 	
@@ -24,9 +25,13 @@ public class GoogleSearch {
 		this.query = query;
 		this.results = new ArrayList<GoogleSearchResult>();
 		
+		// Create the url by encoding the query and adding it to the base url
 		String searchUrl = googleBaseUrl + "?q=" + URLEncoder.encode(query, "utf-8");
 		
+		// For every page, append the results to the list
 		for(int i = 0; i < pages; i++) {
+			// Google pages are numbered (page*10)
+			// e.g 0*10=0=page1, 1*10=10=page1
 			String pageUrl = searchUrl + "&start=" + Integer.toString(i * 10);
 			List<GoogleSearchResult> pageResults = getSearchResults(Uri.parse(pageUrl));
 			
@@ -34,17 +39,20 @@ public class GoogleSearch {
 		}
 	}
 	
+	/** Returns a list of results for the passed url **/
 	public List<GoogleSearchResult> getSearchResults(Uri searchUrl) throws IOException {
 		Document doc = loadSearch(searchUrl);
 		return parseSearchResults(doc);
 	}
 	
+	/** Loads a webpage **/
 	public Document loadSearch(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).execute();
 		Document doc = resp.parse();
 		return doc;
 	}
 	
+	/** Splits the Document into a List of GoogleSearchResult **/
 	public List<GoogleSearchResult> parseSearchResults(Document doc) {
 		Element rso = doc.getElementById("rso");
 		Elements resultItems = rso.getElementsByClass("vsc");
@@ -57,6 +65,7 @@ public class GoogleSearch {
 		return results;
 	}
 	
+	/** Organizes the information from the vsc(Google's naming scheme) Element **/
 	public GoogleSearchResult parseSingleResult(Element vsc) {
 		Element titleElement = vsc.getElementsByTag("a").first();
 		

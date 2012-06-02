@@ -45,6 +45,7 @@ public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	
 	@Override
 	protected void onPostExecute(Object result) {
+		// If the result is a TropesArticle (no error occurred)
 		if(result.getClass() == TropesArticle.class) {
 			TropesArticle article = (TropesArticle) result;
 			TropesArticleInfo articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);

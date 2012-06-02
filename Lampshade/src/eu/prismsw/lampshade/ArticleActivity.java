@@ -39,16 +39,20 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
 	
+	// The active fragment
 	TropesFragment fragment;
+	// The dialog that is shown while the fragment is loading
 	ProgressDialog loadDialog;
-	
+
+	// Information about the article, needs less memory than the full article
 	TropesArticleInfo articleInfo;
 	// The url that was passed to the activity
 	Uri passedUrl;
 	// Where we actually ended up
 	Uri trueUrl;
-	LinkActionMode linkActionMode;
-	RemoveActionMode removeActionmode;
+	
+	SaveActionMode saveActionMode;
+	RemoveActionMode removeActionMode;
 	ShareActionProvider shareProvider;
 	
 	@Override
@@ -56,17 +60,23 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		
+		// Prepare the ActionBar
 		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
-		this.linkActionMode = new LinkActionMode(this);
-		this.removeActionmode = new RemoveActionMode(this);
+		// The ActionMode objects need only be created once and can then be reused
+		// In fact they should only be created once because it prevents conflicts between multiple ActionModes
+		this.saveActionMode = new SaveActionMode(this);
+		this.removeActionMode = new RemoveActionMode(this);
 		
+		// Get the url we are supposed to load
 		Uri data = getIntent().getData();
 		if(data != null) {
 			this.passedUrl = data;
 			
+			// Check if the page is supposed to be loaded as an article
+			// If this is set to true, we don't even check if it could be an index
 			Boolean loadAsArticle = false;
 			Bundle extras = getIntent().getExtras();
 			if(extras != null) {
@@ -74,8 +84,9 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			}
 			
 			if(savedInstanceState == null) {
-				// There might be a better way to redirect the index pages
-				if(application.isIndex(TropesHelper.titleFromUrl(data)) && !loadAsArticle) {
+				// If loadAsArticle is false and it is an index page, we create an IndexFragment
+				// Otherwise we simply create an ArticleFragment
+				if(!loadAsArticle && application.isIndex(TropesHelper.titleFromUrl(data))) {
 					this.fragment = IndexFragment.newInstance(this.passedUrl);
 					
 					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
@@ -92,6 +103,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getSupportMenuInflater();
+    	// Depending on the theme, we have to change the color of the menu icons (light/dark)
     	if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
 	    	inflater.inflate(R.menu.article_menu_dark, menu);
     	}
@@ -107,6 +119,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	if(trueUrl != null) {
+    		// Switch between Remove/Save
 	    	if(isArticleSaved(trueUrl)) {
 	    		menu.findItem(R.id.save_article).setTitle("Remove article");
 	    	}
@@ -254,10 +267,10 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	
 	public void onLinkSelected(Uri url) {
 		if(isArticleSaved(url)) {
-			this.removeActionmode.startActionMode(url);
+			this.removeActionMode.startActionMode(url);
 		}
 		else {
-			this.linkActionMode.startActionMode(url);
+			this.saveActionMode.startActionMode(url);
 		}
 	}
 

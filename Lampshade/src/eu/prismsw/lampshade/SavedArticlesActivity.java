@@ -31,16 +31,20 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
 		
+		// Prepare the ListView
 		loadArticles();
 		ListView lv = getListView();
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
+			
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// Remove the article from the database and load it
 				ListView lv = getListView();
 				ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
 				new RemoveArticleTask(application, SavedArticlesActivity.this).execute(item.url);
 				application.loadPage(item.url);
 			}
+			
 		});
 		
 		this.removeActionMode = new RemoveActionMode(this);
@@ -52,6 +56,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				// Start the removeActionMode for the selected item
 				ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
 				removeActionMode.startActionMode(item.url);
 				return true;

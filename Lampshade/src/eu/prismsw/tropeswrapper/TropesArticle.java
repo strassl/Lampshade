@@ -14,14 +14,11 @@ import android.net.Uri;
 
 /** Wrapper for a TvTropes article */
 public class TropesArticle {
-	
 	public final static Integer TIMEOUT = 0;
 	
 	public Uri url = null;
-	
 	public String title;
 	public Element content;
-	
 	public List<TropesLink> subpages;
 	
 	public TropesArticleSettings settings;

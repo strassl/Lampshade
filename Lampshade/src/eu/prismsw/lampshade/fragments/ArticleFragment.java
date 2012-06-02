@@ -1,7 +1,5 @@
 package eu.prismsw.lampshade.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +26,7 @@ import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesArticleSettings;
 
+/** Shows an TvTropes article in a WebView **/
 public class ArticleFragment extends TropesFragment {
 	
 	public static ArticleFragment newInstance(Uri url) {
@@ -69,6 +68,7 @@ public class ArticleFragment extends TropesFragment {
     private void showAllSpoilers() {
         	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
         	
+        	// Javascript function, find all .spoiler elements and calls showSpoiler on them
         	String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { showSpoiler(spoilers[i]); } }";
         	wv.loadUrl("javascript:(" + showSpoilers + ")()");
     }

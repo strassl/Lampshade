@@ -16,6 +16,7 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
+/** Contains common functionality for Fragments that show a TvTropes article. This Fragment is not supposed to be used, only its subclasses **/
 public class TropesFragment extends SherlockFragment {
 	public static String PASSED_URL = "PASSED_URL";
 	public static String TRUE_URL = "TRUE_URL";
@@ -57,6 +58,7 @@ public class TropesFragment extends SherlockFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		// We need to save the true url, so we end up on the same page when the article is restored
 		outState.putParcelable(PASSED_URL, this.passedUrl);
 		outState.putParcelable(TRUE_URL, this.trueUrl);
 	}

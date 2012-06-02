@@ -29,7 +29,7 @@ public class SavedArticlesSource {
 		helper.close();
 	}
 	
-	// Saves the title and URL, returns an object with the newly created id
+	/** Saves the title and URL, returns an object with the newly created id **/
 	public ArticleItem createArticleItem (String title, Uri url) {
 		ContentValues values = new ContentValues();
 		values.put(SavedArticlesHelper.COLUMN_TITLE, title);
@@ -44,6 +44,7 @@ public class SavedArticlesSource {
 		database.delete(SavedArticlesHelper.TABLE_ARTICLES, SavedArticlesHelper.COLUMN_ID + " = " + item.id, null);
 	}
 	
+	/** Returns all articles in the database **/
 	public List<ArticleItem> getAllArticles() {
 		List<ArticleItem> items = new ArrayList<ArticleItem>();
 		
