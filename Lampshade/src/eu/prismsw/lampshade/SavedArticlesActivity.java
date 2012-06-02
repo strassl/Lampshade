@@ -27,28 +27,6 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.saved_articles_activity);
 		
-		prepare();
-	}
-	
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case android.R.id.home:
-        	application.openActivity(MainActivity.class);
-        	return true;
-        default:
-        	return super.onOptionsItemSelected(item);
-        }
-    }
-    
-    public ListView getListView() {
-		ListView lv = (ListView) findViewById(R.id.lv_saved_articles);
-		return lv;
-    }
-	
-	// Function to remove the clutter from the onCreate method
-	private void prepare() {
 		ActionBar ab = getSupportActionBar();
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
@@ -60,7 +38,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				ListView lv = getListView();
 				ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
-				new RemoveArticleTask(application, null).execute(item.url);
+				new RemoveArticleTask(application, SavedArticlesActivity.this).execute(item.url);
 				application.loadPage(item.url);
 			}
 		});
@@ -81,6 +59,23 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 			
 		});
 	}
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case android.R.id.home:
+        	application.openActivity(MainActivity.class);
+        	return true;
+        default:
+        	return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    public ListView getListView() {
+		ListView lv = (ListView) findViewById(R.id.lv_saved_articles);
+		return lv;
+    }
 	
 	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
