@@ -90,7 +90,7 @@ public class TropesArticle {
 		ArrayList<String> functions = new ArrayList<String>();
 		functions.addAll(createSpoilerScript());
 		insertScript(content, functions);
-		prepareSpoilers(content.getElementsByClass("spoiler"));
+		prepareSpoilers(content.getElementsByClass("spoiler"), settings.toggleSpoilerOnHover);
 	}
 	
 	/** Extracts the subpages from the document */
@@ -196,9 +196,15 @@ public class TropesArticle {
 		return functions;
 	}
 	
-	protected void prepareSpoilers(Elements spoilers) {
+	protected void prepareSpoilers(Elements spoilers, Boolean toggleOnHover) {
 		for(Element spoiler : spoilers) {
-			spoiler.attr("onclick", "toggleSpoiler(this);");
+			if(toggleOnHover) {
+				spoiler.attr("onmouseover", "toggleSpoiler(this);");
+				spoiler.attr("onmouseout", "toggleSpoiler(this);");
+			}
+			else {
+				spoiler.attr("onclick", "toggleSpoiler(this);");
+			}
 			
 			Elements links = spoiler.getElementsByTag("a");
 			

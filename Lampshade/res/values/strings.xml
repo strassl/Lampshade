@@ -33,7 +33,7 @@
 	<string name="saved_action_delete">Delete</string>
 	
 	<string name="article_find">Find</string>
-	<string name="article_show_spoilers">Show spoilers</string>
+	<string name="article_show_spoilers">Toggle spoilers</string>
 	
 	<string name="index_as_article">Show article</string>
 	
@@ -51,4 +51,7 @@
 	
 	<string name="preference_font_size_title">Font size</string>
 	<string name="preference_font_size_summary">Set the font size for articles</string>
+	
+	<string name="preference_spoiler_hover_title">Spoiler on hover</string>
+	<string name="preference_spoiler_hover_summary">Toggle the visibility of spoilers by hovering over them</string>
 </resources>

@@ -21,6 +21,11 @@
             android:defaultValue="12"
             lampshade:maxValue="20"
             lampshade:units="pt" />
+        <CheckBoxPreference 
+            android:key="preference_spoiler_hover"
+            android:title="@string/preference_spoiler_hover_title"
+            android:summary="@string/preference_spoiler_hover_summary"
+            android:defaultValue="False" />
             
         
     </PreferenceCategory>

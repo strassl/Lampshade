@@ -13,25 +13,27 @@ public class TropesArticleSettings {
 	public String linkColor;
 	public String spoilerColor;
 	public String backgroundColor;
+	public Boolean toggleSpoilerOnHover;
 	
 	public TropesArticleSettings() {
-			setSettings(PURE_BLACK, DEFAULT_FONTSIZE, ICS_BRIGHT_BLUE, PURE_BLACK, TRANSPARENT);
+			setSettings(PURE_BLACK, DEFAULT_FONTSIZE, ICS_BRIGHT_BLUE, PURE_BLACK, TRANSPARENT, false);
 	}
 	
 	public TropesArticleSettings(Boolean dark) {
 		if(dark) {
-			setSettings(PURE_WHITE, DEFAULT_FONTSIZE, ICS_BRIGHT_BLUE, PURE_WHITE, PURE_BLACK);
+			setSettings(PURE_WHITE, DEFAULT_FONTSIZE, ICS_BRIGHT_BLUE, PURE_WHITE, PURE_BLACK, false);
 		}
 		else {
-			setSettings(PURE_BLACK, DEFAULT_FONTSIZE, ICS_BRIGHT_BLUE, PURE_BLACK, TRANSPARENT);
+			setSettings(PURE_BLACK, DEFAULT_FONTSIZE, ICS_BRIGHT_BLUE, PURE_BLACK, TRANSPARENT, false);
 		}
 	}
 	
-	public void setSettings(String textColor, String fontSize, String linkColor, String spoilerColor, String backgroundColor) {
+	public void setSettings(String textColor, String fontSize, String linkColor, String spoilerColor, String backgroundColor, Boolean toggleSpoilerOnHover) {
 		this.textColor = textColor;
 		this.fontSize = fontSize;
 		this.linkColor = linkColor;
 		this.spoilerColor = spoilerColor;
 		this.backgroundColor = backgroundColor;
+		this.toggleSpoilerOnHover = toggleSpoilerOnHover;
 	}
 }

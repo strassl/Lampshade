@@ -69,7 +69,7 @@ public class ArticleFragment extends TropesFragment {
         	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
         	
         	// Javascript function, find all .spoiler elements and calls showSpoiler on them
-        	String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { showSpoiler(spoilers[i]); } }";
+        	String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { toggleSpoiler(spoilers[i]); } }";
         	wv.loadUrl("javascript:(" + showSpoilers + ")()");
     }
 	
@@ -152,6 +152,7 @@ public class ArticleFragment extends TropesFragment {
 			articleSettings = new TropesArticleSettings(false);
 		}
 		articleSettings.fontSize = fontSizeStr;
+		articleSettings.toggleSpoilerOnHover = preferences.getBoolean("preference_spoiler_hover", false);
 		
 		
 		new LoadArticleTask(this.loadListener, this.interactionListener, articleSettings).execute(url);
