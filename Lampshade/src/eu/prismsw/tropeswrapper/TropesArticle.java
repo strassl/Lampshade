@@ -136,7 +136,7 @@ public class TropesArticle {
 		element.prepend(style_tag);
 	}
 	
-	/** Combines alist of functions and inserts them before the element */
+	/** Combines a list of functions and inserts them before the element */
 	protected void insertScript(Element element, List<String> functions) {
 		String script = "";
 		
@@ -186,17 +186,19 @@ public class TropesArticle {
 	protected List<String> createSpoilerScript() {
 		ArrayList<String> functions = new ArrayList<String>();
 		
-		String makeLinksClickable = "function makeLinksClickable(element) { var links = element.getElementsByTagName('a'); for(i = 0; i < links.length; i++) { links[i].removeAttribute('onclick'); } }";
+		String makeLinksClickable = "function makeLinksClickable(element) { var links = element.getElementsByTagName('a'); for(i = 0; i < links.length; i++) { links[i].onclick = function() { return true; }; } }";
 		functions.add(makeLinksClickable);
-		String showSpoiler = "function showSpoiler(element) { element.className = '.spoiler .visible'; element.removeAttribute('onclick'); makeLinksClickable(element);}";
-		functions.add(showSpoiler);
+		String makeLinksUnclickable = "function makeLinksUnclickable(element) { var links = element.getElementsByTagName('a'); for(i = 0; i < links.length; i++) { links[i].onclick = function() { return false; }; } }";
+		functions.add(makeLinksUnclickable);
+		String toggleSpoiler = "function toggleSpoiler(element) { if(element.className.indexOf('visible') != -1) { element.className = \"spoiler\"; makeLinksUnclickable(element); } else { element.className=\"spoiler visible\"; makeLinksClickable(element); } }";
+		functions.add(toggleSpoiler);
 		
 		return functions;
 	}
 	
 	protected void prepareSpoilers(Elements spoilers) {
 		for(Element spoiler : spoilers) {
-			spoiler.attr("onclick", "showSpoiler(this);");
+			spoiler.attr("onclick", "toggleSpoiler(this);");
 			
 			Elements links = spoiler.getElementsByTag("a");
 			
@@ -227,8 +229,8 @@ public class TropesArticle {
 		ArrayList<String> selectors = new ArrayList<String>();
 		selectors.add(".spoiler { background-color:" + spoilerColor + ";" + "color:" + spoilerColor + "; }");
 		selectors.add(".spoiler a { color:" + spoilerColor + "; }");
-		selectors.add(".spoiler .visible { background-color:transparent; }");
-		selectors.add(".spoiler .visible a { color:" + linkColor + "; }");
+		selectors.add(".visible { background-color:transparent; }");
+		selectors.add(".visible a { color:" + linkColor + "; }");
 		
 		return selectors;
 	}

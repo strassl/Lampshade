@@ -45,18 +45,20 @@ public class MainActivity extends BaseActivity {
     }
         
     public void clickHandler(View v) {
-    	if (v.getId() == R.id.btn_load) {
-			EditText page_selection = (EditText) findViewById(R.id.et_search);
-			Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
-			searchIntent.putExtra(SearchFragment.QUERY_KEY, page_selection.getText().toString());
-			searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(searchIntent);
-		} else if (v.getId() == R.id.btn_random) {
-			application.loadPage(Uri.parse(TropesApplication.randomUrl));
-		} else if (v.getId() == R.id.btn_tropes) {
-			application.loadPage(Uri.parse(TropesApplication.tropesUrl));
-		} else if (v.getId() == R.id.btn_saved) {
-			application.openActivity(SavedArticlesActivity.class);
-		}
+    	if(v != null) {
+	    	if (v.getId() == R.id.btn_load) {
+				EditText page_selection = (EditText) findViewById(R.id.et_search);
+				Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
+				searchIntent.putExtra(SearchFragment.QUERY_KEY, page_selection.getText().toString());
+				searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(searchIntent);
+			} else if (v.getId() == R.id.btn_random) {
+				application.loadPage(Uri.parse(TropesApplication.randomUrl));
+			} else if (v.getId() == R.id.btn_tropes) {
+				application.loadPage(Uri.parse(TropesApplication.tropesUrl));
+			} else if (v.getId() == R.id.btn_saved) {
+				application.openActivity(SavedArticlesActivity.class);
+			}
+    	}
     }
 }
