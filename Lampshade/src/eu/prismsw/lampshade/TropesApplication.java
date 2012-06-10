@@ -17,7 +17,8 @@ import eu.prismsw.tropeswrapper.TropesIndexSelector;
 public class TropesApplication extends Application {
 	public static final String loadAsArticle = "ASARTICLE";
 
-	// Where the help page is located
+	public static final String remoteUrl = "http://lampshade.prismsw.eu/";
+	public static final String versionUrl = "http://lampshade.prismsw.eu/version.xml";
 	public static final String helpUrl = "http://lampshade.prismsw.eu/help.html";
 	
 	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
@@ -100,4 +101,5 @@ public class TropesApplication extends Application {
     	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(intent);
     }
+    
 }
