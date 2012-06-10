@@ -111,9 +111,8 @@ public class MainActivity extends BaseActivity {
 	    private Integer getApplicationVersion() {
 	    	Integer versionNumber = -1;
 			try {
-				PackageInfo pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
-		    	String versionName = pInfo.versionName.replaceAll("[^0-9]", "");
-		    	versionNumber = Integer.parseInt(versionName);
+				PackageInfo pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), MODE_PRIVATE);
+		    	versionNumber = pInfo.versionCode;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
