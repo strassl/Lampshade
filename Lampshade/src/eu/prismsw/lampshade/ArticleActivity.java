@@ -121,10 +121,10 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	if(trueUrl != null) {
     		// Switch between Remove/Save
 	    	if(isArticleSaved(trueUrl)) {
-	    		menu.findItem(R.id.save_article).setTitle("Remove article");
+	    		menu.findItem(R.id.save_article).setTitle(R.string.article_remove);
 	    	}
 	    	else {
-	    		menu.findItem(R.id.save_article).setTitle("Save article");
+	    		menu.findItem(R.id.save_article).setTitle(R.string.article_save);
 	    	}
     	}
     	
@@ -193,14 +193,14 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     		List<String> subpageStringList = ListFunctions.listToStringList(articleInfo.subpages);
     		String[] subpageStringArray = subpageStringList.toArray(new String[subpageStringList.size()]);
     		
-    		builder.setTitle("Subpages");
+    		builder.setTitle(R.string.article_subpages);
     		builder.setItems(subpageStringArray,  new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					application.loadWebsite(articleInfo.subpages.get(which).url);
 				}
 			});
     		builder.setCancelable(true);
-    		builder.setPositiveButton("Dismiss", new OnClickListener() {
+    		builder.setPositiveButton(R.string.dialog_dismiss, new OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 				}
@@ -211,13 +211,13 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     		builder.setTitle("Error");
     		builder.setMessage("Could not load the page. Do you want to reload it?");
     		
-    		builder.setPositiveButton("Reload", new OnClickListener() {
+    		builder.setPositiveButton(R.string.dialog_reload, new OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					fragment.loadTropes(passedUrl);
 				}
     		});
     		
-    		builder.setNegativeButton("Close", new OnClickListener() {
+    		builder.setNegativeButton(R.string.dialog_close, new OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					finish();
 				}
@@ -290,7 +290,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	}
 
 	public void onLoadStart() {
-		this.loadDialog = ProgressDialog.show(this, "", "Loading article...", true);
+		this.loadDialog = ProgressDialog.show(this, "", getResources().getString(R.string.dialog_article_loading), true);
 	}
 
 	public void onLoadFinish(Object result) {
@@ -311,22 +311,22 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	@Override
 	public void onRemoveSuccess(ArticleItem item) {
 		invalidateOptionsMenu();
-		UIFunctions.showToast("Removed " + item.title, this);
+		UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
 	}
 
 	@Override
 	public void onRemoveError() {
-		UIFunctions.showToast("Could not remove this link",  this);
+		UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
 	}
 
 	@Override
 	public void onSaveSuccess(ArticleItem item) {
 		invalidateOptionsMenu();
-		UIFunctions.showToast("Added " + item.title, this);
+		UIFunctions.showToast(getResources().getString(R.string.article_saved) + item.title, this);
 	}
 
 	@Override
 	public void onSaveError() {
-		UIFunctions.showToast("Could not add this link (not a tvtropes link?)", this);
+		UIFunctions.showToast(getResources().getString(R.string.article_save_failed), this);
 	}
 }

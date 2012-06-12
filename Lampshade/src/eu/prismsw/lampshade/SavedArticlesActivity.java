@@ -95,12 +95,12 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 	@Override
 	public void onRemoveSuccess(ArticleItem item) {
 		loadArticles();
-		UIFunctions.showToast("Removed " + item.title, this);
+		UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
 	}
 
 	@Override
 	public void onRemoveError() {
 		loadArticles();
-		UIFunctions.showToast("Could not remove this link",  this);
+		UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
 	}
 }

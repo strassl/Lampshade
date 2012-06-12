@@ -37,7 +37,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 			 
 			if(query != null) {
 				this.passedQuery = query;
-				ab.setTitle("Search: " + passedQuery);
+				ab.setTitle(getResources().getString(R.string.search_title) + passedQuery);
 				query += " " + "site:tvtropes.org";
 				this.fullQuery = query;
 				if(savedInstanceState == null) {
@@ -70,7 +70,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	}
 
 	public void onLoadStart() {
-		this.loadDialog = ProgressDialog.show(this, "", "Loading search results...", true);
+		this.loadDialog = ProgressDialog.show(this, "", getResources().getString(R.string.dialog_search_loading), true);
 	}
 
 	public void onLoadFinish(Object result) {
