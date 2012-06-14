@@ -26,12 +26,16 @@ public class TropesApplication extends Application {
 	public static final String mainUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
 	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
 	
+	public static final Integer maxRecentArticles = 15;
+	
 	public List<TropesIndexSelector> indexPages;
-	public SavedArticlesSource articlesSource = null;
+	public ArticlesSource savedArticlesSource = null;
+	public ArticlesSource recentArticlesSource = null;
 	
 	@Override
 	public void onCreate() {
-		articlesSource = new SavedArticlesSource(this);
+		savedArticlesSource = new ArticlesSource(new SavedArticlesHelper(this));
+		recentArticlesSource = new ArticlesSource(new RecentArticlesHelper(this));
 		indexPages =  new ArrayList<TropesIndexSelector>();
 		// TODO A horrible way to add all the items, maybe some kind of xml file would be a better idea
 		// TODO Automation would be even better
@@ -56,7 +60,7 @@ public class TropesApplication extends Application {
 	
 	public void loadPage(Uri url) {
 		String page = TropesHelper.titleFromUrl(url);
-
+		
     	if(isIndex(page)) {
     		loadIndex(url);
     	}

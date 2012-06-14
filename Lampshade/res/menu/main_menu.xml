@@ -4,6 +4,10 @@
     	  android:title="@string/show_preferences"
     	  android:showAsAction="never"
 	/>
+    <item android:id="@+id/show_recent"
+    	  android:title="@string/show_recent"
+    	  android:showAsAction="never"
+	/>
     <item android:id="@+id/show_about"
     	  android:title="@string/show_about"
     	  android:showAsAction="never"

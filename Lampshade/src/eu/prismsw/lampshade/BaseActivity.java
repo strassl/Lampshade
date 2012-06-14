@@ -1,7 +1,10 @@
 package eu.prismsw.lampshade;
 
+import java.util.List;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -36,5 +39,21 @@ public class BaseActivity extends SherlockFragmentActivity {
 	    ft.addToBackStack(null);
 
 	    fragment.show(ft, "dialog");
+	}
+	
+	// This still needs more work / can be done in a nicer way
+	public Boolean isArticleSaved(Uri url) {
+		application.savedArticlesSource.open();
+		List<ArticleItem> articles = application.savedArticlesSource.getAllArticles();
+		
+		for(ArticleItem article : articles) {
+			if(article.url.equals(url)) {
+				application.savedArticlesSource.close();
+				return true;
+			}
+		}
+		
+		application.savedArticlesSource.close();
+		return false;
 	}
 }

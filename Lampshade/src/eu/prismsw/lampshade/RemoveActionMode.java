@@ -19,9 +19,11 @@ public class RemoveActionMode implements OnRemoveListener {
 	public ActionMode mActionMode;
 	public Uri selectedUrl;
 	
+	public ArticlesSource articlesSource;
 	
-	public RemoveActionMode(SherlockFragmentActivity activity) {
+	public RemoveActionMode(SherlockFragmentActivity activity, ArticlesSource articlesSource) {
 		this.activity = activity;
+		this.articlesSource = articlesSource;
 	}
 	
 	public void startActionMode(Uri url) {
@@ -82,7 +84,7 @@ public class RemoveActionMode implements OnRemoveListener {
 	};
 	
 	private void removeArticle(Uri url) {
-		new RemoveArticleTask((TropesApplication)activity.getApplication(), this).execute(url);
+		new RemoveArticleTask(articlesSource, this).execute(url);
 	}
 
 	@Override

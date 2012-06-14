@@ -19,8 +19,11 @@ public class SaveActionMode implements OnSaveListener {
 	public ActionMode mActionMode;
 	public Uri selectedLink;
 	
-	public SaveActionMode(SherlockFragmentActivity activity) {
+	public ArticlesSource articlesSource;
+	
+	public SaveActionMode(SherlockFragmentActivity activity, ArticlesSource articlesSource) {
 		this.activity = activity;
+		this.articlesSource = articlesSource;
 	}
 	
 	/** Starts a "new" ActionMode for the passed url **/
@@ -91,7 +94,7 @@ public class SaveActionMode implements OnSaveListener {
 	};
 	
 	private void saveArticle(Uri url) {
-		new SaveArticleTask((TropesApplication) activity.getApplication(), this).execute(url);
+		new SaveArticleTask(articlesSource, this).execute(url);
 	}
 	
 	@Override

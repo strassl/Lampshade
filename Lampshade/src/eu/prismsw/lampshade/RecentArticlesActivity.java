@@ -14,12 +14,12 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
-import eu.prismsw.lampshade.tasks.RemoveArticleTask;
+import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
 
 
 /** Shows a list of saved articles */
-public class SavedArticlesActivity extends BaseActivity implements OnRemoveListener {
+public class RecentArticlesActivity extends BaseActivity implements OnRemoveListener {
 	RemoveActionMode removeActionMode;
 	
 	@Override
@@ -31,29 +31,25 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
 		
-		// Prepare the ListView
 		loadArticles();
 		ListView lv = getListView();
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// Remove the article from the database and load it
 				ListView lv = getListView();
 				ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
-				new RemoveArticleTask(application.savedArticlesSource, SavedArticlesActivity.this).execute(item.url);
 				application.loadPage(item.url);
 			}
 			
 		});
 		
-		this.removeActionMode = new RemoveActionMode(this, application.savedArticlesSource);
+		this.removeActionMode = new RemoveActionMode(this, application.recentArticlesSource);
 		
 		registerForContextMenu(lv);
 		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				// Start the removeActionMode for the selected item
@@ -84,11 +80,12 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 	
 	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
-		application.savedArticlesSource.open();
-		List<ArticleItem> savedArticles = application.savedArticlesSource.getAllArticles();
-		application.savedArticlesSource.close();
+		application.recentArticlesSource.open();
+		List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticles();
+		recentArticles = ListFunctions.reverseList(recentArticles);
+		application.recentArticlesSource.close();
 
-		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, savedArticles);
+		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, recentArticles);
 		getListView().setAdapter(adapter);
 	}
 

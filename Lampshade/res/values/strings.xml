@@ -18,6 +18,7 @@
 	<string name="show_saved_articles">Saved</string>
 	<string name="show_about">About</string>
 	<string name="show_help">Help</string>
+	<string name="show_recent">Recent</string>
 	<string name="show_preferences">Preferences</string>
 	
 	<!-- Misc -->

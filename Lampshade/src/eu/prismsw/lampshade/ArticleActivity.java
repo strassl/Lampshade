@@ -67,8 +67,8 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		
 		// The ActionMode objects need only be created once and can then be reused
 		// In fact they should only be created once because it prevents conflicts between multiple ActionModes
-		this.saveActionMode = new SaveActionMode(this);
-		this.removeActionMode = new RemoveActionMode(this);
+		this.saveActionMode = new SaveActionMode(this, application.savedArticlesSource);
+		this.removeActionMode = new RemoveActionMode(this, application.savedArticlesSource);
 		
 		// Get the url we are supposed to load
 		Uri data = getIntent().getData();
@@ -241,28 +241,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	}
     }
     
-	// This still needs more work / can be done in a nicer way
-	private Boolean isArticleSaved(Uri url) {
-		application.articlesSource.open();
-		List<ArticleItem> articles = application.articlesSource.getAllArticles();
-		
-		for(ArticleItem article : articles) {
-			if(article.url.equals(url)) {
-				application.articlesSource.close();
-				return true;
-			}
-		}
-		
-		application.articlesSource.close();
-		return false;
-	}
-    
     private void saveArticle(Uri url) {
-    	new SaveArticleTask(application, this).execute(url);
+    	new SaveArticleTask(application.savedArticlesSource, this).execute(url);
     }
     
     private void removeArticle(Uri url) {
-    	new RemoveArticleTask(application, this).execute(url);
+    	new RemoveArticleTask(application.savedArticlesSource, this).execute(url);
     }
 	
 	public void onLinkSelected(Uri url) {
@@ -295,11 +279,27 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 
 	public void onLoadFinish(Object result) {
 		TropesArticleInfo info = (TropesArticleInfo) result;
-		closeProgressDialog();
 		this.articleInfo = info;
-		getSupportActionBar().setTitle(info.title);
 		this.trueUrl = info.url;
+		
+		// Add the page to the list of recent articles
+		application.recentArticlesSource.open();
+		
+		// This is a horribly ugly and inefficient way of doing this
+		List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticles();
+		if(recentArticles.size() >= TropesApplication.maxRecentArticles) {
+			// Remove the oldest (=first) item
+			application.recentArticlesSource.removeArticle(recentArticles.get(0));
+		}
+		
+		application.recentArticlesSource.createArticleItem(TropesHelper.titleFromUrl(this.trueUrl), this.trueUrl);
+		
+		application.recentArticlesSource.close();
+		
+		getSupportActionBar().setTitle(info.title);
 		setShareIntent();
+		
+		closeProgressDialog();
 	}
 	
 	private void closeProgressDialog() {

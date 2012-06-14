@@ -29,7 +29,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
-		this.saveActionMode = new SaveActionMode(this);
+		this.saveActionMode = new SaveActionMode(this, application.savedArticlesSource);
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {

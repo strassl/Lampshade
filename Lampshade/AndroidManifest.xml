@@ -41,6 +41,8 @@
         </activity>
         <activity android:name=".SearchActivity">
         </activity>
+        <activity android:name=".RecentArticlesActivity">
+        </activity>
         <activity android:name=".LampshadePreferenceActivity">
         </activity>
     </application>

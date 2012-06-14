@@ -3,7 +3,7 @@ package eu.prismsw.lampshade.tasks;
 import java.util.List;
 
 import eu.prismsw.lampshade.ArticleItem;
-import eu.prismsw.lampshade.TropesApplication;
+import eu.prismsw.lampshade.ArticlesSource;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 import android.net.Uri;
@@ -11,11 +11,11 @@ import android.os.AsyncTask;
 
 /** Removes the article with the matching url from the database **/
 public class RemoveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
-	TropesApplication application;
+	ArticlesSource articlesSource;
 	OnRemoveListener removeListener;
 	
-	public RemoveArticleTask(TropesApplication application, OnRemoveListener removeListener) {
-		this.application = application;
+	public RemoveArticleTask(ArticlesSource articlesSource, OnRemoveListener removeListener) {
+		this.articlesSource = articlesSource;
 		this.removeListener = removeListener;
 	}
 
@@ -25,15 +25,15 @@ public class RemoveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 		Uri url = params[0];
 		
 		if(TropesHelper.isTropesLink(url)) {
-			application.articlesSource.open();
-			List<ArticleItem> articles = application.articlesSource.getAllArticles();
+			articlesSource.open();
+			List<ArticleItem> articles = articlesSource.getAllArticles();
 			
 			ArticleItem matchingArticle = findArticleItemByUrl(articles, url);
 			// If we found a matching article, we remove it
 			if(matchingArticle != null) {
-				application.articlesSource.removeArticle(matchingArticle);
+				articlesSource.removeArticle(matchingArticle);
 			}
-			application.articlesSource.close();
+			articlesSource.close();
 			
 			return matchingArticle;
 		}

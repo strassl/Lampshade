@@ -4,6 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListFunctions {
+	/** Reverse a list **/
+	public static <T> List<T> reverseList(List<T> list) {
+		List<T> reversedList = new ArrayList<T>();
+		
+		for(int i = list.size() - 1; i >= 0; i--) {
+			reversedList.add(list.get(i));
+		}
+		
+		return reversedList;
+	}
 	
 	/** Converts a List of objects to one String, consisting of each object.toString(), separated by the separator **/
 	public static <T> String listToString(List<T> list, String separator) {

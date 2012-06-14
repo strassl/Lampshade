@@ -1,18 +1,18 @@
 package eu.prismsw.lampshade.tasks;
 
 import eu.prismsw.lampshade.ArticleItem;
-import eu.prismsw.lampshade.TropesApplication;
+import eu.prismsw.lampshade.ArticlesSource;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 public class SaveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
-	TropesApplication application;
+	ArticlesSource articlesSource;
 	OnSaveListener saveListener; 
 	
-	public SaveArticleTask(TropesApplication application, OnSaveListener saveListener) {
-		this.application = application;
+	public SaveArticleTask(ArticlesSource articlesSource, OnSaveListener saveListener) {
+		this.articlesSource = articlesSource;
 		this.saveListener = saveListener;
 	}
 
@@ -21,9 +21,9 @@ public class SaveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 		Uri url = params[0];
 		
 		if(TropesHelper.isTropesLink(url)) {
-			application.articlesSource.open();
-			ArticleItem item = application.articlesSource.createArticleItem(TropesHelper.titleFromUrl(url), url);
-			application.articlesSource.close();
+			articlesSource.open();
+			ArticleItem item = articlesSource.createArticleItem(TropesHelper.titleFromUrl(url), url);
+			articlesSource.close();
 			return item;
 		}
 		else {

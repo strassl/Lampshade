@@ -8,18 +8,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
 /** Wrapper for common database functions */
-public class SavedArticlesSource {
+public class ArticlesSource {
 	
-	private SQLiteDatabase database;
-	private SavedArticlesHelper helper;
-	private String[] allColumns = {SavedArticlesHelper.COLUMN_ID, SavedArticlesHelper.COLUMN_TITLE, SavedArticlesHelper.COLUMN_URL};
+	protected SQLiteDatabase database;
+	protected SQLiteOpenHelper helper;
+	protected String[] allColumns = {SavedArticlesHelper.COLUMN_ID, SavedArticlesHelper.COLUMN_TITLE, SavedArticlesHelper.COLUMN_URL};
 	
-	public SavedArticlesSource(Context context) {
-		helper = new SavedArticlesHelper(context);
-	}
+	public ArticlesSource(SQLiteOpenHelper helper) {
+		this.helper = helper;
+	} 
 	
 	public void open() throws SQLException {
 		database = helper.getWritableDatabase();
