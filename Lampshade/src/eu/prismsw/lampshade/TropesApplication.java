@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import eu.prismsw.lampshade.database.ArticlesSource;
+import eu.prismsw.lampshade.database.RecentArticlesHelper;
+import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.tropeswrapper.TropesHelper;
 import eu.prismsw.tropeswrapper.TropesIndexSelector;
 

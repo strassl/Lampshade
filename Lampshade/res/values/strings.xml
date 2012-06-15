@@ -16,7 +16,7 @@
     <string name="title_about">About</string>
     <string name="title_help">Help</string>
     <string name="title_preferences">Preferences</string>
-	<string name="title_search">Search: </string>
+	<string name="title_search">Search:&#160;</string>
     
     <!-- Main Activity -->
 	<string name="et_search">Search</string>
@@ -51,9 +51,9 @@
 	<string name="article_share">Share</string>
 	<string name="article_action_save">Save</string>
 	
-	<string name="article_removed">Removed: </string>
+	<string name="article_removed">Removed&#160;</string>
 	<string name="article_remove_failed">Could not remove this link</string>
-	<string name="article_saved">Added: </string>
+	<string name="article_saved">Added&#160;</string>
 	<string name="article_save_failed">Could not add this link (not a tvtropes link?)</string>
 	
 	<!-- Saved Articles Activity -->

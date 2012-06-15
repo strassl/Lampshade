@@ -1,7 +1,7 @@
 package eu.prismsw.lampshade.tasks;
 
 import eu.prismsw.lampshade.ArticleItem;
-import eu.prismsw.lampshade.ArticlesSource;
+import eu.prismsw.lampshade.database.ArticlesSource;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 import android.net.Uri;

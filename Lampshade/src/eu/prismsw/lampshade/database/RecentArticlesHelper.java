@@ -1,18 +1,18 @@
-package eu.prismsw.lampshade;
+package eu.prismsw.lampshade.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /** Helper class for the database */
-public class SavedArticlesHelper extends SQLiteOpenHelper {
+public class RecentArticlesHelper extends SQLiteOpenHelper {
 	
 	public static final String TABLE_ARTICLES = "articles";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_TITLE = "title";
 	public static final String COLUMN_URL = "url";
 	
-	private static final String DATABASE_NAME = "saved_articles.db";
+	private static final String DATABASE_NAME = "recent_articles.db";
 	private static final int DATABASE_VERSION = 1;
 	
 	private static final String DATABASE_CREATE = "create table " + TABLE_ARTICLES + "( "
@@ -21,7 +21,7 @@ public class SavedArticlesHelper extends SQLiteOpenHelper {
 					+ COLUMN_URL + " text not null" + ");";
 	
 
-	public SavedArticlesHelper(Context context) {
+	public RecentArticlesHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 

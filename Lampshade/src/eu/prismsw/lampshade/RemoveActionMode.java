@@ -8,6 +8,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import eu.prismsw.lampshade.database.ArticlesSource;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 import eu.prismsw.tropeswrapper.TropesHelper;
