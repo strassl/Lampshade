@@ -12,7 +12,6 @@ public class HelpActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_activity);
         
-        this.setTitle("Help");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         

@@ -37,7 +37,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 			 
 			if(query != null) {
 				this.passedQuery = query;
-				ab.setTitle(getResources().getString(R.string.search_title) + passedQuery);
+				ab.setTitle(getResources().getString(R.string.title_search) + passedQuery);
 				query += " " + "site:tvtropes.org";
 				this.fullQuery = query;
 				if(savedInstanceState == null) {

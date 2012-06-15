@@ -33,17 +33,22 @@
 				<data android:scheme="http" android:host="tvtropes.org" android:pathPattern="/pmwiki/pmwiki.php/.*" />
 			</intent-filter>
         </activity>
-        <activity android:name=".SavedArticlesActivity">
+        <activity android:name=".SavedArticlesActivity"
+            android:label="@string/title_saved">
         </activity>
-        <activity android:name=".AboutActivity">
+        <activity android:name=".AboutActivity"
+            android:label="@string/title_about">
         </activity>
-        <activity android:name=".HelpActivity">
+        <activity android:name=".HelpActivity"
+            android:label="@string/title_help">
         </activity>
         <activity android:name=".SearchActivity">
         </activity>
-        <activity android:name=".RecentArticlesActivity">
+        <activity android:name=".RecentArticlesActivity"
+            android:label="@string/title_recent">
         </activity>
-        <activity android:name=".LampshadePreferenceActivity">
+        <activity android:name=".LampshadePreferenceActivity"
+            android:label="@string/title_preferences">
         </activity>
     </application>
 
