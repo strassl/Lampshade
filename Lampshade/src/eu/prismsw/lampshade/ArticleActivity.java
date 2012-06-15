@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -154,6 +156,10 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		} else if (item.getItemId() == R.id.browser_article) {
 			application.loadWebsite(this.trueUrl);
 			return true;
+		} else if (item.getItemId() == R.id.clipboard_article) {
+			copyUrlToClipboard(this.trueUrl);
+			UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + this.trueUrl.toString(), this);
+			return true;
 		} else if (item.getItemId() == R.id.subpages_article) {
 			showDialog(DIALOG_SUBPAGES_ID);
 			return true;
@@ -239,6 +245,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	    	intent.putExtra(Intent.EXTRA_TEXT, trueUrl.toString());
 	    	shareProvider.setShareIntent(intent);
     	}
+    }
+    
+    private void copyUrlToClipboard(Uri url) {
+    	ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+    	ClipData clip = ClipData.newUri(getContentResolver(),"URI", url);
+    	clipboard.setPrimaryClip(clip);
     }
     
     private void saveArticle(Uri url) {

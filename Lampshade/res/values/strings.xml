@@ -47,6 +47,7 @@
 	<string name="article_save">Save</string>
 	<string name="article_info">Info</string>
 	<string name="article_browser">Show in browser</string>
+	<string name="article_clipboard">Copy to clipboard</string>
 	<string name="article_subpages">Subpages</string>
 	<string name="article_share">Share</string>
 	<string name="article_action_save">Save</string>
@@ -55,6 +56,7 @@
 	<string name="article_remove_failed">Could not remove this link</string>
 	<string name="article_saved">Added&#160;</string>
 	<string name="article_save_failed">Could not add this link (not a tvtropes link?)</string>
+	<string name="article_clipboard_copied">Copied&#160;</string>
 	
 	<!-- Saved Articles Activity -->
 	<string name="saved_action_delete">Delete</string>
