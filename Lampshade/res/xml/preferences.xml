@@ -21,12 +21,23 @@
             android:defaultValue="12"
             lampshade:maxValue="20"
             lampshade:units="pt" />
+            
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/preference_category_functionality">
+        
         <CheckBoxPreference 
             android:key="preference_spoiler_hover"
             android:title="@string/preference_spoiler_hover_title"
             android:summary="@string/preference_spoiler_hover_summary"
             android:defaultValue="False" />
-            
         
+        <CheckBoxPreference 
+            android:key="preference_history_enable"
+            android:title="@string/preference_history_enable_title"
+            android:summary="@string/preference_history_enable_summary"
+            android:defaultValue="True" />
+    
     </PreferenceCategory>
 </PreferenceScreen>

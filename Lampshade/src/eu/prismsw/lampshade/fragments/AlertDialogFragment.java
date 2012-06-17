@@ -38,8 +38,7 @@ public class AlertDialogFragment extends SherlockDialogFragment {
 	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle(this.title)
                 .setMessage(Html.fromHtml(this.content))
                 .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
@@ -49,6 +48,8 @@ public class AlertDialogFragment extends SherlockDialogFragment {
                     }
                 )
                 .create();
+        
+        return dialog;
     }
 }
 

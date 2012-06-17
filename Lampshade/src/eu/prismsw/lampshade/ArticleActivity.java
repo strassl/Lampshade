@@ -10,9 +10,11 @@ import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
+import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -21,6 +23,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 
+import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
 import eu.prismsw.lampshade.fragments.TropesFragment;
@@ -37,7 +40,6 @@ import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Shows a single TvTropes article */
 public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener, OnRemoveListener {
-	static final int DIALOG_INFO_ID = 0;
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
 	
@@ -151,14 +153,13 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			}
 			return true;
 		} else if (item.getItemId() == R.id.info_article) {
-			showDialog(DIALOG_INFO_ID);
+			showDialogFragment(createInfoDialog(articleInfo.title, trueUrl, passedUrl));
 			return true;
 		} else if (item.getItemId() == R.id.browser_article) {
 			application.loadWebsite(this.trueUrl);
 			return true;
 		} else if (item.getItemId() == R.id.clipboard_article) {
 			copyUrlToClipboard(this.trueUrl);
-			UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + this.trueUrl.toString(), this);
 			return true;
 		} else if (item.getItemId() == R.id.subpages_article) {
 			showDialog(DIALOG_SUBPAGES_ID);
@@ -167,6 +168,17 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			return super.onOptionsItemSelected(item);
 		}
     }
+    
+    private DialogFragment createInfoDialog(String title, Uri trueUrl, Uri passedUrl) {
+    		String info = "";
+    		info += "Title: " + articleInfo.title + "<br /><br />";
+    		info += "Url: " + trueUrl.toString() + "<br /><br />";
+    		info += "Passed Url: " + passedUrl.toString();
+    		
+			AlertDialogFragment f = AlertDialogFragment.newInstance("Info", info);
+			return f;
+    }
+    
     
     @Override
     public Dialog onCreateDialog(int id) {
@@ -178,23 +190,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	Dialog dialog;
    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	switch(id) {
-    	case DIALOG_INFO_ID:
-    		String info = "";
-    		info += "Title: " + articleInfo.title + "<br /><br />";
-    		info += "Url: " + trueUrl.toString() + "<br /><br />";
-    		info += "Passed Url: " + passedUrl.toString();
-    		    		
-    		builder.setTitle("Info");
-    		builder.setMessage(Html.fromHtml(info));
-    		builder.setCancelable(true);
-    		builder.setPositiveButton("Thanks!", new OnClickListener() {
-    			public void onClick(DialogInterface dialog, int which) {
-    				dialog.dismiss();
-    			}
-    		});
-    		       
-    		dialog = builder.create();
-    		break;
     	case DIALOG_SUBPAGES_ID:
     		List<String> subpageStringList = ListFunctions.listToStringList(articleInfo.subpages);
     		String[] subpageStringArray = subpageStringList.toArray(new String[subpageStringList.size()]);
@@ -214,12 +209,19 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     		dialog = builder.create();
     		break;
     	case DIALOG_LOAD_FAILED:
-    		builder.setTitle("Error");
-    		builder.setMessage("Could not load the page. Do you want to reload it?");
+    		builder.setTitle(R.string.dialog_load_failed_title);
+    		builder.setMessage(R.string.dialog_load_failed_message);
     		
     		builder.setPositiveButton(R.string.dialog_reload, new OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					fragment.loadTropes(passedUrl);
+				}
+    		});
+    		
+    		builder.setNeutralButton("Copy url", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					copyUrlToClipboard(passedUrl);
+					finish();
 				}
     		});
     		
@@ -251,6 +253,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
     	ClipData clip = ClipData.newUri(getContentResolver(),"URI", url);
     	clipboard.setPrimaryClip(clip);
+		UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + url.toString(), this);
     }
     
     private void saveArticle(Uri url) {
@@ -294,19 +297,25 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		this.articleInfo = info;
 		this.trueUrl = info.url;
 		
-		// Add the page to the list of recent articles
-		application.recentArticlesSource.open();
 		
-		// This is a horribly ugly and inefficient way of doing this
-		List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticles();
-		if(recentArticles.size() >= TropesApplication.maxRecentArticles) {
-			// Remove the oldest (=first) item
-			application.recentArticlesSource.removeArticle(recentArticles.get(0));
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		Boolean historyEnabled = preferences.getBoolean("preference_history_enable", true);
+		
+		if(historyEnabled) {
+			// Add the page to the list of recent articles
+			application.recentArticlesSource.open();
+			
+			// This is a horribly ugly and inefficient way of doing this
+			List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticles();
+			if(recentArticles.size() >= TropesApplication.maxRecentArticles) {
+				// Remove the oldest (=first) item
+				application.recentArticlesSource.removeArticle(recentArticles.get(0));
+			}
+			
+			application.recentArticlesSource.createArticleItem(TropesHelper.titleFromUrl(this.trueUrl), this.trueUrl);
+			
+			application.recentArticlesSource.close();
 		}
-		
-		application.recentArticlesSource.createArticleItem(TropesHelper.titleFromUrl(this.trueUrl), this.trueUrl);
-		
-		application.recentArticlesSource.close();
 		
 		getSupportActionBar().setTitle(info.title);
 		setShareIntent();

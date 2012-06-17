@@ -67,7 +67,11 @@ public class TropesHelper {
 	
 	/** Converts a TropesLink into an <a> tag **/
 	public static String linkToHtml(TropesLink link) {
-		String html = "<a href =\"" + link.url + "\" >" + link.title + "</a>";
+		return createHtmlLink(link.title, link.url.toString());
+	}
+	
+	public static String createHtmlLink(String title, String url) {
+		String html = "<a href =\"" + url + "\" >" + title + "</a>";
 		return html;
 	}
 }

@@ -38,6 +38,8 @@
 	<string name="dialog_close">Close</string>
 	<string name="dialog_article_loading">Loading article…</string>
 	<string name="dialog_search_loading">Loading search results…</string>
+	<string name="dialog_load_failed_title">Error</string>
+	<string name="dialog_load_failed_message">Could not load the page. Do you want to reload it?</string>
 	
 	<!-- Article Activity -->
 	<string name="article_title">Title</string>
@@ -70,6 +72,8 @@
 	
 	<!-- Preferences -->
 	<string name="preference_category_visual">Visual</string>
+	<string name="preference_category_functionality">Functionality</string>
+	
 	<string name="preference_theme_title">Theme</string>
 	<string name="preference_theme_summary">Requires an application restart</string>
 	<string-array name="preference_theme_entries">
@@ -86,4 +90,7 @@
 	
 	<string name="preference_spoiler_hover_title">Spoiler on hover</string>
 	<string name="preference_spoiler_hover_summary">Toggle the visibility of spoilers by hovering over them</string>
+	
+	<string name="preference_history_enable_title">Enable history</string>
+	<string name="preference_history_enable_summary">If this is unchecked, the articles you visit will not show up in your recent articles</string>
 </resources>
