@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="/media/data/projects/git/Lampshade/Lampshade/libs/jsoup-1.6.2.jar">
+	<classpathentry exported="true" kind="lib" path="/media/data/projects/git/Lampshade/Lampshade/libs/jsoup-1.6.2.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/media/data/projects/git/Lampshade/Lampshade/libs/jsoup-1.6.2-javadoc.jar!/"/>
 		</attributes>
