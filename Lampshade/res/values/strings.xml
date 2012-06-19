@@ -13,6 +13,7 @@
     <!-- Activty titles -->
     <string name="title_saved">Saved</string>
     <string name="title_recent">Recent</string>
+    <string name="title_favorites">Favorites</string>
     <string name="title_about">About</string>
     <string name="title_help">Help</string>
     <string name="title_preferences">Preferences</string>
@@ -27,6 +28,7 @@
 	<string name="show_about">About</string>
 	<string name="show_help">Help</string>
 	<string name="show_recent">Recent</string>
+	<string name="show_favorites">Favorites</string>
 	<string name="show_preferences">Preferences</string>
 	
 	<!-- Misc -->
@@ -47,6 +49,8 @@
 	<string name="article_refresh">Refresh</string>
 	<string name="article_remove">Remove article</string>
 	<string name="article_save">Save</string>
+	<string name="article_favorite">Favorite</string>
+	<string name="article_unfavorite">Un-favorite</string>
 	<string name="article_info">Info</string>
 	<string name="article_browser">Show in browser</string>
 	<string name="article_clipboard">Copy to clipboard</string>

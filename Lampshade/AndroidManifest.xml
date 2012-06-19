@@ -47,6 +47,9 @@
         <activity android:name=".RecentArticlesActivity"
             android:label="@string/title_recent">
         </activity>
+        <activity android:name=".FavoriteArticlesActivity"
+            android:label="@string/title_favorites">
+        </activity>
         <activity android:name=".LampshadePreferenceActivity"
             android:label="@string/title_preferences">
         </activity>

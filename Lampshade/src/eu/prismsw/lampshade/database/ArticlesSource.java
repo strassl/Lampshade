@@ -43,6 +43,18 @@ public class ArticlesSource {
 		return new ArticleItem(id, title, url);
 	}
 	
+	public Boolean articleExists(Uri url) {
+		List<ArticleItem> articles = this.getAllArticles();
+		
+		for(ArticleItem article : articles) {
+			if(article.url.equals(url)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public void removeArticle(ArticleItem item) {
 		database.delete(SavedArticlesHelper.TABLE_ARTICLES, SavedArticlesHelper.COLUMN_ID + " = " + item.id, null);
 	}

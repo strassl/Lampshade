@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import eu.prismsw.lampshade.database.ArticlesSource;
+import eu.prismsw.lampshade.database.FavoriteArticlesHelper;
 import eu.prismsw.lampshade.database.RecentArticlesHelper;
 import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.tropeswrapper.TropesHelper;
@@ -34,11 +35,14 @@ public class TropesApplication extends Application {
 	public List<TropesIndexSelector> indexPages;
 	public ArticlesSource savedArticlesSource = null;
 	public ArticlesSource recentArticlesSource = null;
+	public ArticlesSource favoriteArticlesSource = null;
 	
 	@Override
 	public void onCreate() {
 		savedArticlesSource = new ArticlesSource(new SavedArticlesHelper(this));
 		recentArticlesSource = new ArticlesSource(new RecentArticlesHelper(this));
+		favoriteArticlesSource = new ArticlesSource(new FavoriteArticlesHelper(this));
+		
 		indexPages =  new ArrayList<TropesIndexSelector>();
 		// TODO A horrible way to add all the items, maybe some kind of xml file would be a better idea
 		// TODO Automation would be even better

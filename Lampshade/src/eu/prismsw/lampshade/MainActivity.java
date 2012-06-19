@@ -47,6 +47,9 @@ public class MainActivity extends BaseActivity {
 		} else if (item.getItemId() == R.id.show_recent) {
 			application.openActivity(RecentArticlesActivity.class);
 			return true;
+		} else if (item.getItemId() == R.id.show_favorites) {
+			application.openActivity(FavoriteArticlesActivity.class);
+			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}

@@ -10,6 +10,10 @@
     	  android:title="@string/article_save"
     	  android:showAsAction="never"
 	/>
+    <item android:id="@+id/favorite_article"
+    	  android:title="@string/article_favorite"
+    	  android:showAsAction="never"
+	/>
     <item android:id="@+id/info_article"
     	  android:title="@string/article_info"
     	  android:showAsAction="never"
