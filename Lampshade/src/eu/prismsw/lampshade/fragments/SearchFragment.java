@@ -148,7 +148,7 @@ public class SearchFragment extends SherlockFragment {
 				
 				List<String> pathSegments = result.url.getPathSegments();
 				
-				if(pathSegments.get(1).equalsIgnoreCase("pmwiki.php")) {
+				if(pathSegments.size() > 1 && pathSegments.get(1).equalsIgnoreCase("pmwiki.php")) {
 					String prefix = pathSegments.get(pathSegments.size() - 2) + "/";
 					
 					if(shortTitle.contains(prefix)) {
