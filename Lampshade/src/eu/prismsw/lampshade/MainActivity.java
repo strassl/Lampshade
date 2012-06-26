@@ -6,8 +6,11 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -24,6 +27,18 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        
+        EditText search = (EditText) findViewById(R.id.et_search);
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					startSearch(v.getText().toString());
+					return true;
+				}
+				return false;
+			}
+		});
     }
     
     @Override
@@ -59,10 +74,7 @@ public class MainActivity extends BaseActivity {
     	if(v != null) {
 	    	if (v.getId() == R.id.btn_load) {
 				EditText page_selection = (EditText) findViewById(R.id.et_search);
-				Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
-				searchIntent.putExtra(SearchFragment.QUERY_KEY, page_selection.getText().toString());
-				searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(searchIntent);
+				startSearch(page_selection.getText().toString());
 			} else if (v.getId() == R.id.btn_random) {
 				application.loadPage(Uri.parse(TropesApplication.randomUrl));
 			} else if (v.getId() == R.id.btn_tropes) {
@@ -71,6 +83,13 @@ public class MainActivity extends BaseActivity {
 				application.openActivity(SavedArticlesActivity.class);
 			}
     	}
+    }
+    
+    private void startSearch(String query) {
+				Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
+				searchIntent.putExtra(SearchFragment.QUERY_KEY, query);
+				searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(searchIntent);
     }
     
     private void tryUpdateCheck() {

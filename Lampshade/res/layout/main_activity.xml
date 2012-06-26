@@ -15,7 +15,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="@string/et_search"/>
+            android:hint="@string/et_search"
+            android:inputType="text"
+            android:imeOptions="actionSearch"/>
 
         <Button
             android:id="@+id/btn_load"
