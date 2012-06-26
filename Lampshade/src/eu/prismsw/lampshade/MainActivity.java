@@ -72,10 +72,7 @@ public class MainActivity extends BaseActivity {
         
     public void clickHandler(View v) {
     	if(v != null) {
-	    	if (v.getId() == R.id.btn_load) {
-				EditText page_selection = (EditText) findViewById(R.id.et_search);
-				startSearch(page_selection.getText().toString());
-			} else if (v.getId() == R.id.btn_random) {
+			if (v.getId() == R.id.btn_random) {
 				application.loadPage(Uri.parse(TropesApplication.randomUrl));
 			} else if (v.getId() == R.id.btn_tropes) {
 				application.loadPage(Uri.parse(TropesApplication.tropesUrl));

@@ -18,15 +18,7 @@
             android:hint="@string/et_search"
             android:inputType="text"
             android:imeOptions="actionSearch"/>
-
-        <Button
-            android:id="@+id/btn_load"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="clickHandler"
-            android:text="@string/btn_load" />
-
+        
     </LinearLayout>
 
     <LinearLayout
