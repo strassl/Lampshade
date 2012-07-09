@@ -10,6 +10,7 @@ import android.os.Bundle;
 import eu.prismsw.lampshade.fragments.SearchFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.tools.android.UIFunctions;
 
 public class SearchActivity extends BaseActivity implements OnLoadListener, OnInteractionListener{
 	SearchFragment fragment;
@@ -78,7 +79,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	}
 
 	public void onLoadError(Exception e) {
-		
+		closeProgressDialog();
 	}
 	
 	private void closeProgressDialog() {

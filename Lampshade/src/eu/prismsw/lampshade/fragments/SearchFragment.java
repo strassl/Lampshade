@@ -109,31 +109,32 @@ public class SearchFragment extends SherlockFragment {
 		
 		@Override
 		protected void onPostExecute(Object result) {
-			
 			if(result.getClass() == GoogleSearch.class) {
 				GoogleSearch search = (GoogleSearch) result;
 				
-				// Fix the titles (necessary for TvTropes) and show them in the ListView
-				ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, enhanceSearchTitles(search.results));
-				ListView lv = (ListView) getActivity().findViewById(R.id.lv_search);
-				lv.setAdapter(searchAdapter);
+				if(search.results != null) {
+					// Fix the titles (necessary for TvTropes) and show them in the ListView
+					ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, enhanceSearchTitles(search.results));
+					ListView lv = (ListView) getActivity().findViewById(R.id.lv_search);
+					lv.setAdapter(searchAdapter);
+					
+					lv.setOnItemClickListener(new OnItemClickListener() {
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							GoogleSearchResult item = (GoogleSearchResult) parent.getItemAtPosition(position);
+							tInteractionListener.onLinkClicked(item.url);
+						}
+					});
+			
+					lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+							GoogleSearchResult item = (GoogleSearchResult) parent.getItemAtPosition(position);
+							tInteractionListener.onLinkSelected(item.url);
+							return true;
+						}
+					});
+				}
 				
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-						GoogleSearchResult item = (GoogleSearchResult) parent.getItemAtPosition(position);
-						tInteractionListener.onLinkClicked(item.url);
-					}
-				});
-		
-				lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-						GoogleSearchResult item = (GoogleSearchResult) parent.getItemAtPosition(position);
-						tInteractionListener.onLinkSelected(item.url);
-						return true;
-					}
-				});
-				
-				tLoadListener.onLoadFinish(null);
+				tLoadListener.onLoadFinish(result);
 			}
 			else {
 				Exception e = (Exception) result;
