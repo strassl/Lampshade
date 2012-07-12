@@ -5,8 +5,6 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -15,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.text.ClipboardManager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -273,9 +272,9 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     }
     
     private void copyUrlToClipboard(Uri url) {
+    	// Kinda bugs me, but backward compatibility demands sacrifices
     	ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-    	ClipData clip = ClipData.newUri(getContentResolver(),"URI", url);
-    	clipboard.setPrimaryClip(clip);
+    	clipboard.setText(url.toString());
 		UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + url.toString(), this);
     }
     
