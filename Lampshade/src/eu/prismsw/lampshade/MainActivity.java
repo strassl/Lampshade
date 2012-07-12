@@ -62,9 +62,6 @@ public class MainActivity extends BaseActivity {
 		} else if (item.getItemId() == R.id.show_recent) {
 			application.openActivity(RecentArticlesActivity.class);
 			return true;
-		} else if (item.getItemId() == R.id.show_favorites) {
-			application.openActivity(FavoriteArticlesActivity.class);
-			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
@@ -78,6 +75,8 @@ public class MainActivity extends BaseActivity {
 				application.loadPage(Uri.parse(TropesApplication.tropesUrl));
 			} else if (v.getId() == R.id.btn_saved) {
 				application.openActivity(SavedArticlesActivity.class);
+			} else if (v.getId() == R.id.btn_favorites) {
+				application.openActivity(FavoriteArticlesActivity.class);
 			}
     	}
     }

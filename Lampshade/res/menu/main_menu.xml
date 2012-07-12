@@ -4,10 +4,6 @@
     	  android:title="@string/show_recent"
     	  android:showAsAction="never"
 	/>
-    <item android:id="@+id/show_favorites"
-    	  android:title="@string/show_favorites"
-    	  android:showAsAction="never"
-	/>
     <item android:id="@+id/show_preferences"
     	  android:title="@string/show_preferences"
     	  android:showAsAction="never"
