@@ -1,7 +1,9 @@
 package eu.prismsw.lampshade.fragments;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -49,7 +51,8 @@ public class ArticleFragment extends TropesFragment {
     	inflater.inflate(R.menu.article_fragment_menu, menu);
     }
 	
-    @Override
+	@TargetApi(11)
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.article_find) {
 			WebView wv = (WebView) getView().findViewById(R.id.wv_content);
@@ -64,6 +67,14 @@ public class ArticleFragment extends TropesFragment {
 			return super.onOptionsItemSelected(item);
 		}
     }
+	
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) { 
+		// Hide the "Find" functionality from pre Honeycomb devices because it is not available < 11
+		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			menu.findItem(R.id.article_find).setVisible(false);
+		}
+	}
     
     private void showAllSpoilers() {
         	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
