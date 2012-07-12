@@ -74,6 +74,9 @@ public class ArticleFragment extends TropesFragment {
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			menu.findItem(R.id.article_find).setVisible(false);
 		}
+		
+		// Disable "Toggle Spoilers" because it is causing some weird hangups
+		menu.findItem(R.id.article_show_spoilers).setVisible(false);
 	}
     
     private void showAllSpoilers() {
