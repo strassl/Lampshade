@@ -32,7 +32,11 @@ public class MainActivity extends BaseActivity {
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE) {
+			if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+						actionId == EditorInfo.IME_ACTION_GO ||
+						actionId == EditorInfo.IME_ACTION_DONE ||
+		                event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+				
 					startSearch(v.getText().toString());
 					return true;
 				}
