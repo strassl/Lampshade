@@ -2,6 +2,7 @@ package eu.prismsw.lampshade.fragments;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -107,6 +108,10 @@ public class ArticleFragment extends TropesFragment {
 				wv.getSettings().setJavaScriptEnabled(true);
 				wv.getSettings().setLoadsImagesAutomatically(true);
 				wv.loadDataWithBaseURL("tvtropes.org", article.content.html(), "text/html", "utf-8", null);
+				
+				if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
+					wv.setBackgroundColor(Color.BLACK);
+				}
 				
 				wv.setWebChromeClient(new WebChromeClient() {
 				    @Override  
