@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,6 +111,7 @@ public class ArticleFragment extends TropesFragment {
 				wv.getSettings().setLoadsImagesAutomatically(true);
 				wv.loadDataWithBaseURL("tvtropes.org", article.content.html(), "text/html", "utf-8", null);
 				
+				// Fix background color for older devices because otherwise a white bar appears
 				if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
 					wv.setBackgroundColor(Color.BLACK);
 				}
@@ -131,6 +134,25 @@ public class ArticleFragment extends TropesFragment {
 						if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
 							// hr.getExtra() is the link's target
 							tInteractionListener.onLinkSelected(Uri.parse(hr.getExtra()));
+						}
+						else if(hr.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+							
+							Handler linkHandler = new Handler() {
+								@Override
+								public void handleMessage(Message msg) {
+							        super.handleMessage(msg);
+							        String src = msg.getData().getString("src");
+							        String url = msg.getData().getString("url");
+							        String title = msg.getData().getString("title");
+							        
+							        tInteractionListener.onLinkSelected(Uri.parse(url));
+								}
+							};
+							
+							Message m = linkHandler.obtainMessage();
+							m.setTarget(linkHandler);
+							
+							wv.requestFocusNodeHref(m);
 						}
 						return true;
 					}
