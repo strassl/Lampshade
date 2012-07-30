@@ -20,9 +20,7 @@ import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
-import eu.prismsw.tropeswrapper.TropesHelper;
 import eu.prismsw.tropeswrapper.TropesIndex;
-import eu.prismsw.tropeswrapper.TropesIndexSelector;
 import eu.prismsw.tropeswrapper.TropesLink;
 
 public class IndexFragment extends TropesFragment{
@@ -68,8 +66,7 @@ public class IndexFragment extends TropesFragment{
 		protected Object doInBackground(Uri... params) {
 			try {
 				Uri url = params[0];
-				TropesIndexSelector selector = TropesHelper.findMatchingSelector(application.indexPages, url);
-				TropesIndex tropesIndex = new TropesIndex(url, selector);
+				TropesIndex tropesIndex = new TropesIndex(url);
 				return tropesIndex;
 			} catch (Exception e) {
 				return e;

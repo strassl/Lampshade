@@ -89,7 +89,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			if(savedInstanceState == null) {
 				// If loadAsArticle is false and it is an index page, we create an IndexFragment
 				// Otherwise we simply create an ArticleFragment
-				if(!loadAsArticle && application.isIndex(TropesHelper.titleFromUrl(data))) {
+				if(!loadAsArticle && TropesHelper.isIndex(TropesHelper.titleFromUrl(data))) {
 					this.fragment = IndexFragment.newInstance(this.passedUrl);
 					
 					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();

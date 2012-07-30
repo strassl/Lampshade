@@ -39,23 +39,13 @@ public class TropesHelper {
 		return matcher.matches();
 	}
 	
-	/** Finds a matching selector or returns a generic one */
-	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, String title) {
-		// Check if a predefined selector exists for this page
-		for(TropesIndexSelector s : selectors) {
-			if(title.equals(s.page)) {
-				// If it exists, return it
-				return s;
-			}
+	public static Boolean isIndex(String title) {
+		//Dirty, but it works and the failure rate is pretty low
+		//If it should fail, the user can still view the page as an article
+		if(title.matches(".*(Index|index|Tropes|tropes).*")) {
+			return true;
 		}
-		
-		// Else return a generic selector for the index page
-		return new TropesIndexSelector(title, "li");
-	}
-	
-	/** Finds a matching selector for the url or returns a generic one */
-	public static TropesIndexSelector findMatchingSelector(List<TropesIndexSelector> selectors, Uri url) {
-		return findMatchingSelector(selectors, titleFromUrl(url));
+    	return false;
 	}
 	
 	/** Converts a list of TropesLinks into List of <a> tags **/
