@@ -112,7 +112,7 @@ public class ArticleFragment extends TropesFragment {
 				wv.loadDataWithBaseURL("tvtropes.org", article.content.html(), "text/html", "utf-8", null);
 				
 				// Fix background color for older devices because otherwise a white bar appears
-				if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
+				if(application.isDarkTheme()) {
 					wv.setBackgroundColor(Color.BLACK);
 				}
 				
@@ -179,14 +179,12 @@ public class ArticleFragment extends TropesFragment {
 	}
 	
 	public void loadTropes(Uri url) {
-		String theme = application.getThemeName();
-		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
 		Integer fontSize = preferences.getInt("preference_font_size", 12);
 		String fontSizeStr = fontSize.toString() + "pt";
 		
 		TropesArticleSettings articleSettings;
-		if(theme.equalsIgnoreCase("HoloDark")) {
+		if(application.isDarkTheme()) {
 			articleSettings = new TropesArticleSettings(true);
 		}
 		else {

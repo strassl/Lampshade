@@ -56,7 +56,7 @@ public class SaveActionMode implements OnSaveListener {
 			MenuInflater inflater = mode.getMenuInflater();
 			
 			// Switch, depending on the theme color, to the light or dark icons
-			if(((TropesApplication)activity.getApplication()).getThemeName().equalsIgnoreCase("HoloDark")) {
+			if(((TropesApplication)activity.getApplication()).isDarkTheme()) {
 		        inflater.inflate(R.menu.article_action_menu_dark, menu);
 			}
 			else {

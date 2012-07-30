@@ -50,7 +50,7 @@ public class RemoveActionMode implements OnRemoveListener {
 		
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			if(((TropesApplication)activity.getApplication()).getThemeName().equalsIgnoreCase("HoloDark")) {
+			if(((TropesApplication)activity.getApplication()).isDarkTheme()) {
 		        inflater.inflate(R.menu.saved_action_menu_dark, menu);
 			}
 			else {

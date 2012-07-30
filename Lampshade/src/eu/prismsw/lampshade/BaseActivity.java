@@ -1,13 +1,10 @@
 package eu.prismsw.lampshade;
 
-import java.util.List;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-import eu.prismsw.lampshade.database.ArticlesSource;
-
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;

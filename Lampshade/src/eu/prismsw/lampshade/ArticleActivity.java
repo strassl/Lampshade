@@ -107,7 +107,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getSupportMenuInflater();
     	// Depending on the theme, we have to change the color of the menu icons (light/dark)
-    	if(application.getThemeName().equalsIgnoreCase("HoloDark")) {
+    	if(application.isDarkTheme()) {
 	    	inflater.inflate(R.menu.article_menu_dark, menu);
     	}
     	else {

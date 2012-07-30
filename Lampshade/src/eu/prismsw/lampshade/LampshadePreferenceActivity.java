@@ -1,9 +1,7 @@
 package eu.prismsw.lampshade;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 
 public class LampshadePreferenceActivity extends PreferenceActivity {
 	TropesApplication application;

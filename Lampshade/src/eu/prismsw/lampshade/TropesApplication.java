@@ -34,6 +34,13 @@ public class TropesApplication extends Application {
 		favoriteArticlesSource = new ArticlesSource(new FavoriteArticlesHelper(this));
 	}
 	
+	public Boolean isDarkTheme() {
+		Boolean isDark = false;
+		isDark = getThemeName().equalsIgnoreCase("HoloDark");
+		
+		return isDark;
+	}
+	
 	public String getThemeName() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		String theme = preferences.getString("preference_theme", "HoloLight");
