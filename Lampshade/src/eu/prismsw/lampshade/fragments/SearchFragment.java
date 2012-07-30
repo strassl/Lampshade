@@ -111,10 +111,11 @@ public class SearchFragment extends SherlockFragment {
 		protected void onPostExecute(Object result) {
 			if(result.getClass() == GoogleSearch.class) {
 				GoogleSearch search = (GoogleSearch) result;
+				List<GoogleSearchResult> results = search.getResults();
 				
-				if(search.results != null) {
+				if(results != null) {
 					// Fix the titles (necessary for TvTropes) and show them in the ListView
-					ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, enhanceSearchTitles(search.results));
+					ArrayAdapter<GoogleSearchResult> searchAdapter = new ArrayAdapter<GoogleSearchResult>(getActivity(), android.R.layout.simple_list_item_1, enhanceSearchTitles(results));
 					ListView lv = (ListView) getActivity().findViewById(R.id.lv_search);
 					lv.setAdapter(searchAdapter);
 					
