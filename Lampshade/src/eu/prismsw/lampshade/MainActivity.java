@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.SearchFragment;
+import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** All other activities are accessed from this one */
 public class MainActivity extends BaseActivity {
@@ -74,9 +75,9 @@ public class MainActivity extends BaseActivity {
     public void clickHandler(View v) {
     	if(v != null) {
 			if (v.getId() == R.id.btn_random) {
-				application.loadPage(Uri.parse(TropesApplication.randomUrl));
+				application.loadPage(Uri.parse(TropesHelper.randomUrl));
 			} else if (v.getId() == R.id.btn_tropes) {
-				application.loadPage(Uri.parse(TropesApplication.tropesUrl));
+				application.loadPage(Uri.parse(TropesHelper.tropesUrl));
 			} else if (v.getId() == R.id.btn_saved) {
 				application.openActivity(SavedArticlesActivity.class);
 			} else if (v.getId() == R.id.btn_favorites) {

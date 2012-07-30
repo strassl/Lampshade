@@ -9,6 +9,10 @@ import android.net.Uri;
 
 /** Provides helper functions*/
 public class TropesHelper {
+	public static final String randomUrl = "http://tvtropes.org/pmwiki/randomitem.php?p=1";
+	public static final String baseUrl = "http://tvtropes.org/pmwiki/";
+	public static final String mainUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/";
+	public static final String tropesUrl = "http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes";
 	
 	/** Gets the page's title from the url */
 	public static String titleFromUrl(Uri url) {
