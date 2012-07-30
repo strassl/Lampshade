@@ -12,7 +12,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 /** Shows a Dialog with a SeekBar and saves the result.
- * Mininum, maximum, default value and units can be customised via xml
+ * Minimum, maximum, default value and units can be customised via xml
  */
 public class SeekBarPreference extends DialogPreference implements OnSeekBarChangeListener {
 	public static String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";

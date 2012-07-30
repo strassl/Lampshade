@@ -14,7 +14,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
-import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
 
 
@@ -63,7 +62,6 @@ public class FavoriteArticlesActivity extends BaseActivity implements OnRemoveLi
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
         	application.openActivity(MainActivity.class);
