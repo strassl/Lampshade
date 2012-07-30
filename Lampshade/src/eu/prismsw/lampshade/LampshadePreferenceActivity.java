@@ -1,9 +1,10 @@
 package eu.prismsw.lampshade;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
-public class LampshadePreferenceActivity extends PreferenceActivity {
+import android.os.Bundle;
+
+public class LampshadePreferenceActivity extends SherlockPreferenceActivity {
 	TropesApplication application;
 	
 	@Override
