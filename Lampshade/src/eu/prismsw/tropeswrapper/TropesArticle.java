@@ -15,6 +15,7 @@ import android.net.Uri;
 /** Wrapper for a TvTropes article */
 public class TropesArticle {
 	public final static Integer TIMEOUT = 0;
+	public final static String MAIN_JS_URL = "http://static.tvtropes.org/main.js";
 	
 	public Uri url = null;
 	public String title;
@@ -22,6 +23,9 @@ public class TropesArticle {
 	public List<TropesLink> subpages;
 	
 	public TropesArticleSettings settings;
+	
+	public TropesArticle() {
+	}
 	
 	public TropesArticle(Uri url) throws Exception {
 		this(url, new TropesArticleSettings());
@@ -32,24 +36,26 @@ public class TropesArticle {
 		parseArticle(doc, settings);
 	}
 	
-	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings) throws TropesArticleParseException {
+	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings) throws Exception {
 		Document doc = loadArticle(html, articleUrl);
 		parseArticle(doc, settings);
 	}
 
 	/** Extracts the bits of information from the article and changes the style 
-	 * @throws TropesArticleParseException */
-	protected void parseArticle(Document doc, TropesArticleSettings settings) throws TropesArticleParseException {
+	 * @throws TropesArticleParseException 
+	 * @throws IOException */
+	public void parseArticle(Document doc, TropesArticleSettings settings) throws TropesArticleParseException, IOException {
 		this.settings = settings;
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
 		this.subpages = getSubpages(doc);
 		
+		inlineJS(this.content, loadTextFile(Uri.parse(MAIN_JS_URL)));
 		manipulateStyle(this.content, settings);
 	}
 	
 	/** Returns the Jsoup document of the url */
-	protected Document loadArticle(Uri url) throws IOException {
+	public Document loadArticle(Uri url) throws IOException {
 		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute();
 		// We can only set this here due to possible redirects
 		this.url = Uri.parse(resp.url().toString());
@@ -64,6 +70,14 @@ public class TropesArticle {
 		this.url = url;
 		Document doc = Jsoup.parse(html);
 		return doc;
+	}
+	
+	/** Loads a simple text file (e.g. JavaScript file) */
+	protected String loadTextFile(Uri url) throws IOException {
+		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute();
+		String body = resp.body();
+		
+		return body;
 	}
 	
 	/** Extracts the article's title from the document */
@@ -93,9 +107,7 @@ public class TropesArticle {
 	}
 	
 	/** Performs all the necessary actions to make the page look pretty */
-	public void manipulateStyle(Element content, TropesArticleSettings settings) throws TropesArticleParseException {
-		addMainJS(content);
-		
+	protected void manipulateStyle(Element content, TropesArticleSettings settings) throws TropesArticleParseException {
 		ArrayList<String> selectors = new ArrayList<String>();
 		
 		selectors.addAll(createBackgroundStyle(settings.backgroundColor));
@@ -109,6 +121,7 @@ public class TropesArticle {
 		ArrayList<String> functions = new ArrayList<String>();
 		functions.addAll(createSpoilerScript());
 		insertScript(content, functions);
+		
 		prepareSpoilers(content.getElementsByClass("spoiler"), settings.toggleSpoilerOnHover);
 	}
 	
@@ -151,8 +164,12 @@ public class TropesArticle {
 			style += selector;
 		}
 		
-		String style_tag = "<style type=\"text/css\">" + style + "</style>";
-		element.prepend(style_tag);
+		element.prepend(wrapStyleTag(style));
+	}
+	
+	protected String wrapStyleTag(String style) {
+		String styleTag = "<style type=\"text/css\">" + style + "</style>";
+		return styleTag;
 	}
 	
 	/** Combines a list of functions and inserts them before the element */
@@ -163,9 +180,12 @@ public class TropesArticle {
 			script += function;
 		}
 		
+		element.prepend(wrapScriptTag(script));
+	}
+	
+	protected String wrapScriptTag(String script) {
 		String scriptTag = "<script type=\"text/javascript\">" + script + "</script>";
-		
-		element.prepend(scriptTag);
+		return scriptTag;
 	}
 	
 	/** Inserts an external JavaScript file into the page */
@@ -246,6 +266,12 @@ public class TropesArticle {
 	protected void addMainJS(Element content) {
 		Uri mainJSUrl = Uri.parse("http://static.tvtropes.org/main.js");
 		insertExternalScript(content, mainJSUrl);
+	}
+	
+	/** Inlines a preloaded JavaScript file */
+	protected void inlineJS(Element content, String script) {
+		String scriptTag = wrapScriptTag(script);
+		content.prepend(scriptTag);
 	}
 	
 	/** Modifies the hover state of .spoiler elements */
