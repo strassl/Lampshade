@@ -28,8 +28,19 @@ public class TropesArticle {
 	}
 	
 	public TropesArticle(Uri url, TropesArticleSettings settings) throws Exception {
-		this.settings = settings;
 		Document doc = loadArticle(url);
+		parseArticle(doc, settings);
+	}
+	
+	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings) throws TropesArticleParseException {
+		Document doc = loadArticle(html, articleUrl);
+		parseArticle(doc, settings);
+	}
+
+	/** Extracts the bits of information from the article and changes the style 
+	 * @throws TropesArticleParseException */
+	protected void parseArticle(Document doc, TropesArticleSettings settings) throws TropesArticleParseException {
+		this.settings = settings;
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
 		this.subpages = getSubpages(doc);
@@ -47,7 +58,15 @@ public class TropesArticle {
 		return doc;
 	}
 	
-	/** Extracts the article's title from the document **/
+	/** Return the Jsoup document for the provided html */
+	protected Document loadArticle(String html, Uri url) {
+		// We still need to have all the information about the article, thus the url has to be provided
+		this.url = url;
+		Document doc = Jsoup.parse(html);
+		return doc;
+	}
+	
+	/** Extracts the article's title from the document */
 	protected String getTitle(Document doc) throws TropesArticleParseException{
 		try {
 			Element wikibody = doc.getElementById("wikibody");
@@ -60,7 +79,7 @@ public class TropesArticle {
 		}
 	}
 	
-	/** Extracts the article's content from the document **/
+	/** Extracts the article's content from the document */
 	protected Element getContent(Document doc) throws TropesArticleParseException{
 		try {
 			Element wikibody = doc.getElementById("wikibody");
@@ -73,8 +92,8 @@ public class TropesArticle {
 		}
 	}
 	
-	/** Performs all the necessary actions to make the page look pretty **/
-	public void manipulateStyle(Element content, TropesArticleSettings settings) throws Exception {
+	/** Performs all the necessary actions to make the page look pretty */
+	public void manipulateStyle(Element content, TropesArticleSettings settings) throws TropesArticleParseException {
 		addMainJS(content);
 		
 		ArrayList<String> selectors = new ArrayList<String>();
