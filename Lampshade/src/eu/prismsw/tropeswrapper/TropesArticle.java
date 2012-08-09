@@ -24,9 +24,6 @@ public class TropesArticle {
 	
 	public TropesArticleSettings settings;
 	
-	public TropesArticle() {
-	}
-	
 	public TropesArticle(Uri url) throws Exception {
 		this(url, new TropesArticleSettings());
 	}
@@ -36,21 +33,27 @@ public class TropesArticle {
 		parseArticle(doc, settings);
 	}
 	
-	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings) throws Exception {
+	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception {
 		Document doc = loadArticle(html, articleUrl);
-		parseArticle(doc, settings);
+		parseArticle(doc, settings, ressources);
 	}
 
-	/** Extracts the bits of information from the article and changes the style 
-	 * @throws TropesArticleParseException 
-	 * @throws IOException */
 	public void parseArticle(Document doc, TropesArticleSettings settings) throws TropesArticleParseException, IOException {
+		String mainJS = loadTextFile(Uri.parse(MAIN_JS_URL));
+		TropesArticleRessources res = new TropesArticleRessources(mainJS);
+		parseArticle(doc, settings, res);
+	}
+	
+	/** Extracts the bits of information from the article and changes the style 
+	 * @throws TropesArticleParseException */
+	public void parseArticle(Document doc, TropesArticleSettings settings, TropesArticleRessources ressources) throws TropesArticleParseException {
 		this.settings = settings;
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
 		this.subpages = getSubpages(doc);
 		
-		inlineJS(this.content, loadTextFile(Uri.parse(MAIN_JS_URL)));
+		inlineJS(this.content, ressources.mainJS);
+		
 		manipulateStyle(this.content, settings);
 	}
 	
@@ -260,12 +263,6 @@ public class TropesArticle {
 		selectors.add(".folderlabelopen { color:" + linkColor + ";" + "font-weight:bold" + " }");
 		
 		return selectors;
-	}
-	
-	/** Inserts the main.js file from tvtropes.org */
-	protected void addMainJS(Element content) {
-		Uri mainJSUrl = Uri.parse("http://static.tvtropes.org/main.js");
-		insertExternalScript(content, mainJSUrl);
 	}
 	
 	/** Inlines a preloaded JavaScript file */
