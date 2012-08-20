@@ -1,4 +1,4 @@
-package eu.prismsw.lampshade;
+package eu.prismsw.lampshade.database;
 
 import android.net.Uri;
 

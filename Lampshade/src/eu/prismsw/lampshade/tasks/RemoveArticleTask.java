@@ -2,7 +2,7 @@ package eu.prismsw.lampshade.tasks;
 
 import java.util.List;
 
-import eu.prismsw.lampshade.ArticleItem;
+import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.ArticlesSource;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;

@@ -22,6 +22,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 
+import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;

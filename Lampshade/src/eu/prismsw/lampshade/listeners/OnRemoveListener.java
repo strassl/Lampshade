@@ -1,6 +1,6 @@
 package eu.prismsw.lampshade.listeners;
 
-import eu.prismsw.lampshade.ArticleItem;
+import eu.prismsw.lampshade.database.ArticleItem;
 
 /** 
  * Must be implement by any Activity/Fragment/whatever that wishes to use a RemoveArticleTask

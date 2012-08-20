@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 
+import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.tools.android.UIFunctions;
 

@@ -2,7 +2,6 @@ package eu.prismsw.lampshade.database;
 
 import android.database.Cursor;
 import android.net.Uri;
-import eu.prismsw.lampshade.OfflineArticleItem;
 
 public class OfflineSource extends ArticlesSource {
 
