@@ -26,9 +26,8 @@ public class RemoveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 		
 		if(TropesHelper.isTropesLink(url)) {
 			articlesSource.open();
-			List<ArticleItem> articles = articlesSource.getAllArticles();
 			
-			ArticleItem matchingArticle = findArticleItemByUrl(articles, url);
+			ArticleItem matchingArticle = articlesSource.getArticleItem(url);
 			// If we found a matching article, we remove it
 			if(matchingArticle != null) {
 				articlesSource.removeArticle(matchingArticle);
@@ -40,17 +39,6 @@ public class RemoveArticleTask extends AsyncTask<Uri, Integer, ArticleItem> {
 		else {
 			return null;
 		}
-	}
-	
-	/** Goes through all articles and finds a matching one or returns null **/
-	private ArticleItem findArticleItemByUrl(List<ArticleItem> articles, Uri url) {
-		for(ArticleItem article : articles) {
-			if(article.url.equals(url)) {
-				return article;
-			}
-		}
-		
-		return null;
 	}
 	
 	@Override
