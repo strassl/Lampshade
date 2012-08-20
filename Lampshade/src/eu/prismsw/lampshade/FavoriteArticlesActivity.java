@@ -79,7 +79,7 @@ public class FavoriteArticlesActivity extends BaseActivity implements OnRemoveLi
 	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
 		application.favoriteArticlesSource.open();
-		List<ArticleItem> favoriteArticles = application.favoriteArticlesSource.getAllArticles();
+		List<ArticleItem> favoriteArticles = application.favoriteArticlesSource.getAllArticleItems();
 		application.favoriteArticlesSource.close();
 
 		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, favoriteArticles);

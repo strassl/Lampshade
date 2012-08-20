@@ -85,7 +85,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
 	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
 		application.savedArticlesSource.open();
-		List<ArticleItem> savedArticles = application.savedArticlesSource.getAllArticles();
+		List<ArticleItem> savedArticles = application.savedArticlesSource.getAllArticleItems();
 		application.savedArticlesSource.close();
 
 		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, savedArticles);

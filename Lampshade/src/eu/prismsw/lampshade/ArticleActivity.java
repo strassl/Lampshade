@@ -338,7 +338,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			application.recentArticlesSource.open();
 			
 			// This is a horribly ugly and inefficient way of doing this
-			List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticles();
+			List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticleItems();
 			if(recentArticles.size() >= TropesApplication.maxRecentArticles) {
 				// Remove the oldest (=first) item
 				application.recentArticlesSource.removeArticle(recentArticles.get(0));

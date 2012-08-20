@@ -81,7 +81,7 @@ public class RecentArticlesActivity extends BaseActivity implements OnRemoveList
 	/** Loads the saved articles from the database and sets the ArrayAdapter */
 	private void loadArticles() {
 		application.recentArticlesSource.open();
-		List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticles();
+		List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticleItems();
 		recentArticles = ListFunctions.reverseList(recentArticles);
 		application.recentArticlesSource.close();
 
