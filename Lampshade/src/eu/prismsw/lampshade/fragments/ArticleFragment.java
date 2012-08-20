@@ -103,13 +103,14 @@ public class ArticleFragment extends TropesFragment {
 		
 		@Override
 		protected void onPostExecute(Object result) {
-			if(result.getClass() == TropesArticle.class) {
+			if(result instanceof TropesArticle) {
 				TropesArticle article = (TropesArticle) result;
 				
 				WebView wv = (WebView) getView().findViewById(R.id.wv_content);
 				wv.getSettings().setJavaScriptEnabled(true);
 				wv.getSettings().setLoadsImagesAutomatically(true);
-				wv.loadDataWithBaseURL("tvtropes.org", article.content.html(), "text/html", "utf-8", null);
+				String html = article.content.html();
+				wv.loadDataWithBaseURL("tvtropes.org", html, "text/html", "utf-8", null);
 				
 				// Fix background color for older devices because otherwise a white bar appears
 				if(application.isDarkTheme()) {
