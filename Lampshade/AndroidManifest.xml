@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ArticleActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:permission="android.permission.INTERNET">
             <intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
