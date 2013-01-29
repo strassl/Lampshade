@@ -1,3 +1,9 @@
-Lampshade/bin
-Lampshade/gen
+lampshade/bin
+lampshade/gen
+lampshade/gen-external-apklibs
+lampshade/lib
+lampshade/libs
+lampshade/out
+lampshade/target
+lampshade/.idea
 *.apk
