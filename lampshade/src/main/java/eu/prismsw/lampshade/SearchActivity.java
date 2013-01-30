@@ -8,11 +8,14 @@ import com.actionbarsherlock.view.MenuItem;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.fragments.SearchFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
+import eu.prismsw.lampshade.listeners.OnSaveListener;
+import eu.prismsw.tools.android.UIFunctions;
 
-public class SearchActivity extends BaseActivity implements OnLoadListener, OnInteractionListener{
+public class SearchActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener {
 	SearchFragment fragment;
 	
 	String passedQuery;
@@ -81,6 +84,14 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	public void onLoadError(Exception e) {
 		closeProgressDialog();
 	}
+
+    public void onSaveSuccess(ArticleItem item) {
+        UIFunctions.showToast(getResources().getString(R.string.article_saved) + item.title, this);
+    }
+
+    public void onSaveError() {
+        UIFunctions.showToast(getResources().getString(R.string.article_save_failed), this);
+    }
 	
 	private void closeProgressDialog() {
 		if(this.loadDialog != null && this.loadDialog.isShowing()) {
