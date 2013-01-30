@@ -2,6 +2,7 @@ package eu.prismsw.lampshade;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,7 +72,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnRemoveListe
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-        	application.openActivity(MainActivity.class);
+            startActivity(new Intent(this, MainActivity.class));
         	return true;
         default:
         	return super.onOptionsItemSelected(item);

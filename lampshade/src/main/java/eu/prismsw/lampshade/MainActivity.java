@@ -50,16 +50,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.show_preferences) {
-			application.openActivity(LampshadePreferenceActivity.class);
+            startActivity(new Intent(this, LampshadePreferenceActivity.class));
 			return true;
 		} else if (item.getItemId() == R.id.show_about) {
-			application.openActivity(AboutActivity.class);
+            startActivity(new Intent(this, AboutActivity.class));
 			return true;
 		} else if (item.getItemId() == R.id.show_help) {
-			application.openActivity(HelpActivity.class);
+            startActivity(new Intent(this, HelpActivity.class));
 			return true;
 		} else if (item.getItemId() == R.id.show_recent) {
-			application.openActivity(RecentArticlesActivity.class);
+            startActivity(new Intent(this, RecentArticlesActivity.class));
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -73,9 +73,9 @@ public class MainActivity extends BaseActivity {
 			} else if (v.getId() == R.id.btn_tropes) {
 				application.loadPage(Uri.parse(TropesHelper.tropesUrl));
 			} else if (v.getId() == R.id.btn_saved) {
-				application.openActivity(SavedArticlesActivity.class);
+                startActivity(new Intent(this, SavedArticlesActivity.class));
 			} else if (v.getId() == R.id.btn_favorites) {
-				application.openActivity(FavoriteArticlesActivity.class);
+                startActivity(new Intent(this, FavoriteArticlesActivity.class));
 			}
     	}
     }

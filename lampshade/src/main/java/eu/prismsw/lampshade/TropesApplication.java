@@ -80,11 +80,5 @@ public class TropesApplication extends Application {
 		indexIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(indexIntent);
 	}
-	
-    public void openActivity(Class<?> cls) {
-    	Intent intent = new Intent(getApplicationContext(), cls);
-    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    	startActivity(intent);
-    }
     
 }

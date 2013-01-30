@@ -1,5 +1,6 @@
 package eu.prismsw.lampshade;
 
+import android.content.Intent;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
@@ -54,7 +55,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case android.R.id.home:
-			application.openActivity(MainActivity.class);
+            startActivity(new Intent(this, MainActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

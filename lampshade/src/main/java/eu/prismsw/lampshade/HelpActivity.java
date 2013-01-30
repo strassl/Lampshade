@@ -1,5 +1,6 @@
 package eu.prismsw.lampshade;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 
@@ -28,7 +29,7 @@ public class HelpActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-        	application.openActivity(MainActivity.class);
+            startActivity(new Intent(this, MainActivity.class));
         	return true;
         default:
         	return super.onOptionsItemSelected(item);

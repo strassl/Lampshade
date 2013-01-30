@@ -77,7 +77,7 @@ public class TropesArticle {
 	
 	/** Loads a simple text file (e.g. JavaScript file) */
 	protected String loadTextFile(Uri url) throws IOException {
-		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute();
+		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).ignoreContentType(true).execute();
 		String body = resp.body();
 		
 		return body;

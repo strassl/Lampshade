@@ -150,7 +150,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-			application.openActivity(MainActivity.class);
+            startActivity(new Intent(this, MainActivity.class));
 			return true;
 		} else if (item.getItemId() == R.id.refresh_article) {
 			application.loadPage(passedUrl);

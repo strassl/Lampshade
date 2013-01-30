@@ -1,5 +1,6 @@
 package eu.prismsw.lampshade;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class AboutActivity extends BaseActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-        	application.openActivity(MainActivity.class);
+            startActivity(new Intent(this, MainActivity.class));
         	return true;
         default:
         	return super.onOptionsItemSelected(item);
