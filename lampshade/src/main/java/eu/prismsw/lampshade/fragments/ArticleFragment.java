@@ -89,88 +89,102 @@ public class ArticleFragment extends TropesFragment {
         	String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { toggleSpoiler(spoilers[i]); } }";
         	wv.loadUrl("javascript:(" + showSpoilers + ")()");
     }
-	
+
+    @Override
+    public void onLoadFinish(Object result) {
+        TropesArticle article = (TropesArticle) result;
+        setupArticle(article);
+
+        TropesArticleInfo info = new TropesArticleInfo(article.title, article.url, article.subpages);
+        trueUrl = article.url;
+        articleInfo = info;
+
+        loadListener.onLoadFinish(article);
+    }
+
+
+    private void setupArticle(TropesArticle article) {
+
+        WebView wv = (WebView) getView().findViewById(R.id.wv_content);
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setLoadsImagesAutomatically(true);
+        String html = article.content.html();
+        wv.loadDataWithBaseURL("tvtropes.org", html, "text/html", "utf-8", null);
+
+        // Fix background color for older devices because otherwise a white bar appears
+        if(application.isDarkTheme()) {
+            wv.setBackgroundColor(Color.BLACK);
+        }
+
+        wv.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result)
+            {
+                UIFunctions.showToast(message, application);
+                return true;
+            };
+        });
+
+        wv.setOnLongClickListener(new OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                WebView wv = (WebView) v;
+                HitTestResult hr = wv.getHitTestResult();
+
+                // If the clicked element is a link
+                if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
+                    // hr.getExtra() is the link's target
+                    interactionListener.onLinkSelected(Uri.parse(hr.getExtra()));
+                }
+                else if(hr.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+
+                    Handler linkHandler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            super.handleMessage(msg);
+                            String src = msg.getData().getString("src");
+                            String url = msg.getData().getString("url");
+                            String title = msg.getData().getString("title");
+
+                            interactionListener.onLinkSelected(Uri.parse(url));
+                        }
+                    };
+
+                    Message m = linkHandler.obtainMessage();
+                    m.setTarget(linkHandler);
+
+                    wv.requestFocusNodeHref(m);
+                }
+                return true;
+            }
+        });
+
+        wv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                interactionListener.onLinkClicked(Uri.parse(url));
+                return true;
+            }
+        });
+
+    }
+
     /** Loads an article in a different thread */
 	public class LoadArticleTask extends LoadTropesTask {
 		
-		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
-			super(tLoadListener, tInteractionListener);
+		public LoadArticleTask(OnLoadListener tLoadListener) {
+			super(tLoadListener);
 		}
 		
-		public LoadArticleTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, TropesArticleSettings articleSettings) {
-			super(tLoadListener, tInteractionListener, articleSettings);
+		public LoadArticleTask(OnLoadListener tLoadListener, TropesArticleSettings articleSettings) {
+			super(tLoadListener, articleSettings);
 		}
 		
 		@Override
 		protected void onPostExecute(Object result) {
 			if(result instanceof TropesArticle) {
 				TropesArticle article = (TropesArticle) result;
-				
-				WebView wv = (WebView) getView().findViewById(R.id.wv_content);
-				wv.getSettings().setJavaScriptEnabled(true);
-				wv.getSettings().setLoadsImagesAutomatically(true);
-				String html = article.content.html();
-				wv.loadDataWithBaseURL("tvtropes.org", html, "text/html", "utf-8", null);
-				
-				// Fix background color for older devices because otherwise a white bar appears
-				if(application.isDarkTheme()) {
-					wv.setBackgroundColor(Color.BLACK);
-				}
-				
-				wv.setWebChromeClient(new WebChromeClient() {
-				    @Override  
-				    public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result)  
-				    {  
-				    	UIFunctions.showToast(message, application);
-				    	return true;
-				    };  
-				});
-				
-				wv.setOnLongClickListener(new OnLongClickListener() {
-					public boolean onLongClick(View v) {
-						WebView wv = (WebView) v;
-						HitTestResult hr = wv.getHitTestResult();
-						
-						// If the clicked element is a link
-						if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
-							// hr.getExtra() is the link's target
-							tInteractionListener.onLinkSelected(Uri.parse(hr.getExtra()));
-						}
-						else if(hr.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-							
-							Handler linkHandler = new Handler() {
-								@Override
-								public void handleMessage(Message msg) {
-							        super.handleMessage(msg);
-							        String src = msg.getData().getString("src");
-							        String url = msg.getData().getString("url");
-							        String title = msg.getData().getString("title");
-							        
-							        tInteractionListener.onLinkSelected(Uri.parse(url));
-								}
-							};
-							
-							Message m = linkHandler.obtainMessage();
-							m.setTarget(linkHandler);
-							
-							wv.requestFocusNodeHref(m);
-						}
-						return true;
-					}
-				});
-				
-				wv.setWebViewClient(new WebViewClient() {
-					@Override
-					public boolean shouldOverrideUrlLoading(WebView view, String url) {
-						tInteractionListener.onLinkClicked(Uri.parse(url));
-						return true;
-					}
-				});
-				
-				TropesArticleInfo tArticleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
-				trueUrl = article.url;
-				articleInfo = tArticleInfo;
-				tLoadListener.onLoadFinish(tArticleInfo);
+
+                tLoadListener.onLoadFinish(article);
 			}
 			else {
 				Exception e = (Exception) result;
@@ -195,6 +209,6 @@ public class ArticleFragment extends TropesFragment {
 		articleSettings.toggleSpoilerOnHover = preferences.getBoolean("preference_spoiler_hover", false);
 		
 		
-		new LoadArticleTask(this.loadListener, this.interactionListener, articleSettings).execute(url);
+		new LoadArticleTask(this, articleSettings).execute(url);
 	}
 }

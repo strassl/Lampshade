@@ -14,10 +14,11 @@ import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
+import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 /** Contains common functionality for Fragments that show a TvTropes article. This Fragment is not supposed to be used, only its subclasses **/
-public class TropesFragment extends SherlockFragment {
+public class TropesFragment extends SherlockFragment implements OnLoadListener{
 	public static String PASSED_URL = "PASSED_URL";
 	public static String TRUE_URL = "TRUE_URL";
 	
@@ -80,7 +81,7 @@ public class TropesFragment extends SherlockFragment {
     
 	
 	public void loadTropes(Uri url) {
-		new LoadTropesTask(this.loadListener, this.interactionListener).execute(url);
+		new LoadTropesTask(this).execute(url);
 	}
 
 	public Uri getTrueUrl() {
@@ -95,4 +96,18 @@ public class TropesFragment extends SherlockFragment {
 		return this.articleInfo;
 	}
 
+    @Override
+    public void onLoadStart() {
+        loadListener.onLoadStart();
+    }
+
+    @Override
+    public void onLoadFinish(Object result) {
+        loadListener.onLoadFinish(result);
+    }
+
+    @Override
+    public void onLoadError(Exception e) {
+        loadListener.onLoadError(e);
+    }
 }

@@ -19,11 +19,12 @@ import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
+import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesIndex;
 import eu.prismsw.tropeswrapper.TropesLink;
 
-public class IndexFragment extends TropesFragment{
+public class IndexFragment extends TropesFragment {
 	
 	public static IndexFragment newInstance(Uri url) {
 		IndexFragment f = new IndexFragment();
@@ -53,13 +54,45 @@ public class IndexFragment extends TropesFragment{
 			return super.onOptionsItemSelected(item);
 		}
     }
-    
-	
+
+    @Override
+    public void onLoadFinish(Object result) {
+        TropesIndex index = (TropesIndex) result;
+
+        setupIndex(index);
+
+        loadListener.onLoadFinish(index);
+    }
+
+    private void setupIndex(TropesIndex index) {
+        ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(getActivity(), android.R.layout.simple_list_item_1, index.tropes);
+        ListView lv = (ListView) getActivity().findViewById(R.id.lv_tropes);
+        lv.setAdapter(tropeAdapter);
+
+        lv.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TropesLink item = (TropesLink) parent.getItemAtPosition(position);
+                interactionListener.onLinkClicked(item.url);
+            }
+        });
+
+        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                TropesLink link = (TropesLink) parent.getItemAtPosition(position);
+                interactionListener.onLinkSelected(link.url);
+                return true;
+            }
+        });
+
+        articleInfo = new TropesArticleInfo(index.title, index.url, index.subpages);
+    }
+
+
     /** Loads an index in a different thread */
 	public class LoadIndexTask extends LoadTropesTask {
 		
-		public LoadIndexTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
-			super(tLoadListener, tInteractionListener);
+		public LoadIndexTask(OnLoadListener tLoadListener) {
+			super(tLoadListener);
 		}
 
 		@Override
@@ -76,33 +109,9 @@ public class IndexFragment extends TropesFragment{
 		@Override
 		protected void onPostExecute(Object result) {
 			
-			if(result.getClass() == TropesIndex.class) {
-				TropesIndex tropesIndex = (TropesIndex) result;
-
-				ArrayAdapter<TropesLink> tropeAdapter = new ArrayAdapter<TropesLink>(getActivity(), android.R.layout.simple_list_item_1, tropesIndex.tropes);
-				ListView lv = (ListView) getActivity().findViewById(R.id.lv_tropes);
-				lv.setAdapter(tropeAdapter);
-				
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-						TropesLink item = (TropesLink) parent.getItemAtPosition(position);
-						tInteractionListener.onLinkClicked(item.url);
-					}
-				});
-		
-				lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-						TropesLink link = (TropesLink) parent.getItemAtPosition(position);
-						tInteractionListener.onLinkSelected(link.url);
-						return true;
-					}
-				});
-				
-				
-				TropesArticleInfo tArticleInfo = new TropesArticleInfo(tropesIndex.title, tropesIndex.url, tropesIndex.subpages);
-				articleInfo = tArticleInfo;
-				
-				tLoadListener.onLoadFinish(articleInfo);
+			if(result instanceof TropesIndex) {
+                TropesIndex index = (TropesIndex) result;
+                tLoadListener.onLoadFinish(index);
 			}
 			else {
 				Exception e = (Exception) result;
@@ -113,6 +122,6 @@ public class IndexFragment extends TropesFragment{
 
 	@Override
 	public void loadTropes(Uri url) {
-		new LoadIndexTask(this.loadListener, this.interactionListener).execute(url);
+		new LoadIndexTask(this).execute(url);
 	}
 }

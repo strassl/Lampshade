@@ -13,18 +13,16 @@ import eu.prismsw.tropeswrapper.TropesArticleSettings;
 /** Loads an article in a different thread */
 public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	public OnLoadListener tLoadListener;
-	public OnInteractionListener tInteractionListener;
-	
+
 	public TropesArticleSettings articleSettings;
 	
-	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener, TropesArticleSettings articleSettings) {
+	public LoadTropesTask(OnLoadListener tLoadListener, TropesArticleSettings articleSettings) {
 		this.tLoadListener = tLoadListener;
-		this.tInteractionListener = tInteractionListener;
 		this.articleSettings = articleSettings;
 	}
 	
-	public LoadTropesTask(OnLoadListener tLoadListener, OnInteractionListener tInteractionListener) {
-		this(tLoadListener, tInteractionListener, new TropesArticleSettings(false));
+	public LoadTropesTask(OnLoadListener tLoadListener) {
+		this(tLoadListener, new TropesArticleSettings(false));
 	}
 	
 	@Override
@@ -48,8 +46,7 @@ public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 		// If the result is a TropesArticle (no error occurred)
 		if(result.getClass() == TropesArticle.class) {
 			TropesArticle article = (TropesArticle) result;
-			TropesArticleInfo articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
-			this.tLoadListener.onLoadFinish(articleInfo);
+			this.tLoadListener.onLoadFinish(article);
 		}
 		else {
 			Exception e = (Exception) result;
