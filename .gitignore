@@ -6,4 +6,6 @@ lampshade/libs
 lampshade/out
 lampshade/target
 lampshade/.idea
+lampshade/project.properties
+lampshade/lampshade.iml
 *.apk
