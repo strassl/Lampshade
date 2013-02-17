@@ -99,7 +99,7 @@ public class ArticleFragment extends TropesFragment {
         trueUrl = article.url;
         articleInfo = info;
 
-        loadListener.onLoadFinish(article);
+        loadListener.onLoadFinish(info);
     }
 
 

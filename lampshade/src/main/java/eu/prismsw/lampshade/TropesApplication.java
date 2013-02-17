@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import eu.prismsw.lampshade.database.ArticlesSource;
-import eu.prismsw.lampshade.database.FavoriteArticlesHelper;
-import eu.prismsw.lampshade.database.RecentArticlesHelper;
 import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
@@ -29,9 +27,9 @@ public class TropesApplication extends Application {
 	
 	@Override
 	public void onCreate() {
-		savedArticlesSource = new ArticlesSource(new SavedArticlesHelper(this));
-		recentArticlesSource = new ArticlesSource(new RecentArticlesHelper(this));
-		favoriteArticlesSource = new ArticlesSource(new FavoriteArticlesHelper(this));
+		savedArticlesSource = new ArticlesSource(this, SavedArticlesHelper.TABLE_SAVED);
+		recentArticlesSource = new ArticlesSource(this, SavedArticlesHelper.TABLE_RECENT);
+		favoriteArticlesSource = new ArticlesSource(this, SavedArticlesHelper.TABLE_FAVORITE);
 	}
 	
 	public Boolean isDarkTheme() {
