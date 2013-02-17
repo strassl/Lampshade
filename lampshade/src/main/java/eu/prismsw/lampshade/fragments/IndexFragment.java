@@ -61,7 +61,8 @@ public class IndexFragment extends TropesFragment {
 
         setupIndex(index);
 
-        loadListener.onLoadFinish(index);
+        TropesArticleInfo info = new TropesArticleInfo(index.title, index.url, index.subpages);
+        loadListener.onLoadFinish(info);
     }
 
     private void setupIndex(TropesIndex index) {
