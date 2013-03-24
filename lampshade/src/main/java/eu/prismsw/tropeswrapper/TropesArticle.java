@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,15 +39,14 @@ public class TropesArticle {
 		parseArticle(doc, settings, ressources);
 	}
 
-	public void parseArticle(Document doc, TropesArticleSettings settings) throws TropesArticleParseException, IOException {
+	public void parseArticle(Document doc, TropesArticleSettings settings) throws Exception {
 		String mainJS = loadTextFile(Uri.parse(MAIN_JS_URL));
 		TropesArticleRessources res = new TropesArticleRessources(mainJS);
 		parseArticle(doc, settings, res);
 	}
 	
-	/** Extracts the bits of information from the article and changes the style 
-	 * @throws TropesArticleParseException */
-	public void parseArticle(Document doc, TropesArticleSettings settings, TropesArticleRessources ressources) throws TropesArticleParseException {
+	/** Extracts the bits of information from the article and changes the style  **/
+	public void parseArticle(Document doc, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception {
 		this.settings = settings;
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
@@ -59,7 +59,24 @@ public class TropesArticle {
 	
 	/** Returns the Jsoup document of the url */
 	public Document loadArticle(Uri url) throws IOException {
-		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute();
+        Document noJS = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute().parse();
+
+        String cookieScript = noJS.head().getElementsByTag("script").first().html();
+        cookieScript = cookieScript.substring(cookieScript.lastIndexOf('}'));
+
+        Integer openParen = cookieScript.indexOf('(');
+        Integer closeParen = cookieScript.indexOf(')');
+        String cookieInfo = cookieScript.substring(openParen + 1, closeParen).replaceAll("'", "").replaceAll(" ", "");
+        Log.i("CookieInfo", cookieInfo);
+
+        String[] parts = cookieInfo.split(",");
+        String cName = parts[0];
+        String cIP = parts[1];
+
+        Log.i("CookieName", cName);
+        Log.i("CookieIP", cIP);
+
+		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).cookie(cName, cIP).execute();
 		// We can only set this here due to possible redirects
 		this.url = Uri.parse(resp.url().toString());
 		Document doc = resp.parse();
