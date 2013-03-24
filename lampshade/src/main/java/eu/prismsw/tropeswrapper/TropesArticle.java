@@ -67,7 +67,6 @@ public class TropesArticle {
         Integer openParen = cookieScript.indexOf('(');
         Integer closeParen = cookieScript.indexOf(')');
         String cookieInfo = cookieScript.substring(openParen + 1, closeParen).replaceAll("'", "").replaceAll(" ", "");
-        Log.i("CookieInfo", cookieInfo);
 
         String[] parts = cookieInfo.split(",");
         String cName = parts[0];
