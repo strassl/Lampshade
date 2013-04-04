@@ -6,7 +6,7 @@
 <groupId>eu.prismsw.lampshade</groupId>
     <artifactId>lampshade</artifactId>
     <name>Lampshade</name>
-    <version>1.1.9</version>
+    <version>1.2.0</version>
     <packaging>apk</packaging>
 
 
