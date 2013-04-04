@@ -26,17 +26,15 @@ public class TropesArticle {
 	public TropesArticleSettings settings;
 	
 	public TropesArticle(Uri url) throws Exception {
-		this(url, new TropesArticleSettings());
+		loadArticle(url);
 	}
 	
 	public TropesArticle(Uri url, TropesArticleSettings settings) throws Exception {
-		Document doc = loadArticle(url);
-		parseArticle(doc, settings);
+        loadArticle(url, settings);
 	}
 	
 	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception {
-		Document doc = loadArticle(html, articleUrl);
-		parseArticle(doc, settings, ressources);
+        loadArticle(html, articleUrl, settings, ressources);
 	}
 
 	public void parseArticle(Document doc, TropesArticleSettings settings) throws Exception {
@@ -56,9 +54,47 @@ public class TropesArticle {
 		
 		manipulateStyle(this.content, settings);
 	}
+
+    //TODO Needs a cleaner and more general solution
+
+    public void loadArticle(Uri url) throws Exception {
+        loadArticle(url, new TropesArticleSettings());
+    }
+
+    public void loadArticle(Uri url, TropesArticleSettings settings) throws Exception {
+        try {
+            Document doc = loadPage(url);
+            parseArticle(doc, settings);
+        }
+        catch (Exception e) {
+            try {
+                Document doc = loadProtectedPage(url);
+                parseArticle(doc, settings);
+            }
+            catch (Exception ex) {
+                throw e;
+            }
+        }
+    }
+
+    public void loadArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception{
+        Document doc = loadPage(html, articleUrl);
+        parseArticle(doc, settings, ressources);
+    }
 	
-	/** Returns the Jsoup document of the url */
-	public Document loadArticle(Uri url) throws IOException {
+	/** Primary means of loading the article **/
+	private Document loadPage(Uri url) throws IOException {
+		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute();
+		// We can only set this here due to possible redirects
+		this.url = Uri.parse(resp.url().toString());
+		Document doc = resp.parse();
+
+		return doc;
+	}
+
+    /** Loads an article even if the weird cookie protection is activated
+     * Has an impact on performance, only use if necessary **/
+    private Document loadProtectedPage(Uri url) throws IOException {
         Document noJS = Jsoup.connect(url.toString()).timeout(TIMEOUT).execute().parse();
 
         String cookieScript = noJS.head().getElementsByTag("script").first().html();
@@ -75,16 +111,16 @@ public class TropesArticle {
         Log.i("CookieName", cName);
         Log.i("CookieIP", cIP);
 
-		Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).cookie(cName, cIP).execute();
-		// We can only set this here due to possible redirects
-		this.url = Uri.parse(resp.url().toString());
-		Document doc = resp.parse();
-				
-		return doc;
-	}
+        Response resp = Jsoup.connect(url.toString()).timeout(TIMEOUT).cookie(cName, cIP).execute();
+        // We can only set this here due to possible redirects
+        this.url = Uri.parse(resp.url().toString());
+        Document doc = resp.parse();
+
+        return doc;
+    }
 	
 	/** Return the Jsoup document for the provided html */
-	protected Document loadArticle(String html, Uri url) {
+	protected Document loadPage(String html, Uri url) {
 		// We still need to have all the information about the article, thus the url has to be provided
 		this.url = url;
 		Document doc = Jsoup.parse(html);
