@@ -17,13 +17,10 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
 import eu.prismsw.lampshade.R;
-import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tools.android.UIFunctions;
@@ -131,11 +128,10 @@ public class ArticleFragment extends TropesFragment {
                 HitTestResult hr = wv.getHitTestResult();
 
                 // If the clicked element is a link
-                if(hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
+                if (hr.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
                     // hr.getExtra() is the link's target
                     interactionListener.onLinkSelected(Uri.parse(hr.getExtra()));
-                }
-                else if(hr.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                } else if (hr.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
 
                     Handler linkHandler = new Handler() {
                         @Override

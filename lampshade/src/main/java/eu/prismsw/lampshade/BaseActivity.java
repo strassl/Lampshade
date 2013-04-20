@@ -2,6 +2,7 @@ package eu.prismsw.lampshade;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -37,4 +38,11 @@ public class BaseActivity extends SherlockFragmentActivity {
 
 	    fragment.show(ft, "dialog");
 	}
+
+    public boolean isTablet() {
+        boolean xlarge = ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean large = ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
+    }
+
 }

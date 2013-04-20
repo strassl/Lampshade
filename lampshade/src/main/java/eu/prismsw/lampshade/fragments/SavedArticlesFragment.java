@@ -16,6 +16,7 @@ import eu.prismsw.lampshade.RemoveActionMode;
 import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.ArticlesSource;
+import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 
@@ -29,6 +30,7 @@ public class SavedArticlesFragment extends SherlockFragment {
 
     public TropesApplication application;
     public OnRemoveListener removeListener;
+    public OnInteractionListener interactionListener;
 
     public static SavedArticlesFragment newInstance() {
         SavedArticlesFragment f = new SavedArticlesFragment();
@@ -52,6 +54,7 @@ public class SavedArticlesFragment extends SherlockFragment {
         this.application = (TropesApplication) activity.getApplication();
         this.source = application.savedArticlesSource;
         this.removeListener = (OnRemoveListener) activity;
+        this.interactionListener = (OnInteractionListener) activity;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class SavedArticlesFragment extends SherlockFragment {
                 ListView lv = getListView();
                 ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
                 new RemoveArticleTask(source, removeListener).execute(item.url);
-                application.loadPage(item.url);
+                interactionListener.onLinkClicked(item.url);
             }
 
         });

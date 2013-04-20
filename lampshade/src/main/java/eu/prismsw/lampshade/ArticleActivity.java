@@ -1,7 +1,5 @@
 package eu.prismsw.lampshade;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -14,14 +12,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.text.ClipboardManager;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
-
 import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
@@ -38,14 +34,14 @@ import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
+import java.util.List;
+
 /** Shows a single TvTropes article */
 public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener, OnRemoveListener {
 	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
 	
-	// The active fragment
 	TropesFragment fragment;
-	// The dialog that is shown while the fragment is loading
 	ProgressDialog loadDialog;
 
 	// Information about the article, needs less memory than the full article
@@ -99,7 +95,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 					this.fragment = ArticleFragment.newInstance(this.passedUrl);
 					
 					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
-				}
+                }
 			}
 		}
 	}
@@ -315,7 +311,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	public void onLinkClicked(Uri url) {
 		if(TropesHelper.isTropesLink(url)) {
 			application.loadPage(url);
-		}
+        }
 		else {
 			application.loadWebsite(url);
 		}

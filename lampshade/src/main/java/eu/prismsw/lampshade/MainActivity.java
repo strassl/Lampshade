@@ -22,7 +22,7 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        
+
         EditText search = (EditText) findViewById(R.id.et_search);
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -81,9 +81,9 @@ public class MainActivity extends BaseActivity {
     }
     
     private void startSearch(String query) {
-				Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
-				searchIntent.putExtra(SearchFragment.QUERY_KEY, query);
-				searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(searchIntent);
+        Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
+        searchIntent.putExtra(SearchFragment.QUERY_KEY, query);
+        searchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(searchIntent);
     }
 }
