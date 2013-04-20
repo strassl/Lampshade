@@ -1,102 +1,14 @@
 package eu.prismsw.lampshade;
 
-import java.util.List;
+import eu.prismsw.lampshade.fragments.FavoriteArticlesFragment;
 
-import android.os.Bundle;
-import android.view.View;
-import android.content.Intent;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+public class FavoriteArticlesActivity extends SavedArticlesActivity {
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
-
-import eu.prismsw.lampshade.database.ArticleItem;
-import eu.prismsw.lampshade.listeners.OnRemoveListener;
-import eu.prismsw.tools.android.UIFunctions;
-
-
-/** Shows a list of saved articles */
-public class FavoriteArticlesActivity extends BaseActivity implements OnRemoveListener {
-	RemoveActionMode removeActionMode;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.saved_articles_activity);
-		
-		ActionBar ab = getSupportActionBar();
-		ab.setHomeButtonEnabled(true);
-		ab.setDisplayHomeAsUpEnabled(true);
-		
-		loadArticles();
-		ListView lv = getListView();
-		
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				ListView lv = getListView();
-				ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
-				application.loadPage(item.url);
-			}
-			
-		});
-		
-		this.removeActionMode = new RemoveActionMode(this, application.favoriteArticlesSource);
-		
-		registerForContextMenu(lv);
-		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		
-		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				// Start the removeActionMode for the selected item
-				ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
-				removeActionMode.startActionMode(item.url);
-				return true;
-			}
-			
-		});
-	}
-	
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            startActivity(new Intent(this, MainActivity.class));
-        	return true;
-        default:
-        	return super.onOptionsItemSelected(item);
-        }
+    public void addFragments() {
+        listFragment = FavoriteArticlesFragment.newInstance();
+
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, listFragment).commit();
     }
-    
-    public ListView getListView() {
-		ListView lv = (ListView) findViewById(R.id.lv_saved_articles);
-		return lv;
-    }
-	
-	/** Loads the saved articles from the database and sets the ArrayAdapter */
-	private void loadArticles() {
-		application.favoriteArticlesSource.open();
-		List<ArticleItem> favoriteArticles = application.favoriteArticlesSource.getAllArticleItems();
-		application.favoriteArticlesSource.close();
 
-		ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(this, android.R.layout.simple_list_item_1, favoriteArticles);
-		getListView().setAdapter(adapter);
-	}
-
-	@Override
-	public void onRemoveSuccess(ArticleItem item) {
-		loadArticles();
-		UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
-	}
-
-	@Override
-	public void onRemoveError() {
-		loadArticles();
-		UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
-	}
 }

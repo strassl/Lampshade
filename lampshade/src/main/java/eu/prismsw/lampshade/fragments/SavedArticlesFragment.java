@@ -1,7 +1,5 @@
 package eu.prismsw.lampshade.fragments;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,18 +10,21 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.actionbarsherlock.app.SherlockFragment;
-
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.RemoveActionMode;
 import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.database.ArticleItem;
+import eu.prismsw.lampshade.database.ArticlesSource;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 
+import java.util.List;
+
 
 public class SavedArticlesFragment extends SherlockFragment {
+    ArticlesSource source;
+
     public RemoveActionMode removeActionMode;
 
     public TropesApplication application;
@@ -49,6 +50,7 @@ public class SavedArticlesFragment extends SherlockFragment {
         super.onAttach(activity);
 
         this.application = (TropesApplication) activity.getApplication();
+        this.source = application.savedArticlesSource;
         this.removeListener = (OnRemoveListener) activity;
     }
 
@@ -77,13 +79,13 @@ public class SavedArticlesFragment extends SherlockFragment {
                 // Remove the article from the database and load it
                 ListView lv = getListView();
                 ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
-                new RemoveArticleTask(application.savedArticlesSource, removeListener).execute(item.url);
+                new RemoveArticleTask(source, removeListener).execute(item.url);
                 application.loadPage(item.url);
             }
 
         });
 
-        this.removeActionMode = new RemoveActionMode(getSherlockActivity(), application.savedArticlesSource);
+        this.removeActionMode = new RemoveActionMode(getSherlockActivity(), source);
 
         registerForContextMenu(lv);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -92,7 +94,6 @@ public class SavedArticlesFragment extends SherlockFragment {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Start the removeActionMode for the selected item
                 ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
                 removeActionMode.startActionMode(item.url);
                 return true;
@@ -104,9 +105,9 @@ public class SavedArticlesFragment extends SherlockFragment {
     private List<ArticleItem> loadArticles() {
         TropesApplication application = (TropesApplication) getSherlockActivity().getApplication();
 
-        application.savedArticlesSource.open();
-        List<ArticleItem> savedArticles = application.savedArticlesSource.getAllArticleItems();
-        application.savedArticlesSource.close();
+        source.open();
+        List<ArticleItem> savedArticles = source.getAllArticleItems();
+        source.close();
 
         return savedArticles;
     }
