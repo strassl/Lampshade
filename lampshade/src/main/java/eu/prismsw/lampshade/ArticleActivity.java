@@ -26,8 +26,6 @@ import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
-import eu.prismsw.lampshade.tasks.RemoveArticleTask;
-import eu.prismsw.lampshade.tasks.SaveArticleTask;
 import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
@@ -116,27 +114,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	if(trueUrl != null) {
-    		// Switch between Remove/Save
-    		application.savedArticlesSource.open();
-	    	if(application.savedArticlesSource.articleExists(trueUrl)) {
-	    		menu.findItem(R.id.save_article).setTitle(R.string.article_remove);
-	    	}
-	    	else {
-	    		menu.findItem(R.id.save_article).setTitle(R.string.article_save);
-	    	}
-	    	application.savedArticlesSource.close();
-	    	
-	    	application.favoriteArticlesSource.open();
-	    	if(application.favoriteArticlesSource.articleExists(trueUrl)) {
-	    		menu.findItem(R.id.favorite_article).setTitle(R.string.article_unfavorite);
-	    	}
-	    	else {
-	    		menu.findItem(R.id.favorite_article).setTitle(R.string.article_favorite);
-	    	}
-	    	application.favoriteArticlesSource.close();
-    	}
-    	
+
     	return super.onPrepareOptionsMenu(menu);
     }
     
@@ -148,26 +126,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			return true;
 		} else if (item.getItemId() == R.id.refresh_article) {
 			application.loadPage(passedUrl);
-			return true;
-		} else if (item.getItemId() == R.id.save_article) {
-			application.savedArticlesSource.open();
-			if(application.savedArticlesSource.articleExists(trueUrl)) {
-				removeArticle(trueUrl);
-			}
-			else {
-				saveArticle(trueUrl);
-			}
-			application.savedArticlesSource.close();
-			return true;
-		} else if (item.getItemId() == R.id.favorite_article) {
-			application.favoriteArticlesSource.open();
-				if(application.favoriteArticlesSource.articleExists(trueUrl)) {
-					unfavoriteArticle(trueUrl);
-				}
-				else {
-					favoriteArticle(trueUrl);
-				}
-			application.favoriteArticlesSource.close();
 			return true;
 		} else if (item.getItemId() == R.id.info_article) {
 			showDialogFragment(createInfoDialog(articleInfo.title, trueUrl, passedUrl));
@@ -273,22 +231,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + url.toString(), this);
     }
     
-    private void favoriteArticle(Uri url) {
-    	new SaveArticleTask(application.favoriteArticlesSource, this).execute(url);
-    }
-    
-    private void unfavoriteArticle(Uri url) {
-    	new RemoveArticleTask(application.favoriteArticlesSource, this).execute(url);
-    }
-    
-    private void saveArticle(Uri url) {
-    	new SaveArticleTask(application.savedArticlesSource, this).execute(url);
-    }
-    
-    private void removeArticle(Uri url) {
-    	new RemoveArticleTask(application.savedArticlesSource, this).execute(url);
-    }
-	
+
 	public void onLinkSelected(Uri url) {
 		application.savedArticlesSource.open();
 		if(application.savedArticlesSource.articleExists(url)) {

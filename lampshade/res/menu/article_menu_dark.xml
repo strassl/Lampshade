@@ -5,15 +5,6 @@
     	  android:title="@string/article_refresh"
     	  android:showAsAction="always"
 	/>
-    <item android:id="@+id/save_article"
-          android:icon="@drawable/ic_menu_save_dark"
-    	  android:title="@string/article_save"
-    	  android:showAsAction="never"
-	/>
-    <item android:id="@+id/favorite_article"
-    	  android:title="@string/article_favorite"
-    	  android:showAsAction="never"
-	/>
     <item android:id="@+id/info_article"
     	  android:title="@string/article_info"
     	  android:showAsAction="never"

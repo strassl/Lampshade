@@ -59,17 +59,6 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
         }
     }
 
-	@Override
-	public void onRemoveSuccess(ArticleItem item) {
-		UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
-        listFragment.reloadList();
-	}
-
-	@Override
-	public void onRemoveError() {
-		UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
-	}
-
     @Override
     public void onLinkSelected(Uri url) {
         // Can't call this from the list fragment, would cause a lot of problems
@@ -102,12 +91,26 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     }
 
     @Override
+    public void onRemoveSuccess(ArticleItem item) {
+        invalidateOptionsMenu();
+        listFragment.reloadList();
+        UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
+    }
+
+    @Override
+    public void onRemoveError() {
+        UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
+    }
+
+    @Override
     public void onSaveSuccess(ArticleItem item) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        invalidateOptionsMenu();
+        listFragment.reloadList();
+        UIFunctions.showToast(getResources().getString(R.string.article_saved) + item.title, this);
     }
 
     @Override
     public void onSaveError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        UIFunctions.showToast(getResources().getString(R.string.article_save_failed), this);
     }
 }

@@ -70,7 +70,8 @@ public class ArticleFragment extends TropesFragment {
     }
 	
 	@Override
-	public void onPrepareOptionsMenu(Menu menu) { 
+	public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 		// Hide the "Find" functionality from pre Honeycomb devices because it is not available < 11
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			menu.findItem(R.id.article_find).setVisible(false);
