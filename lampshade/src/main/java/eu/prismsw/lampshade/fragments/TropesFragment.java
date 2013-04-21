@@ -1,6 +1,9 @@
 package eu.prismsw.lampshade.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +22,10 @@ import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 import eu.prismsw.lampshade.tasks.SaveArticleTask;
+import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
+
+import java.util.List;
 
 /** Contains common functionality for Fragments that show a TvTropes article. This Fragment is not supposed to be used, only its subclasses **/
 public class TropesFragment extends SherlockFragment implements OnLoadListener, OnSaveListener, OnRemoveListener {
@@ -88,6 +94,10 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             application.favoriteArticlesSource.close();
             return true;
         }
+        else if (item.getItemId() == R.id.subpages_article) {
+            showSubpagesDialog();
+            return true;
+        }
         else {
             return super.onOptionsItemSelected(item);
         }
@@ -141,6 +151,29 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
 		return inflater.inflate(R.layout.tropes_fragment, group, false);
 	}
+
+    private void showSubpagesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        List<String> subpageStringList = ListFunctions.listToStringList(articleInfo.subpages);
+        String[] subpageStringArray = subpageStringList.toArray(new String[subpageStringList.size()]);
+
+        builder.setTitle(R.string.article_subpages);
+        builder.setItems(subpageStringArray,  new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                interactionListener.onLinkClicked(articleInfo.subpages.get(which).url);
+            }
+        });
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     private void favoriteArticle(Uri url) {
         new SaveArticleTask(application.favoriteArticlesSource, this).execute(url);

@@ -9,10 +9,6 @@
     	  android:title="@string/article_info"
     	  android:showAsAction="never"
 	/>
-    <item android:id="@+id/subpages_article"
-          android:title="@string/article_subpages"
-          android:showAsAction="never"
-    />
     <item android:id="@+id/browser_article"
           android:title="@string/article_browser"
           android:showAsAction="never"

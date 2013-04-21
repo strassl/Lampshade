@@ -26,7 +26,6 @@ import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
-import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
@@ -35,7 +34,6 @@ import java.util.List;
 
 /** Shows a single TvTropes article */
 public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener, OnRemoveListener {
-	static final int DIALOG_SUBPAGES_ID = 1;
 	static final int DIALOG_LOAD_FAILED = 2;
 	
 	TropesFragment fragment;
@@ -114,7 +112,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
     	return super.onPrepareOptionsMenu(menu);
     }
     
@@ -135,9 +132,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			return true;
 		} else if (item.getItemId() == R.id.clipboard_article) {
 			copyUrlToClipboard(this.trueUrl);
-			return true;
-		} else if (item.getItemId() == R.id.subpages_article) {
-			showDialog(DIALOG_SUBPAGES_ID);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -165,24 +159,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	Dialog dialog;
    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	switch(id) {
-    	case DIALOG_SUBPAGES_ID:
-    		List<String> subpageStringList = ListFunctions.listToStringList(articleInfo.subpages);
-    		String[] subpageStringArray = subpageStringList.toArray(new String[subpageStringList.size()]);
-    		
-    		builder.setTitle(R.string.article_subpages);
-    		builder.setItems(subpageStringArray,  new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					application.loadWebsite(articleInfo.subpages.get(which).url);
-				}
-			});
-    		builder.setCancelable(true);
-    		builder.setPositiveButton(R.string.dialog_dismiss, new OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-    		dialog = builder.create();
-    		break;
     	case DIALOG_LOAD_FAILED:
     		builder.setTitle(R.string.dialog_load_failed_title);
     		builder.setMessage(R.string.dialog_load_failed_message);
