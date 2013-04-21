@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 import eu.prismsw.lampshade.tasks.SaveArticleTask;
 import eu.prismsw.tools.ListFunctions;
+import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 import java.util.List;
@@ -94,7 +96,11 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             application.favoriteArticlesSource.close();
             return true;
         }
-        else if (item.getItemId() == R.id.subpages_article) {
+        else if(id == R.id.clipboard_article) {
+            copyUrlToClipboard(this.trueUrl);
+            return true;
+        }
+        else if (id == R.id.subpages_article) {
             showSubpagesDialog();
             return true;
         }
@@ -152,6 +158,13 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 		return inflater.inflate(R.layout.tropes_fragment, group, false);
 	}
 
+    private void copyUrlToClipboard(Uri url) {
+        // Kinda bugs me, but backward compatibility demands sacrifices
+        ClipboardManager clipboard = (ClipboardManager) application.getSystemService(TropesApplication.CLIPBOARD_SERVICE);
+        clipboard.setText(url.toString());
+        UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + url.toString(), getActivity());
+    }
+
     private void showSubpagesDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -171,6 +184,37 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             }
         });
         Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showLoadingFailedDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(R.string.dialog_load_failed_title);
+        builder.setMessage(R.string.dialog_load_failed_message);
+
+        builder.setPositiveButton(R.string.dialog_reload, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                loadTropes(passedUrl);
+            }
+        });
+
+        builder.setNeutralButton("Copy url", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                loadListener.onLoadError();
+                copyUrlToClipboard(passedUrl);
+            }
+        });
+
+        builder.setNegativeButton(R.string.dialog_close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                loadListener.onLoadError();
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+
         dialog.show();
     }
 
@@ -222,8 +266,8 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     }
 
     @Override
-    public void onLoadError(Exception e) {
-        loadListener.onLoadError(e);
+    public void onLoadError() {
+        showLoadingFailedDialog();
     }
 
     @Override

@@ -18,8 +18,11 @@
           android:title="@string/article_favorite"
           android:showAsAction="never" />
 
+    <item android:id="@+id/clipboard_article"
+          android:title="@string/article_clipboard"
+          android:showAsAction="never" />
+
     <item android:id="@+id/subpages_article"
           android:title="@string/article_subpages"
-          android:showAsAction="never"
-            />
+          android:showAsAction="never" />
 </menu>

@@ -188,7 +188,7 @@ public class ArticleFragment extends TropesFragment {
 			}
 			else {
 				Exception e = (Exception) result;
-				this.tLoadListener.onLoadError(e);
+				this.tLoadListener.onLoadError();
 			}
 		}
 	}

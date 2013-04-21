@@ -139,7 +139,7 @@ public class SearchFragment extends SherlockFragment {
 			}
 			else {
 				Exception e = (Exception) result;
-				tLoadListener.onLoadError(e);
+				tLoadListener.onLoadError();
 			}
 		}
 		

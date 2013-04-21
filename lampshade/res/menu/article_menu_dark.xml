@@ -17,10 +17,6 @@
           android:title="@string/article_browser"
           android:showAsAction="never"
     />
-    <item android:id="@+id/clipboard_article"
-          android:title="@string/article_clipboard"
-          android:showAsAction="never"
-    />
     <item android:id="@+id/share_article"
     	  android:title="@string/article_share"
     	  android:showAsAction="never"

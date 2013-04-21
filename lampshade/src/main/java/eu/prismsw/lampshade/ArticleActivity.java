@@ -2,15 +2,12 @@ package eu.prismsw.lampshade;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.text.ClipboardManager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -130,9 +127,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		} else if (item.getItemId() == R.id.browser_article) {
 			application.loadWebsite(this.trueUrl);
 			return true;
-		} else if (item.getItemId() == R.id.clipboard_article) {
-			copyUrlToClipboard(this.trueUrl);
-			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
@@ -159,31 +153,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	Dialog dialog;
    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	switch(id) {
-    	case DIALOG_LOAD_FAILED:
-    		builder.setTitle(R.string.dialog_load_failed_title);
-    		builder.setMessage(R.string.dialog_load_failed_message);
-    		
-    		builder.setPositiveButton(R.string.dialog_reload, new OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					fragment.loadTropes(passedUrl);
-				}
-    		});
-    		
-    		builder.setNeutralButton("Copy url", new OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					copyUrlToClipboard(passedUrl);
-					finish();
-				}
-    		});
-    		
-    		builder.setNegativeButton(R.string.dialog_close, new OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-    		});
-    		
-    		dialog = builder.create();
-    		break;
     	default:
     		dialog = null;
     	}
@@ -199,14 +168,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	    	shareProvider.setShareIntent(intent);
     	}
     }
-    
-    private void copyUrlToClipboard(Uri url) {
-    	// Kinda bugs me, but backward compatibility demands sacrifices
-    	ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-    	clipboard.setText(url.toString());
-		UIFunctions.showToast(getResources().getString(R.string.article_clipboard_copied) + url.toString(), this);
-    }
-    
+
 
 	public void onLinkSelected(Uri url) {
 		application.savedArticlesSource.open();
@@ -219,9 +181,8 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		application.savedArticlesSource.close();
 	}
 
-	public void onLoadError(Exception e) {
-		e.printStackTrace();
-		showDialog(DIALOG_LOAD_FAILED);
+	public void onLoadError() {
+        finish();
 	}
 
 	public void onLinkClicked(Uri url) {

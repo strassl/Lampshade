@@ -4,10 +4,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 
-import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.tropeswrapper.TropesArticle;
-import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesArticleSettings;
 
 /** Loads an article in a different thread */
@@ -50,7 +48,7 @@ public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 		}
 		else {
 			Exception e = (Exception) result;
-			this.tLoadListener.onLoadError(e);
+			this.tLoadListener.onLoadError();
 		}
 	}
 }

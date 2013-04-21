@@ -114,7 +114,7 @@ public class IndexFragment extends TropesFragment {
 			}
 			else {
 				Exception e = (Exception) result;
-				tLoadListener.onLoadError(e);
+				tLoadListener.onLoadError();
 			}
 		}
 	}

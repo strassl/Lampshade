@@ -86,7 +86,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     }
 
     @Override
-    public void onLoadError(Exception e) {
+    public void onLoadError() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

@@ -81,7 +81,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 		closeProgressDialog();
 	}
 
-	public void onLoadError(Exception e) {
+	public void onLoadError() {
 		closeProgressDialog();
 	}
 
