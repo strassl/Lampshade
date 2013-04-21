@@ -16,10 +16,8 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.R;
-import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
-import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesIndex;
 import eu.prismsw.tropeswrapper.TropesLink;
@@ -42,7 +40,7 @@ public class IndexFragment extends TropesFragment {
 	
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    	inflater.inflate(R.menu.index_menu, menu);
+    	inflater.inflate(R.menu.index_fragment_menu, menu);
     }
 	
     @Override
