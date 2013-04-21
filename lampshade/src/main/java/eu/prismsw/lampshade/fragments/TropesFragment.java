@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.actionbarsherlock.app.SherlockFragment;
-
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
-import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 
 /** Contains common functionality for Fragments that show a TvTropes article. This Fragment is not supposed to be used, only its subclasses **/
@@ -52,8 +49,8 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener{
 			this.passedUrl = getArguments().getParcelable(PASSED_URL);
 			this.trueUrl = getArguments().getParcelable(TRUE_URL);
 		}
-		
-		loadTropes(this.trueUrl);
+
+        loadTropes(this.trueUrl);
 	}
 	
 	@Override
@@ -73,7 +70,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener{
 		this.loadListener = (OnLoadListener) activity;
 		this.interactionListener = (OnInteractionListener) activity;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
 		return inflater.inflate(R.layout.tropes_fragment, group, false);

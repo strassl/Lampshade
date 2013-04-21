@@ -17,6 +17,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -89,6 +90,9 @@ public class ArticleFragment extends TropesFragment {
 
     @Override
     public void onLoadFinish(Object result) {
+        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
+        rl.setVisibility(RelativeLayout.GONE);
+
         TropesArticle article = (TropesArticle) result;
         setupArticle(article);
 
@@ -164,7 +168,6 @@ public class ArticleFragment extends TropesFragment {
 
     }
 
-    /** Loads an article in a different thread */
 	public class LoadArticleTask extends LoadTropesTask {
 		
 		public LoadArticleTask(OnLoadListener tLoadListener) {

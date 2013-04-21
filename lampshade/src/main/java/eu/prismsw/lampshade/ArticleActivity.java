@@ -2,7 +2,6 @@ package eu.prismsw.lampshade;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -42,7 +41,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	static final int DIALOG_LOAD_FAILED = 2;
 	
 	TropesFragment fragment;
-	ProgressDialog loadDialog;
 
 	// Information about the article, needs less memory than the full article
 	TropesArticleInfo articleInfo;
@@ -303,7 +301,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	}
 
 	public void onLoadError(Exception e) {
-		closeProgressDialog();
 		e.printStackTrace();
 		showDialog(DIALOG_LOAD_FAILED);
 	}
@@ -318,7 +315,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	}
 
 	public void onLoadStart() {
-		this.loadDialog = ProgressDialog.show(this, "", getResources().getString(R.string.dialog_article_loading), true);
 	}
 
 	public void onLoadFinish(Object result) {
@@ -348,14 +344,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		
 		getSupportActionBar().setTitle(info.title);
 		setShareIntent();
-		
-		closeProgressDialog();
-	}
-	
-	private void closeProgressDialog() {
-		if(this.loadDialog != null && this.loadDialog.isShowing()) {
-			this.loadDialog.dismiss();
-		}
 	}
 
 	@Override
