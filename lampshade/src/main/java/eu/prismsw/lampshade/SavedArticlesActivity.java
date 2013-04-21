@@ -41,11 +41,6 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     public void addFragments() {
         listFragment = SavedArticlesFragment.newInstance();
         getSupportFragmentManager().beginTransaction().add(R.id.list_container, listFragment).commit();
-
-        if(isTablet()) {
-            ArticleFragment articleFragment = ArticleFragment.newInstance(Uri.parse("http://tvtropes.org"));
-            getSupportFragmentManager().beginTransaction().add(R.id.article_container, articleFragment).commit();
-        }
     }
 	
     @Override
