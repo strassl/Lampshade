@@ -88,7 +88,7 @@ public class SavedArticlesFragment extends SherlockFragment {
 
         });
 
-        this.removeActionMode = new RemoveActionMode(getSherlockActivity(), source);
+        //this.removeActionMode = new RemoveActionMode(getSherlockActivity(), source);
 
         registerForContextMenu(lv);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -98,7 +98,8 @@ public class SavedArticlesFragment extends SherlockFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
-                removeActionMode.startActionMode(item.url);
+                //removeActionMode.startActionMode(item.url);
+                interactionListener.onLinkSelected(item.url);
                 return true;
             }
 

@@ -17,6 +17,9 @@ import eu.prismsw.tools.android.UIFunctions;
 public class SavedArticlesActivity extends BaseActivity implements OnLoadListener, OnSaveListener, OnRemoveListener, OnInteractionListener {
     SavedArticlesFragment listFragment;
 
+    public SaveActionMode saveActionMode;
+    public RemoveActionMode removeActionMode;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,6 +34,9 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 		ActionBar ab = getSupportActionBar();
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
+
+        this.saveActionMode = new SaveActionMode(this, application.savedArticlesSource);
+        this.removeActionMode = new RemoveActionMode(this, application.savedArticlesSource);
 
         if(savedInstanceState == null) {
             addFragments();
@@ -56,7 +62,14 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 
     @Override
     public void onLinkSelected(Uri url) {
-        // Can't call this from the list fragment, would cause a lot of problems
+        application.savedArticlesSource.open();
+        if(application.savedArticlesSource.articleExists(url)) {
+            this.removeActionMode.startActionMode(url);
+        }
+        else {
+            this.saveActionMode.startActionMode(url);
+        }
+        application.savedArticlesSource.close();
     }
 
     @Override
