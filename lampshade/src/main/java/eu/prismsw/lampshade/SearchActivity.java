@@ -13,6 +13,7 @@ import eu.prismsw.lampshade.fragments.SearchFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
+import eu.prismsw.lampshade.providers.ArticleProvider;
 import eu.prismsw.tools.android.UIFunctions;
 
 public class SearchActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener {
@@ -33,7 +34,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
-		this.saveActionMode = new SaveActionMode(this, application.savedArticlesSource);
+		this.saveActionMode = new SaveActionMode(this, ArticleProvider.SAVED_URI);
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {

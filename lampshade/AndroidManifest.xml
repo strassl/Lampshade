@@ -56,6 +56,9 @@
         <activity android:name=".LampshadePreferenceActivity"
             android:label="@string/title_preferences">
         </activity>
+        <provider
+                android:authorities="eu.prismsw.lampshade.providers.articleprovider"
+                android:name=".providers.ArticleProvider" >
+        </provider>
     </application>
-
 </manifest>

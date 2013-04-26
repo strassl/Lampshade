@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-
-import eu.prismsw.lampshade.database.ArticlesSource;
-import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 
@@ -20,16 +17,9 @@ public class TropesApplication extends Application {
 	public static final String helpUrl = "http://lampshade.prismsw.eu/help.html";
 	
 	public static final Integer maxRecentArticles = 15;
-	
-	public ArticlesSource savedArticlesSource = null;
-	public ArticlesSource recentArticlesSource = null;
-	public ArticlesSource favoriteArticlesSource = null;
-	
+
 	@Override
 	public void onCreate() {
-		savedArticlesSource = new ArticlesSource(this, SavedArticlesHelper.TABLE_SAVED);
-		recentArticlesSource = new ArticlesSource(this, SavedArticlesHelper.TABLE_RECENT);
-		favoriteArticlesSource = new ArticlesSource(this, SavedArticlesHelper.TABLE_FAVORITE);
 	}
 	
 	public Boolean isDarkTheme() {

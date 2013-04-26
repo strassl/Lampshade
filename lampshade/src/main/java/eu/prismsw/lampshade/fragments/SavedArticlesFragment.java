@@ -1,36 +1,38 @@
 package eu.prismsw.lampshade.fragments;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.RemoveActionMode;
 import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.database.ArticleItem;
-import eu.prismsw.lampshade.database.ArticlesSource;
+import eu.prismsw.lampshade.database.ProviderHelper;
+import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
-import eu.prismsw.lampshade.tasks.RemoveArticleTask;
-
-import java.util.List;
+import eu.prismsw.lampshade.providers.ArticleProvider;
 
 
 public class SavedArticlesFragment extends SherlockFragment {
-    ArticlesSource source;
-
     public RemoveActionMode removeActionMode;
 
     public TropesApplication application;
     public OnRemoveListener removeListener;
     public OnInteractionListener interactionListener;
+
+    public Uri contentUri = ArticleProvider.SAVED_URI;
 
     public static SavedArticlesFragment newInstance() {
         SavedArticlesFragment f = new SavedArticlesFragment();
@@ -52,7 +54,6 @@ public class SavedArticlesFragment extends SherlockFragment {
         super.onAttach(activity);
 
         this.application = (TropesApplication) activity.getApplication();
-        this.source = application.savedArticlesSource;
         this.removeListener = (OnRemoveListener) activity;
         this.interactionListener = (OnInteractionListener) activity;
     }
@@ -70,10 +71,12 @@ public class SavedArticlesFragment extends SherlockFragment {
     }
 
     public void reloadList() {
-        List<ArticleItem> savedArticles = loadArticles();
         ListView lv = getListView();
 
-        ArrayAdapter<ArticleItem> adapter = new ArrayAdapter<ArticleItem>(getSherlockActivity(), android.R.layout.simple_list_item_1, savedArticles);
+        String[] uiBindFrom = { SavedArticlesHelper.ARTICLES_COLUMN_TITLE };
+        int[] uiBindTo = { android.R.id.text1 };
+        Cursor articles = ProviderHelper.getArticles(getActivity().getContentResolver(), contentUri);
+        CursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, articles, uiBindFrom, uiBindTo, 0);
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(new OnItemClickListener() {
@@ -81,14 +84,12 @@ public class SavedArticlesFragment extends SherlockFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Remove the article from the database and load it
                 ListView lv = getListView();
-                ArticleItem item = (ArticleItem) lv.getAdapter().getItem(position);
-                new RemoveArticleTask(source, removeListener).execute(item.url);
+                ArticleItem item = new ArticleItem((Cursor) lv.getAdapter().getItem(position));
+                ProviderHelper.deleteArticle(getActivity().getContentResolver(), contentUri, item.url);
                 interactionListener.onLinkClicked(item.url);
             }
 
         });
-
-        //this.removeActionMode = new RemoveActionMode(getSherlockActivity(), source);
 
         registerForContextMenu(lv);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -96,24 +97,13 @@ public class SavedArticlesFragment extends SherlockFragment {
         lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                ArticleItem item = (ArticleItem) getListView().getAdapter().getItem(position);
-                //removeActionMode.startActionMode(item.url);
+            public boolean onItemLongClick(AdapterView <?> parent, View view, int position, long id) {
+                ArticleItem item = new ArticleItem((Cursor) getListView().getAdapter().getItem(position));
                 interactionListener.onLinkSelected(item.url);
                 return true;
             }
 
         });
-    }
-
-    private List<ArticleItem> loadArticles() {
-        TropesApplication application = (TropesApplication) getSherlockActivity().getApplication();
-
-        source.open();
-        List<ArticleItem> savedArticles = source.getAllArticleItems();
-        source.close();
-
-        return savedArticles;
     }
 
     private ListView getListView() {

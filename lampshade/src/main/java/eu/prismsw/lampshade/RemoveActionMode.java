@@ -1,17 +1,14 @@
 package eu.prismsw.lampshade;
 
 import android.net.Uri;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
 import eu.prismsw.lampshade.database.ArticleItem;
-import eu.prismsw.lampshade.database.ArticlesSource;
+import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
-import eu.prismsw.lampshade.tasks.RemoveArticleTask;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Wraps an ActionMode for selected links (that can be removed) into a nice handy package **/
@@ -20,12 +17,12 @@ public class RemoveActionMode implements OnRemoveListener {
 	
 	public ActionMode mActionMode;
 	public Uri selectedUrl;
-	
-	public ArticlesSource articlesSource;
-	
-	public RemoveActionMode(SherlockFragmentActivity activity, ArticlesSource articlesSource) {
+
+    public Uri contentUri;
+
+	public RemoveActionMode(SherlockFragmentActivity activity, Uri contentUri) {
 		this.activity = activity;
-		this.articlesSource = articlesSource;
+        this.contentUri = contentUri;
 	}
 	
 	public void startActionMode(Uri url) {
@@ -86,7 +83,7 @@ public class RemoveActionMode implements OnRemoveListener {
 	};
 	
 	private void removeArticle(Uri url) {
-		new RemoveArticleTask(articlesSource, this).execute(url);
+        activity.getContentResolver().delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_URL + "=?", new String[] {url.toString()});
 	}
 
 	@Override

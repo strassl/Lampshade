@@ -6,12 +6,14 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import eu.prismsw.lampshade.database.ArticleItem;
+import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.SavedArticlesFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
+import eu.prismsw.lampshade.providers.ArticleProvider;
 import eu.prismsw.tools.android.UIFunctions;
 
 public class SavedArticlesActivity extends BaseActivity implements OnLoadListener, OnSaveListener, OnRemoveListener, OnInteractionListener {
@@ -35,8 +37,8 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
 
-        this.saveActionMode = new SaveActionMode(this, application.savedArticlesSource);
-        this.removeActionMode = new RemoveActionMode(this, application.savedArticlesSource);
+        this.saveActionMode = new SaveActionMode(this, ArticleProvider.SAVED_URI);
+        this.removeActionMode = new RemoveActionMode(this, ArticleProvider.SAVED_URI);
 
         if(savedInstanceState == null) {
             addFragments();
@@ -62,14 +64,12 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 
     @Override
     public void onLinkSelected(Uri url) {
-        application.savedArticlesSource.open();
-        if(application.savedArticlesSource.articleExists(url)) {
+        if(ProviderHelper.articleExists(getContentResolver(), ArticleProvider.SAVED_URI, url)) {
             this.removeActionMode.startActionMode(url);
         }
         else {
             this.saveActionMode.startActionMode(url);
         }
-        application.savedArticlesSource.close();
     }
 
     @Override
@@ -85,17 +85,14 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 
     @Override
     public void onLoadStart() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onLoadFinish(Object result) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onLoadError() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

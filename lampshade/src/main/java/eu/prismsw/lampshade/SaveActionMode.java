@@ -1,17 +1,15 @@
 package eu.prismsw.lampshade;
 
+import android.content.ContentValues;
 import android.net.Uri;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
 import eu.prismsw.lampshade.database.ArticleItem;
-import eu.prismsw.lampshade.database.ArticlesSource;
+import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
-import eu.prismsw.lampshade.tasks.SaveArticleTask;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Wraps an ActionMode for selected links (that can be saved) into a nice handy package **/
@@ -20,12 +18,12 @@ public class SaveActionMode implements OnSaveListener {
 	
 	public ActionMode mActionMode;
 	public Uri selectedLink;
-	
-	public ArticlesSource articlesSource;
-	
-	public SaveActionMode(SherlockFragmentActivity activity, ArticlesSource articlesSource) {
+
+    public Uri contentUri;
+
+	public SaveActionMode(SherlockFragmentActivity activity, Uri contentUri) {
 		this.activity = activity;
-		this.articlesSource = articlesSource;
+        this.contentUri = contentUri;
 	}
 	
 	/** Starts a "new" ActionMode for the passed url **/
@@ -96,7 +94,10 @@ public class SaveActionMode implements OnSaveListener {
 	};
 	
 	private void saveArticle(Uri url) {
-		new SaveArticleTask(articlesSource, this).execute(url);
+        ContentValues values = new ContentValues();
+        values.put(SavedArticlesHelper.ARTICLES_COLUMN_TITLE, TropesHelper.titleFromUrl(url));
+        values.put(SavedArticlesHelper.ARTICLES_COLUMN_URL, url.toString());
+        activity.getContentResolver().insert(contentUri, values);
 	}
 	
 	@Override

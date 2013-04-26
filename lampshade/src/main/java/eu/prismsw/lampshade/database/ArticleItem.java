@@ -1,5 +1,6 @@
 package eu.prismsw.lampshade.database;
 
+import android.database.Cursor;
 import android.net.Uri;
 
 import eu.prismsw.tropeswrapper.*;
@@ -21,6 +22,12 @@ public class ArticleItem {
 		this.title = TropesHelper.titleFromUrl(url);
 		this.url = url;
 	}
+
+    public ArticleItem(Cursor c) {
+        this.id = c.getLong(0);
+        this.title = c.getString(1);
+        this.url = Uri.parse(c.getString(2));
+    }
 	
 	
 	// Returns the title for the ListView

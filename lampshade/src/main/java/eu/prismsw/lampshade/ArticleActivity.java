@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,6 +16,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import eu.prismsw.lampshade.database.ArticleItem;
+import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
@@ -23,11 +25,10 @@ import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
+import eu.prismsw.lampshade.providers.ArticleProvider;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
-
-import java.util.List;
 
 /** Shows a single TvTropes article */
 public class ArticleActivity extends BaseActivity implements OnLoadListener, OnInteractionListener, OnSaveListener, OnRemoveListener {
@@ -58,8 +59,8 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		
 		// The ActionMode objects need only be created once and can then be reused
 		// In fact they should only be created once because it prevents conflicts between multiple ActionModes
-		this.saveActionMode = new SaveActionMode(this, application.savedArticlesSource);
-		this.removeActionMode = new RemoveActionMode(this, application.savedArticlesSource);
+		this.saveActionMode = new SaveActionMode(this, ArticleProvider.SAVED_URI);
+		this.removeActionMode = new RemoveActionMode(this, ArticleProvider.SAVED_URI);
 		
 		// Get the url we are supposed to load
 		Uri data = getIntent().getData();
@@ -171,14 +172,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 
 
 	public void onLinkSelected(Uri url) {
-		application.savedArticlesSource.open();
-		if(application.savedArticlesSource.articleExists(url)) {
+		if(ProviderHelper.articleExists(getContentResolver(), ArticleProvider.SAVED_URI, url)) {
 			this.removeActionMode.startActionMode(url);
 		}
 		else {
 			this.saveActionMode.startActionMode(url);
 		}
-		application.savedArticlesSource.close();
 	}
 
 	public void onLoadError() {
@@ -208,18 +207,18 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		
 		if(historyEnabled) {
 			// Add the page to the list of recent articles
-			application.recentArticlesSource.open();
-			
-			// This is a horribly ugly and inefficient way of doing this
-			List<ArticleItem> recentArticles = application.recentArticlesSource.getAllArticleItems();
-			if(recentArticles.size() >= TropesApplication.maxRecentArticles) {
-				// Remove the oldest (=first) item
-				application.recentArticlesSource.removeArticle(recentArticles.get(0));
+
+            Cursor c = ProviderHelper.getArticles(getContentResolver(), ArticleProvider.RECENT_URI);
+
+            // Prevent the list from growing infinitely
+			if(c.getCount() > TropesApplication.maxRecentArticles) {
+                c.moveToFirst();
+                long id = c.getLong(0);
+                c.close();
+                ProviderHelper.deleteArticle(getContentResolver(), ArticleProvider.RECENT_URI, String.valueOf(id));
 			}
-			
-			application.recentArticlesSource.createArticleItem(TropesHelper.titleFromUrl(this.trueUrl), this.trueUrl);
-			
-			application.recentArticlesSource.close();
+
+            ProviderHelper.saveArticle(getContentResolver(), ArticleProvider.RECENT_URI, trueUrl);
 		}
 		
 		getSupportActionBar().setTitle(info.title);
