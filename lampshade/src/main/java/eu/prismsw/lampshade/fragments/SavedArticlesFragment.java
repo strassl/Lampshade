@@ -99,7 +99,7 @@ public class SavedArticlesFragment extends SherlockFragment {
             @Override
             public boolean onItemLongClick(AdapterView <?> parent, View view, int position, long id) {
                 ArticleItem item = new ArticleItem((Cursor) getListView().getAdapter().getItem(position));
-                interactionListener.onLinkSelected(item.url);
+                new RemoveActionMode(getSherlockActivity(), contentUri).startActionMode(item.url);
                 return true;
             }
 
