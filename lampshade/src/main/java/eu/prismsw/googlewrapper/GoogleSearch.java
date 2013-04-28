@@ -1,17 +1,16 @@
 package eu.prismsw.googlewrapper;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsoup.Jsoup;
+import android.net.Uri;
 import org.jsoup.Connection.Response;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.net.Uri;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Handles the loading and parsing of a Google search **/
 public class GoogleSearch {
@@ -75,8 +74,8 @@ public class GoogleSearch {
 	/** Splits the Document into a List of GoogleSearchResult **/
 	private List<GoogleSearchResult> parseSearchResults(Document doc) {
 		Element rso = doc.getElementById("rso");
-		Elements resultItems = rso.getElementsByClass("vsc");
-		
+		Elements resultItems = rso.getElementsByClass("rc");
+
 		List<GoogleSearchResult> results = new ArrayList<GoogleSearchResult>();
 		for(Element vsc : resultItems) {
 			results.add(parseSingleResult(vsc));
@@ -86,13 +85,13 @@ public class GoogleSearch {
 	}
 	
 	/** Organises the information from the vsc(Google's naming scheme) Element **/
-	private GoogleSearchResult parseSingleResult(Element vsc) {
-		Element titleElement = vsc.getElementsByTag("a").first();
+	private GoogleSearchResult parseSingleResult(Element e) {
+		Element titleElement = e.getElementsByTag("a").first();
 		
 		String title = titleElement.text();
 		Uri url = Uri.parse(titleElement.attr("href"));
-		String description = vsc.getElementsByClass("st").first().text();
-		
+		String description = e.getElementsByClass("st").first().text();
+
 		return new GoogleSearchResult(title, url, description);
 	}
 }
