@@ -10,11 +10,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
+import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
@@ -46,7 +46,7 @@ public class IndexFragment extends TropesFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.index_as_article) {
-			application.loadArticle(this.trueUrl);
+            ((BaseActivity) getActivity()).loadArticle(trueUrl);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -55,6 +55,9 @@ public class IndexFragment extends TropesFragment {
 
     @Override
     public void onLoadFinish(Object result) {
+        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
+        rl.setVisibility(RelativeLayout.GONE);
+
         TropesIndex index = (TropesIndex) result;
 
         setupIndex(index);

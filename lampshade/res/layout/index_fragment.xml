@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lv_tropes"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-</ListView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+    <!-- Relative layout is a fix for pre ICS devices, otherwise it will be stretched -->
+    <RelativeLayout android:id="@+id/rl_progress_wrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+        <ProgressBar
+                android:id="@+id/pb_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                style="?android:attr/progressBarStyleLarge"
+                android:visibility="visible" />
+    </RelativeLayout>
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/lv_tropes"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" >
+    </ListView>
+
+</LinearLayout>
