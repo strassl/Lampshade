@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import com.actionbarsherlock.R;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
@@ -28,9 +29,19 @@ public class BaseActivity extends SherlockFragmentActivity {
 		String theme = getThemeName();
 		
 		if(theme.equalsIgnoreCase("HoloDark")) {
-			this.setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
+			setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
 		}
+        else if(theme.equalsIgnoreCase("HoloDarkActionBar")) {
+            setTheme(R.style.Theme_Sherlock_Light_DarkActionBar);
+        }
 	}
+
+    public Boolean isDarkActionBar() {
+        Boolean darkAB = false;
+        darkAB = getThemeName().contains("Dark");
+
+        return darkAB;
+    }
 
     public Boolean isDarkTheme() {
         Boolean isDark = false;

@@ -82,10 +82,12 @@
 	<string-array name="preference_theme_entries">
 		<item name="HoloLight">Holo Light</item>
 		<item name="HoloDark">Holo Dark</item>
+        <item name="HoloDarkActionBar">Holo Light with dark ActionBar</item>
 	</string-array>
 	<string-array name="preference_theme_values">
 		<item name="HoloLight">HoloLight</item>
 		<item name="HoloDark">HoloDark</item>
+        <item name="HoloDarkActionBar">HoloDarkActionBar</item>
 	</string-array>
 	
 	<string name="preference_font_size_title">Font size</string>

@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
@@ -114,7 +115,7 @@ public class ArticleFragment extends TropesFragment {
         wv.loadDataWithBaseURL("tvtropes.org", html, "text/html", "utf-8", null);
 
         // Fix background color for older devices because otherwise a white bar appears
-        if(application.isDarkTheme()) {
+        if(((BaseActivity) getActivity()).isDarkTheme()) {
             wv.setBackgroundColor(Color.BLACK);
         }
 
@@ -199,7 +200,7 @@ public class ArticleFragment extends TropesFragment {
 		String fontSizeStr = fontSize.toString() + "pt";
 		
 		TropesArticleSettings articleSettings;
-		if(application.isDarkTheme()) {
+		if(((BaseActivity) getActivity()).isDarkTheme()) {
 			articleSettings = new TropesArticleSettings(true);
 		}
 		else {
