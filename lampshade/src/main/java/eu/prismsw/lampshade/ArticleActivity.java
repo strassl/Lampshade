@@ -120,13 +120,13 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
             startActivity(new Intent(this, MainActivity.class));
 			return true;
 		} else if (item.getItemId() == R.id.refresh_article) {
-			application.loadPage(passedUrl);
+			loadPage(passedUrl);
 			return true;
 		} else if (item.getItemId() == R.id.info_article) {
 			showDialogFragment(createInfoDialog(articleInfo.title, trueUrl, passedUrl));
 			return true;
 		} else if (item.getItemId() == R.id.browser_article) {
-			application.loadWebsite(this.trueUrl);
+			loadWebsite(this.trueUrl);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -185,12 +185,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	}
 
 	public void onLinkClicked(Uri url) {
-		if(TropesHelper.isTropesLink(url)) {
-			application.loadPage(url);
-        }
-		else {
-			application.loadWebsite(url);
-		}
+        loadPage(url);
 	}
 
 	public void onLoadStart() {

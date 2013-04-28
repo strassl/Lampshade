@@ -71,7 +71,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 	}
 
 	public void onLinkClicked(Uri url) {
-		application.loadPage(url);
+		loadPage(url);
 	}
 
 	public void onLoadStart() {

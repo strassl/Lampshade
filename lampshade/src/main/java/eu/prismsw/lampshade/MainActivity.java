@@ -69,9 +69,9 @@ public class MainActivity extends BaseActivity {
     public void clickHandler(View v) {
     	if(v != null) {
 			if (v.getId() == R.id.btn_random) {
-				application.loadPage(Uri.parse(TropesHelper.randomUrl));
+				loadPage(Uri.parse(TropesHelper.randomUrl));
 			} else if (v.getId() == R.id.btn_tropes) {
-				application.loadPage(Uri.parse(TropesHelper.tropesUrl));
+				loadPage(Uri.parse(TropesHelper.tropesUrl));
 			} else if (v.getId() == R.id.btn_saved) {
                 startActivity(new Intent(this, SavedArticlesActivity.class));
 			} else if (v.getId() == R.id.btn_favorites) {

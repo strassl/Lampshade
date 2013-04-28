@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
 import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
+import eu.prismsw.lampshade.fragments.IndexFragment;
 import eu.prismsw.lampshade.fragments.SavedArticlesFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
@@ -15,6 +17,7 @@ import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.providers.ArticleProvider;
 import eu.prismsw.tools.android.UIFunctions;
+import eu.prismsw.tropeswrapper.TropesHelper;
 
 public class SavedArticlesActivity extends BaseActivity implements OnLoadListener, OnSaveListener, OnRemoveListener, OnInteractionListener {
     SavedArticlesFragment listFragment;
@@ -74,12 +77,29 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 
     @Override
     public void onLinkClicked(Uri url) {
-        if(isTablet()) {
-            ArticleFragment f = ArticleFragment.newInstance(url);
-            getSupportFragmentManager().beginTransaction().replace(R.id.article_container, f).commit();
+        loadPage(url);
+    }
+
+    @Override
+    public void loadPage(Uri url) {
+        if(TropesHelper.isTropesLink(url)) {
+            if(isTablet()) {
+                android.util.Log.i("lampshade", "isTablet");
+                SherlockFragment f;
+                if(TropesHelper.isIndex(TropesHelper.titleFromUrl(url))) {
+                    f = IndexFragment.newInstance(url);
+                }
+                else {
+                    f = ArticleFragment.newInstance(url);
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.article_container, f).commit();
+            }
+            else {
+                super.loadPage(url);
+            }
         }
         else {
-            application.loadArticle(url);
+            loadWebsite(url);
         }
     }
 
