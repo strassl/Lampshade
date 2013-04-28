@@ -15,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.TropesApplication;
-import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
@@ -263,22 +262,12 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     }
 
     @Override
-    public void onRemoveSuccess(ArticleItem item) {
-        removeListener.onRemoveSuccess(item);
+    public void onRemoveFinish(int affected) {
+        removeListener.onRemoveFinish(affected);
     }
 
     @Override
-    public void onRemoveError() {
-        removeListener.onRemoveError();
-    }
-
-    @Override
-    public void onSaveSuccess(ArticleItem item) {
-        saveListener.onSaveSuccess(item);
-    }
-
-    @Override
-    public void onSaveError() {
-        saveListener.onSaveError();
+    public void onSaveFinish(Uri url) {
+        saveListener.onSaveFinish(url);
     }
 }

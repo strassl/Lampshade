@@ -7,19 +7,19 @@ import android.net.Uri;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 public class ProviderHelper {
-    public static void saveArticle(ContentResolver resolver, Uri contentUri, Uri url) {
+    public static Uri saveArticle(ContentResolver resolver, Uri contentUri, Uri url) {
         ContentValues values = new ContentValues();
         values.put(SavedArticlesHelper.ARTICLES_COLUMN_TITLE, TropesHelper.titleFromUrl(url));
         values.put(SavedArticlesHelper.ARTICLES_COLUMN_URL, url.toString());
-        resolver.insert(contentUri, values);
+        return resolver.insert(contentUri, values);
     }
 
-    public static void deleteArticle(ContentResolver resolver, Uri contentUri, Uri url) {
-        resolver.delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_URL + "=?", new String[]{url.toString()});
+    public static int deleteArticle(ContentResolver resolver, Uri contentUri, Uri url) {
+        return resolver.delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_URL + "=?", new String[]{url.toString()});
     }
 
-    public static void deleteArticle(ContentResolver resolver, Uri contentUri, String id) {
-        resolver.delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_ID + "=?", new String[]{ id });
+    public static int deleteArticle(ContentResolver resolver, Uri contentUri, String id) {
+        return resolver.delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_ID + "=?", new String[]{ id });
     }
 
     public static boolean articleExists(ContentResolver resolver, Uri contentUrl, Uri url) {

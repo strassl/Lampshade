@@ -78,35 +78,35 @@ public class SavedArticlesFragment extends SherlockFragment {
         Cursor articles = ProviderHelper.getArticles(getActivity().getContentResolver(), contentUri);
         CursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, articles, uiBindFrom, uiBindTo, 0);
         lv.setAdapter(adapter);
+        setUpListView(lv);
+    }
 
+    public void setUpListView(ListView lv) {
         lv.setOnItemClickListener(new OnItemClickListener() {
-
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Remove the article from the database and load it
                 ListView lv = getListView();
                 ArticleItem item = new ArticleItem((Cursor) lv.getAdapter().getItem(position));
-                ProviderHelper.deleteArticle(getActivity().getContentResolver(), contentUri, item.url);
+                int affected = ProviderHelper.deleteArticle(getActivity().getContentResolver(), contentUri, item.url);
+                removeListener.onRemoveFinish(affected);
                 interactionListener.onLinkClicked(item.url);
             }
-
         });
 
         registerForContextMenu(lv);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-
             @Override
             public boolean onItemLongClick(AdapterView <?> parent, View view, int position, long id) {
                 ArticleItem item = new ArticleItem((Cursor) getListView().getAdapter().getItem(position));
                 new RemoveActionMode(getSherlockActivity(), contentUri).startActionMode(item.url);
                 return true;
             }
-
         });
     }
 
-    private ListView getListView() {
+    public ListView getListView() {
         ListView lv = (ListView) getSherlockActivity().findViewById(R.id.lv_saved_articles);
         return lv;
     }

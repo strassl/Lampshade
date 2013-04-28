@@ -8,7 +8,6 @@ public class FavoriteArticlesActivity extends SavedArticlesActivity {
     public void addFragments() {
         listFragment = FavoriteArticlesFragment.newInstance();
 
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, listFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.list_container, listFragment).commit();
     }
-
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
@@ -16,7 +15,6 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.providers.ArticleProvider;
-import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 public class SavedArticlesActivity extends BaseActivity implements OnLoadListener, OnSaveListener, OnRemoveListener, OnInteractionListener {
@@ -84,7 +82,6 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     public void loadPage(Uri url) {
         if(TropesHelper.isTropesLink(url)) {
             if(isTablet()) {
-                android.util.Log.i("lampshade", "isTablet");
                 SherlockFragment f;
                 if(TropesHelper.isIndex(TropesHelper.titleFromUrl(url))) {
                     f = IndexFragment.newInstance(url);
@@ -116,26 +113,14 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     }
 
     @Override
-    public void onRemoveSuccess(ArticleItem item) {
+    public void onRemoveFinish(int affected) {
         invalidateOptionsMenu();
         listFragment.reloadList();
-        UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
     }
 
     @Override
-    public void onRemoveError() {
-        UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
-    }
-
-    @Override
-    public void onSaveSuccess(ArticleItem item) {
+    public void onSaveFinish(Uri url) {
         invalidateOptionsMenu();
         listFragment.reloadList();
-        UIFunctions.showToast(getResources().getString(R.string.article_saved) + item.title, this);
-    }
-
-    @Override
-    public void onSaveError() {
-        UIFunctions.showToast(getResources().getString(R.string.article_save_failed), this);
     }
 }

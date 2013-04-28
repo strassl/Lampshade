@@ -7,13 +7,12 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Wraps an ActionMode for selected links (that can be saved) into a nice handy package **/
-public class SaveActionMode implements OnSaveListener {
+public class SaveActionMode {
 	public SherlockFragmentActivity activity; 
 	
 	public ActionMode mActionMode;
@@ -97,18 +96,8 @@ public class SaveActionMode implements OnSaveListener {
         ContentValues values = new ContentValues();
         values.put(SavedArticlesHelper.ARTICLES_COLUMN_TITLE, TropesHelper.titleFromUrl(url));
         values.put(SavedArticlesHelper.ARTICLES_COLUMN_URL, url.toString());
-        activity.getContentResolver().insert(contentUri, values);
-	}
-	
-	@Override
-	public void onSaveSuccess(ArticleItem item) {
-		OnSaveListener saveListener = (OnSaveListener) activity;
-		saveListener.onSaveSuccess(item);
-	}
-
-	@Override
-	public void onSaveError() {
-		OnSaveListener saveListener = (OnSaveListener) activity;
-		saveListener.onSaveError();
+        Uri newUrl = activity.getContentResolver().insert(contentUri, values);
+        OnSaveListener saveListener = (OnSaveListener) activity;
+        saveListener.onSaveFinish(newUrl);
 	}
 }

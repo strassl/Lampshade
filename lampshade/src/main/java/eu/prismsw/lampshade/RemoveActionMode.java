@@ -6,13 +6,12 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Wraps an ActionMode for selected links (that can be removed) into a nice handy package **/
-public class RemoveActionMode implements OnRemoveListener {
+public class RemoveActionMode {
 	public SherlockFragmentActivity activity; 
 	
 	public ActionMode mActionMode;
@@ -83,18 +82,8 @@ public class RemoveActionMode implements OnRemoveListener {
 	};
 	
 	private void removeArticle(Uri url) {
-        activity.getContentResolver().delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_URL + "=?", new String[] {url.toString()});
-	}
-
-	@Override
-	public void onRemoveSuccess(ArticleItem item) {
-		OnRemoveListener removeListener = (OnRemoveListener) activity;
-		removeListener.onRemoveSuccess(item);
-	}
-
-	@Override
-	public void onRemoveError() {
-		OnRemoveListener removeListener = (OnRemoveListener) activity;
-		removeListener.onRemoveError();
+        int affected = activity.getContentResolver().delete(contentUri, SavedArticlesHelper.ARTICLES_COLUMN_URL + "=?", new String[] {url.toString()});
+        OnRemoveListener removeListener = (OnRemoveListener) activity;
+        removeListener.onRemoveFinish(affected);
 	}
 }

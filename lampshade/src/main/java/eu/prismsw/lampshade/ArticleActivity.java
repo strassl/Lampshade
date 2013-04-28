@@ -15,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
-import eu.prismsw.lampshade.database.ArticleItem;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
@@ -26,7 +25,6 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.providers.ArticleProvider;
-import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
@@ -221,24 +219,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	}
 
 	@Override
-	public void onRemoveSuccess(ArticleItem item) {
+	public void onRemoveFinish(int affected) {
 		invalidateOptionsMenu();
-		UIFunctions.showToast(getResources().getString(R.string.article_removed) + item.title, this);
 	}
 
 	@Override
-	public void onRemoveError() {
-		UIFunctions.showToast(getResources().getString(R.string.article_remove_failed),  this);
-	}
-
-	@Override
-	public void onSaveSuccess(ArticleItem item) {
+	public void onSaveFinish(Uri url) {
 		invalidateOptionsMenu();
-		UIFunctions.showToast(getResources().getString(R.string.article_saved) + item.title, this);
-	}
-
-	@Override
-	public void onSaveError() {
-		UIFunctions.showToast(getResources().getString(R.string.article_save_failed), this);
 	}
 }
