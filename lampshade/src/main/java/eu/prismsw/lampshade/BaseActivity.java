@@ -1,9 +1,11 @@
 package eu.prismsw.lampshade;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,13 +25,26 @@ public class BaseActivity extends SherlockFragmentActivity {
 	}
 	
 	public void switchTheme() {
-		String theme = application.getThemeName();
+		String theme = getThemeName();
 		
 		if(theme.equalsIgnoreCase("HoloDark")) {
 			this.setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
 		}
 	}
-	
+
+    public Boolean isDarkTheme() {
+        Boolean isDark = false;
+        isDark = getThemeName().equalsIgnoreCase("HoloDark");
+
+        return isDark;
+    }
+
+    public String getThemeName() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = preferences.getString("preference_theme", "HoloLight");
+        return theme;
+    }
+
 	public void showDialogFragment(DialogFragment fragment) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 	    Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
