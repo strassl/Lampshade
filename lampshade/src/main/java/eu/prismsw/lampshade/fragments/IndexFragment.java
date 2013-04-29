@@ -135,6 +135,7 @@ public class IndexFragment extends TropesFragment {
 
 	@Override
 	public void loadTropes(Uri url) {
-		new LoadIndexTask(this).execute(url);
+		loadTask = new LoadIndexTask(this);
+        loadTask.execute(url);
 	}
 }

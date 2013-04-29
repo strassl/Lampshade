@@ -45,6 +45,8 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	OnInteractionListener interactionListener;
     OnSaveListener saveListener;
     OnRemoveListener removeListener;
+
+    LoadTropesTask loadTask;
 	
 	TropesArticleInfo articleInfo;
 	Uri passedUrl;
@@ -81,6 +83,14 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     public void onStart() {
         super.onStart();
         loadTropes(this.trueUrl);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(loadTask != null && !loadTask.isCancelled()) {
+            loadTask.cancel(true);
+        }
     }
 
 
@@ -312,7 +322,8 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     }
 	
 	public void loadTropes(Uri url) {
-		new LoadTropesTask(this).execute(url);
+		loadTask = new LoadTropesTask(this);
+        loadTask.execute(url);
 	}
 
 	public Uri getTrueUrl() {
@@ -337,6 +348,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 
     @Override
     public void onLoadFinish(Object result) {
+        loadTask = null;
         loadListener.onLoadFinish(result);
     }
 

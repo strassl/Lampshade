@@ -221,6 +221,7 @@ public class ArticleFragment extends TropesFragment {
 		articleSettings.toggleSpoilerOnHover = preferences.getBoolean("preference_spoiler_hover", false);
 		
 		
-		new LoadArticleTask(this, articleSettings).execute(url);
+		loadTask = new LoadArticleTask(this, articleSettings);
+        loadTask.execute(url);
 	}
 }
