@@ -118,9 +118,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		} else if (item.getItemId() == R.id.refresh_article) {
 			loadPage(passedUrl);
 			return true;
-		} else if (item.getItemId() == R.id.browser_article) {
-			loadWebsite(this.trueUrl);
-			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}

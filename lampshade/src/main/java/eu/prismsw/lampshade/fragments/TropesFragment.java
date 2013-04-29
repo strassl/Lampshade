@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.database.ProviderHelper;
@@ -99,12 +100,16 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             }
             return true;
         }
-        else if (item.getItemId() == R.id.info_article) {
+        else if (id == R.id.info_article) {
             showInfoDialog();
             return true;
         }
         else if(id == R.id.clipboard_article) {
             copyUrlToClipboard(this.trueUrl);
+            return true;
+        }
+        else if (id == R.id.browser_article) {
+            ((BaseActivity) getActivity()).loadWebsite(trueUrl);
             return true;
         }
         else if (id == R.id.subpages_article) {
