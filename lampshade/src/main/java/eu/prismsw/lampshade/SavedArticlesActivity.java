@@ -113,6 +113,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     public void onLoadFinish(Object result) {
         TropesArticleInfo info = (TropesArticleInfo) result;
         getActionBar().setTitle(info.title);
+        listFragment.reloadList();
     }
 
     @Override
