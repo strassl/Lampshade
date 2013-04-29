@@ -3,11 +3,8 @@ package eu.prismsw.lampshade;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -143,26 +140,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		TropesArticleInfo info = (TropesArticleInfo) result;
 		this.articleInfo = info;
 		this.trueUrl = info.url;
-		
-		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		Boolean historyEnabled = preferences.getBoolean("preference_history_enable", true);
-		
-		if(historyEnabled) {
-			// Add the page to the list of recent articles
-
-            Cursor c = ProviderHelper.getArticles(getContentResolver(), ArticleProvider.RECENT_URI);
-
-            // Prevent the list from growing infinitely
-			if(c.getCount() > TropesApplication.maxRecentArticles) {
-                c.moveToFirst();
-                long id = c.getLong(0);
-                c.close();
-                ProviderHelper.deleteArticle(getContentResolver(), ArticleProvider.RECENT_URI, String.valueOf(id));
-			}
-
-            ProviderHelper.saveArticle(getContentResolver(), ArticleProvider.RECENT_URI, trueUrl);
-		}
 		
 		getSupportActionBar().setTitle(info.title);
 	}

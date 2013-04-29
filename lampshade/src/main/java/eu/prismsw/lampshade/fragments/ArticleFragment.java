@@ -17,7 +17,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
-import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -28,7 +27,6 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticle;
-import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesArticleSettings;
 
 /** Shows an TvTropes article in a WebView **/
@@ -101,19 +99,10 @@ public class ArticleFragment extends TropesFragment {
 
     @Override
     public void onLoadFinish(Object result) {
-        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
-        rl.setVisibility(RelativeLayout.GONE);
+        super.onLoadFinish(result);
 
         TropesArticle article = (TropesArticle) result;
         setupArticle(article);
-
-        TropesArticleInfo info = new TropesArticleInfo(article.title, article.url, article.subpages);
-        trueUrl = article.url;
-        articleInfo = info;
-
-        setShareIntent(trueUrl);
-
-        loadListener.onLoadFinish(info);
     }
 
 

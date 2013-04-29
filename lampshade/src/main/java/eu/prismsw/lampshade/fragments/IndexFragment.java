@@ -10,7 +10,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -63,18 +62,10 @@ public class IndexFragment extends TropesFragment {
 
     @Override
     public void onLoadFinish(Object result) {
-        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
-        rl.setVisibility(RelativeLayout.GONE);
+        super.onLoadFinish(result);
 
         TropesIndex index = (TropesIndex) result;
-
         setupIndex(index);
-
-        TropesArticleInfo info = new TropesArticleInfo(index.title, index.url, index.subpages);
-        trueUrl = index.url;
-        setShareIntent(trueUrl);
-
-        loadListener.onLoadFinish(info);
     }
 
     private void setupIndex(TropesIndex index) {

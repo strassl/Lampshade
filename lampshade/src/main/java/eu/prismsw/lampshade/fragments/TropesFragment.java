@@ -5,8 +5,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.ClipboardManager;
@@ -14,6 +17,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -30,6 +34,7 @@ import eu.prismsw.lampshade.providers.ArticleProvider;
 import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
+import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
@@ -348,8 +353,36 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 
     @Override
     public void onLoadFinish(Object result) {
+        TropesArticle article = (TropesArticle) result;
+        articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
+        trueUrl = articleInfo.url;
         loadTask = null;
-        loadListener.onLoadFinish(result);
+
+        setShareIntent(trueUrl);
+
+        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
+        rl.setVisibility(RelativeLayout.GONE);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean historyEnabled = preferences.getBoolean("preference_history_enable", true);
+
+        if(historyEnabled) {
+            // Add the page to the list of recent articles
+
+            Cursor c = ProviderHelper.getArticles(getActivity().getContentResolver(), ArticleProvider.RECENT_URI);
+
+            // Prevent the list from growing infinitely
+            if(c.getCount() > TropesApplication.maxRecentArticles) {
+                c.moveToFirst();
+                long id = c.getLong(0);
+                c.close();
+                ProviderHelper.deleteArticle(getActivity().getContentResolver(), ArticleProvider.RECENT_URI, String.valueOf(id));
+            }
+
+            ProviderHelper.saveArticle(getActivity().getContentResolver(), ArticleProvider.RECENT_URI, trueUrl);
+        }
+
+        loadListener.onLoadFinish(articleInfo);
     }
 
     @Override

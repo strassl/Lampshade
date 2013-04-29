@@ -1,9 +1,6 @@
 package eu.prismsw.tropeswrapper;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.net.Uri;
 import android.util.Log;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -11,7 +8,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.net.Uri;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Wrapper for a TvTropes article */
 public class TropesArticle {
