@@ -50,6 +50,7 @@ public class TropesArticle {
 		this.subpages = getSubpages(doc);
 		
 		inlineJS(this.content, ressources.mainJS);
+        inlineJS(content, ressources.noteJS);
 		
 		manipulateStyle(this.content, settings);
 	}
