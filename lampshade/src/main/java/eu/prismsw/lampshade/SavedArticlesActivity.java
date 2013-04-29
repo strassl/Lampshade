@@ -3,6 +3,7 @@ package eu.prismsw.lampshade;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
@@ -89,7 +90,10 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
                 else {
                     f = ArticleFragment.newInstance(url);
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.article_container, f).commit();
+                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+                t.replace(R.id.article_container, f);
+                t.addToBackStack(null);
+                t.commit();
             }
             else {
                 super.loadPage(url);

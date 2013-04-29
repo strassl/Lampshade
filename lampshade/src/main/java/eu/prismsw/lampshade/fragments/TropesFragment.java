@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.ClipboardManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,16 +60,21 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 		this.setHasOptionsMenu(true);
 		
 		if(savedInstanceState != null) {
-			this.passedUrl = savedInstanceState.getParcelable(PASSED_URL);
-			this.trueUrl = savedInstanceState.getParcelable(TRUE_URL);
+			passedUrl = savedInstanceState.getParcelable(PASSED_URL);
+			trueUrl = savedInstanceState.getParcelable(TRUE_URL);
 		}
 		else {
-			this.passedUrl = getArguments().getParcelable(PASSED_URL);
-			this.trueUrl = getArguments().getParcelable(TRUE_URL);
+			passedUrl = getArguments().getParcelable(PASSED_URL);
+			trueUrl = getArguments().getParcelable(TRUE_URL);
 		}
 
-        loadTropes(this.trueUrl);
 	}
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadTropes(this.trueUrl);
+    }
 
 
     @Override
@@ -90,6 +97,10 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             else {
                 favoriteArticle(trueUrl);
             }
+            return true;
+        }
+        else if (item.getItemId() == R.id.info_article) {
+            showInfoDialog();
             return true;
         }
         else if(id == R.id.clipboard_article) {
@@ -129,8 +140,8 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// We need to save the true url, so we end up on the same page when the article is restored
-		outState.putParcelable(PASSED_URL, this.passedUrl);
-		outState.putParcelable(TRUE_URL, this.trueUrl);
+		outState.putParcelable(PASSED_URL,passedUrl);
+		outState.putParcelable(TRUE_URL, trueUrl);
 	}
 	
 	@Override
@@ -178,6 +189,23 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
         Dialog dialog = builder.create();
         dialog.show();
     }
+
+    private void showInfoDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        DialogFragment dialog = createInfoDialog(articleInfo.title, trueUrl, passedUrl);
+        dialog.show(fm, "dialog");
+    }
+
+    private DialogFragment createInfoDialog(String title, Uri trueUrl, Uri passedUrl) {
+        String info = "";
+        info += "Title: " + title + "<br /><br />";
+        info += "Url: " + trueUrl.toString() + "<br /><br />";
+        info += "Passed Url: " + passedUrl.toString();
+
+        AlertDialogFragment f = AlertDialogFragment.newInstance("Info", info);
+        return f;
+    }
+
 
     private void showLoadingFailedDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

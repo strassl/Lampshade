@@ -83,11 +83,11 @@ public class ArticleFragment extends TropesFragment {
 	}
     
     private void showAllSpoilers() {
-        	WebView wv = (WebView) getView().findViewById(R.id.wv_content);
-        	
-        	// Javascript function, find all .spoiler elements and calls showSpoiler on them
-        	String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { toggleSpoiler(spoilers[i]); } }";
-        	wv.loadUrl("javascript:(" + showSpoilers + ")()");
+        WebView wv = (WebView) getView().findViewById(R.id.wv_content);
+
+        // Javascript function, find all .spoiler elements and calls showSpoiler on them
+        String showSpoilers = "function() { var spoilers = document.getElementsByClassName('spoiler'); for(i = 0; i < spoilers.length; i++) { toggleSpoiler(spoilers[i]); } }";
+        wv.loadUrl("javascript:(" + showSpoilers + ")()");
     }
 
     @Override
