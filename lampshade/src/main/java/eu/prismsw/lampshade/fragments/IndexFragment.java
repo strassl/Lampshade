@@ -50,7 +50,10 @@ public class IndexFragment extends TropesFragment {
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.index_as_article) {
+        if(!loadingIsFinished()) {
+            return true;
+        }
+        else if (item.getItemId() == R.id.index_as_article) {
             ((BaseActivity) getActivity()).loadArticle(trueUrl);
 			return true;
 		} else {

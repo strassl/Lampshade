@@ -88,7 +88,10 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
         Integer id = item.getItemId();
         getActivity().supportInvalidateOptionsMenu();
 
-        if (id == R.id.random_article) {
+        if(!loadingIsFinished()) {
+            return true;
+        }
+        else if (id == R.id.random_article) {
             ((BaseActivity) getActivity()).loadPage(passedUrl);
             return true;
         }
@@ -298,6 +301,14 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
         removeListener.onRemoveFinish(affected);
     }
 
+    public boolean loadingIsFinished() {
+        if(articleInfo != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 	
 	public void loadTropes(Uri url) {
 		new LoadTropesTask(this).execute(url);

@@ -61,7 +61,10 @@ public class ArticleFragment extends TropesFragment {
 	@TargetApi(11)
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.article_find) {
+        if(!loadingIsFinished()) {
+            return true;
+        }
+        else if (item.getItemId() == R.id.article_find) {
 			WebView wv = (WebView) getView().findViewById(R.id.wv_content);
 			wv.showFindDialog("", true);
 			return true;
