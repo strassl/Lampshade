@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/article_find"
-          android:title="@string/article_find"
-          android:showAsAction="collapseActionView" />
-
-    <item android:id="@+id/article_show_spoilers"
-          android:title="@string/article_show_spoilers"
-          android:showAsAction="collapseActionView" />
-
     <item android:id="@+id/save_article"
           android:icon="@drawable/ic_menu_save_light"
           android:title="@string/article_save"
@@ -17,6 +9,18 @@
     <item android:id="@+id/favorite_article"
           android:title="@string/article_favorite"
           android:showAsAction="never" />
+
+    <item android:id="@+id/info_article"
+          android:title="@string/article_info"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/article_find"
+          android:title="@string/article_find"
+          android:showAsAction="collapseActionView" />
+
+    <item android:id="@+id/article_show_spoilers"
+          android:title="@string/article_show_spoilers"
+          android:showAsAction="collapseActionView" />
 
     <item android:id="@+id/clipboard_article"
           android:title="@string/article_clipboard"

@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -16,7 +15,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import eu.prismsw.lampshade.database.ProviderHelper;
-import eu.prismsw.lampshade.fragments.AlertDialogFragment;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
 import eu.prismsw.lampshade.fragments.TropesFragment;
@@ -120,9 +118,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		} else if (item.getItemId() == R.id.refresh_article) {
 			loadPage(passedUrl);
 			return true;
-		} else if (item.getItemId() == R.id.info_article) {
-			showDialogFragment(createInfoDialog(articleInfo.title, trueUrl, passedUrl));
-			return true;
 		} else if (item.getItemId() == R.id.browser_article) {
 			loadWebsite(this.trueUrl);
 			return true;
@@ -131,17 +126,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		}
     }
     
-    private DialogFragment createInfoDialog(String title, Uri trueUrl, Uri passedUrl) {
-    		String info = "";
-    		info += "Title: " + articleInfo.title + "<br /><br />";
-    		info += "Url: " + trueUrl.toString() + "<br /><br />";
-    		info += "Passed Url: " + passedUrl.toString();
-    		
-			AlertDialogFragment f = AlertDialogFragment.newInstance("Info", info);
-			return f;
-    }
-    
-    
+
     @Override
     public Dialog onCreateDialog(int id) {
     	return onCreateDialog(id, null);
