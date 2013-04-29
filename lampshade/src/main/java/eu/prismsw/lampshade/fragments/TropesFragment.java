@@ -50,7 +50,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	Uri passedUrl;
 	Uri trueUrl;
 
-    ShareActionProvider shareProvider;
+    public ShareActionProvider shareProvider;
 	
 	public static TropesFragment newInstance(Uri url) {
 		TropesFragment f = new TropesFragment();
@@ -171,7 +171,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
         if(shareProvider != null) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, url);
+            intent.putExtra(Intent.EXTRA_TEXT, url.toString());
             shareProvider.setShareIntent(intent);
         }
         else {
