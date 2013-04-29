@@ -13,7 +13,7 @@
         android:name=".TropesApplication"
         android:label="@string/app_name"
         android:hardwareAccelerated="true"
-        android:theme="@style/Theme.Sherlock.Light">
+        android:theme="@style/LampshadeLight">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/random_article"
+          android:icon="?attr/randomIcon"
+          android:title="@string/article_refresh"
+          android:showAsAction="always" />
+
+    <item android:id="@+id/save_article"
+          android:icon="?attr/saveIcon"
+          android:title="@string/article_save"
+          android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/favorite_article"
+          android:icon="?attr/favoriteIcon"
+          android:title="@string/article_favorite"
+          android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/info_article"
+          android:title="@string/article_info"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/article_find"
+          android:title="@string/article_find"
+          android:showAsAction="collapseActionView" />
+
+    <item android:id="@+id/clipboard_article"
+          android:title="@string/article_clipboard"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/browser_article"
+          android:title="@string/article_browser"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/subpages_article"
+          android:title="@string/article_subpages"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/share_article"
+          android:title="@string/article_share"
+          android:showAsAction="never"
+          android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" />
+</menu>

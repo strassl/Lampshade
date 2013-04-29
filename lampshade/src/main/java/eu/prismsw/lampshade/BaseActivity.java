@@ -29,10 +29,10 @@ public class BaseActivity extends SherlockFragmentActivity {
 		String theme = getThemeName();
 		
 		if(theme.equalsIgnoreCase("HoloDark")) {
-			setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
+			setTheme(R.style.LampshadeDark);
 		}
         else if(theme.equalsIgnoreCase("HoloDarkActionBar")) {
-            setTheme(R.style.Theme_Sherlock_Light_DarkActionBar);
+            setTheme(R.style.LampshadeLightDarkActionBar);
         }
 	}
 

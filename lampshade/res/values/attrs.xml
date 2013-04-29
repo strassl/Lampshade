@@ -6,5 +6,13 @@
         <attr name="maxValue" format="integer"></attr>
         <attr name="units" format="string"></attr>
     </declare-styleable>
-    
+
+    <declare-styleable name="customAttrs">
+        <attr name="randomIcon" format="reference" />
+        <attr name="saveIcon" format="reference" />
+        <attr name="deleteIcon" format="reference" />
+        <attr name="favoriteIcon" format="reference" />
+        <attr name="unfavoriteIcon" format="reference" />
+    </declare-styleable>
+
 </resources>

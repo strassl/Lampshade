@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
@@ -32,7 +33,7 @@ import eu.prismsw.tropeswrapper.TropesArticleSettings;
 
 /** Shows an TvTropes article in a WebView **/
 public class ArticleFragment extends TropesFragment {
-	
+
 	public static ArticleFragment newInstance(Uri url) {
 		ArticleFragment f = new ArticleFragment();
 		Bundle bundle = new Bundle(2);
@@ -50,9 +51,13 @@ public class ArticleFragment extends TropesFragment {
 	
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.tropes_fragment_menu, menu);
     	inflater.inflate(R.menu.article_fragment_menu, menu);
+
+        MenuItem shareItem = menu.findItem(R.id.share_article);
+        shareProvider = (ShareActionProvider) shareItem.getActionProvider();
     }
-	
+
 	@TargetApi(11)
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -101,6 +106,8 @@ public class ArticleFragment extends TropesFragment {
         TropesArticleInfo info = new TropesArticleInfo(article.title, article.url, article.subpages);
         trueUrl = article.url;
         articleInfo = info;
+
+        setShareIntent(trueUrl);
 
         loadListener.onLoadFinish(info);
     }

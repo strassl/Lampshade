@@ -4,17 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.ClipboardManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.TropesApplication;
@@ -45,6 +48,8 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	TropesArticleInfo articleInfo;
 	Uri passedUrl;
 	Uri trueUrl;
+
+    ShareActionProvider shareProvider;
 	
 	public static TropesFragment newInstance(Uri url) {
 		TropesFragment f = new TropesFragment();
@@ -81,8 +86,13 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Integer id = item.getItemId();
+        getActivity().supportInvalidateOptionsMenu();
 
-        if (id == R.id.save_article) {
+        if (id == R.id.random_article) {
+            ((BaseActivity) getActivity()).loadPage(passedUrl);
+            return true;
+        }
+        else if (id == R.id.save_article) {
             if(ProviderHelper.articleExists(getActivity().getContentResolver(), ArticleProvider.SAVED_URI, trueUrl)) {
                 removeArticle(trueUrl);
             }
@@ -125,22 +135,47 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     public void onPrepareOptionsMenu(Menu menu) {
         if(trueUrl != null) {
             // Switch between Remove/Save
+            MenuItem saveItem = menu.findItem(R.id.save_article);
+            MenuItem favItem = menu.findItem(R.id.favorite_article);
             if(ProviderHelper.articleExists(getActivity().getContentResolver(), ArticleProvider.SAVED_URI, trueUrl)) {
-                menu.findItem(R.id.save_article).setTitle(R.string.article_remove);
+                saveItem.setTitle(R.string.article_remove);
+                saveItem.setIcon(attrToResId(R.attr.deleteIcon));
             }
             else {
-                menu.findItem(R.id.save_article).setTitle(R.string.article_save);
+                saveItem.setTitle(R.string.article_save);
+                saveItem.setIcon(attrToResId(R.attr.saveIcon));
             }
 
             if(ProviderHelper.articleExists(getActivity().getContentResolver(), ArticleProvider.FAV_URI, trueUrl)) {
-                menu.findItem(R.id.favorite_article).setTitle(R.string.article_unfavorite);
+                favItem.setTitle(R.string.article_unfavorite);
+                favItem.setIcon(attrToResId(R.attr.unfavoriteIcon));
             }
             else {
-                menu.findItem(R.id.favorite_article).setTitle(R.string.article_favorite);
+                favItem.setTitle(R.string.article_favorite);
+                favItem.setIcon(attrToResId(R.attr.favoriteIcon));
             }
         }
     }
-	
+
+    private int attrToResId(int attr) {
+        TypedValue typedValue= new TypedValue();
+        getActivity().getTheme().resolveAttribute(attr, typedValue, true);
+        return typedValue.resourceId;
+    }
+
+    public void setShareIntent(Uri url) {
+        if(shareProvider != null) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, url);
+            shareProvider.setShareIntent(intent);
+        }
+        else {
+            android.util.Log.e("lampshade", "shareProvider is null");
+        }
+    }
+
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -244,19 +279,23 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     }
 
     private void favoriteArticle(Uri url) {
-        ProviderHelper.saveArticle(getActivity().getContentResolver(), ArticleProvider.FAV_URI, url);
+        Uri newUrl = ProviderHelper.saveArticle(getActivity().getContentResolver(), ArticleProvider.FAV_URI, url);
+        saveListener.onSaveFinish(newUrl);
     }
 
     private void unfavoriteArticle(Uri url) {
-        ProviderHelper.deleteArticle(getActivity().getContentResolver(), ArticleProvider.FAV_URI, url);
+        int affected = ProviderHelper.deleteArticle(getActivity().getContentResolver(), ArticleProvider.FAV_URI, url);
+        removeListener.onRemoveFinish(affected);
     }
 
     private void saveArticle(Uri url) {
-        ProviderHelper.saveArticle(getActivity().getContentResolver(), ArticleProvider.SAVED_URI, url);
+        Uri newUrl = ProviderHelper.saveArticle(getActivity().getContentResolver(), ArticleProvider.SAVED_URI, url);
+        saveListener.onSaveFinish(newUrl);
     }
 
     private void removeArticle(Uri url) {
-        ProviderHelper.deleteArticle(getActivity().getContentResolver(), ArticleProvider.SAVED_URI, url);
+        int affected = ProviderHelper.deleteArticle(getActivity().getContentResolver(), ArticleProvider.SAVED_URI, url);
+        removeListener.onRemoveFinish(affected);
     }
 
 	

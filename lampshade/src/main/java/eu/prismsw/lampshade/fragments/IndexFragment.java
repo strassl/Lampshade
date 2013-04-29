@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
@@ -40,7 +41,11 @@ public class IndexFragment extends TropesFragment {
 	
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    	inflater.inflate(R.menu.index_fragment_menu, menu);
+        inflater.inflate(R.menu.tropes_fragment_menu, menu);
+        inflater.inflate(R.menu.index_fragment_menu, menu);
+
+        MenuItem shareItem = menu.findItem(R.id.share_article);
+        shareProvider = (ShareActionProvider) shareItem.getActionProvider();
     }
 	
     @Override
@@ -63,6 +68,9 @@ public class IndexFragment extends TropesFragment {
         setupIndex(index);
 
         TropesArticleInfo info = new TropesArticleInfo(index.title, index.url, index.subpages);
+        trueUrl = index.url;
+        setShareIntent(trueUrl);
+
         loadListener.onLoadFinish(info);
     }
 

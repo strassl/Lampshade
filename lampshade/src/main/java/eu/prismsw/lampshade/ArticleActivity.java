@@ -11,9 +11,7 @@ import android.preference.PreferenceManager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
@@ -41,8 +39,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 	
 	SaveActionMode saveActionMode;
 	RemoveActionMode removeActionMode;
-	ShareActionProvider shareProvider;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,23 +84,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 			}
 		}
 	}
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getSupportMenuInflater();
-    	// Depending on the theme, we have to change the color of the menu icons (light/dark)
-    	if(isDarkActionBar()) {
-	    	inflater.inflate(R.menu.article_menu_dark, menu);
-    	}
-    	else {
-	    	inflater.inflate(R.menu.article_menu_light, menu);
-    	}
-    	
-    	MenuItem shareItem = menu.findItem(R.id.share_article);
-    	shareProvider = (ShareActionProvider) shareItem.getActionProvider();
-        return true;
-    }
-    
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	return super.onPrepareOptionsMenu(menu);
@@ -114,9 +95,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             startActivity(new Intent(this, MainActivity.class));
-			return true;
-		} else if (item.getItemId() == R.id.refresh_article) {
-			loadPage(passedUrl);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -140,16 +118,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
     	return dialog;
     }
     
-    /** Sets the share intent, should only be called after the true url is known **/
-    private void setShareIntent() {
-    	if(shareProvider != null) {
-	    	Intent intent = new Intent(Intent.ACTION_SEND);
-	    	intent.setType("text/plain");
-	    	intent.putExtra(Intent.EXTRA_TEXT, trueUrl.toString());
-	    	shareProvider.setShareIntent(intent);
-    	}
-    }
-
 
 	public void onLinkSelected(Uri url) {
 		if(ProviderHelper.articleExists(getContentResolver(), ArticleProvider.SAVED_URI, url)) {
@@ -197,7 +165,6 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		}
 		
 		getSupportActionBar().setTitle(info.title);
-		setShareIntent();
 	}
 
 	@Override

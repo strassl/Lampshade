@@ -46,7 +46,7 @@
 	<string name="article_title">Title</string>
 	<string name="article_content">Content</string>
 	<string name="article_refresh">Refresh</string>
-	<string name="article_remove">Remove article</string>
+	<string name="article_remove">Remove</string>
 	<string name="article_save">Save</string>
 	<string name="article_favorite">Favorite</string>
 	<string name="article_unfavorite">Un-favorite</string>
@@ -82,7 +82,7 @@
 	<string-array name="preference_theme_entries">
 		<item name="HoloLight">Holo Light</item>
 		<item name="HoloDark">Holo Dark</item>
-        <item name="HoloDarkActionBar">Holo Light with dark ActionBar</item>
+        <item name="HoloDarkActionBar">Holo Light/Dark ActionBar</item>
 	</string-array>
 	<string-array name="preference_theme_values">
 		<item name="HoloLight">HoloLight</item>
