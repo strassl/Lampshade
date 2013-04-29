@@ -31,6 +31,7 @@ import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesHelper;
 
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             return true;
         }
         else if (id == R.id.random_article) {
-            ((BaseActivity) getActivity()).loadPage(passedUrl);
+            ((BaseActivity) getActivity()).loadPage(Uri.parse(TropesHelper.randomUrl));
             return true;
         }
         else if (id == R.id.save_article) {

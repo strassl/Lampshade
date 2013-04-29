@@ -45,7 +45,7 @@
 	<!-- Article Activity -->
 	<string name="article_title">Title</string>
 	<string name="article_content">Content</string>
-	<string name="article_refresh">Refresh</string>
+	<string name="article_random">Random</string>
 	<string name="article_remove">Remove</string>
 	<string name="article_save">Save</string>
 	<string name="article_favorite">Favorite</string>

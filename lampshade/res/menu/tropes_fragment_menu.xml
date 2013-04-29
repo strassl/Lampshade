@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/random_article"
           android:icon="?attr/randomIcon"
-          android:title="@string/article_refresh"
+          android:title="@string/article_random"
           android:showAsAction="always" />
 
     <item android:id="@+id/save_article"
