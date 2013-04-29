@@ -53,14 +53,8 @@ public class SaveActionMode {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			
-			// Switch, depending on the theme color, to the light or dark icons
-			if(((BaseActivity) activity).isDarkActionBar()) {
-		        inflater.inflate(R.menu.article_action_menu_dark, menu);
-			}
-			else {
-		        inflater.inflate(R.menu.article_action_menu_light, menu);
-			}
-			
+            inflater.inflate(R.menu.save_action_menu, menu);
+
 			// Set the ActionMode title
 			if(selectedLink != null) {
 				if(TropesHelper.isTropesLink(selectedLink)) {

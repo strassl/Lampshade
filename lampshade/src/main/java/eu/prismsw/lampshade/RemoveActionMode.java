@@ -47,12 +47,8 @@ public class RemoveActionMode {
 		
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			if(((BaseActivity) activity).isDarkActionBar()) {
-		        inflater.inflate(R.menu.saved_action_menu_dark, menu);
-			}
-			else {
-		        inflater.inflate(R.menu.saved_action_menu_light, menu);
-			}
+
+            inflater.inflate(R.menu.remove_action_menu, menu);
 			if(selectedUrl != null) {
 				if(TropesHelper.isTropesLink(selectedUrl)) {
 					mode.setTitle(TropesHelper.titleFromUrl(selectedUrl));
