@@ -16,6 +16,7 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.providers.ArticleProvider;
+import eu.prismsw.tropeswrapper.TropesArticleInfo;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 public class SavedArticlesActivity extends BaseActivity implements OnLoadListener, OnSaveListener, OnRemoveListener, OnInteractionListener {
@@ -110,6 +111,8 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
 
     @Override
     public void onLoadFinish(Object result) {
+        TropesArticleInfo info = (TropesArticleInfo) result;
+        getActionBar().setTitle(info.title);
     }
 
     @Override
