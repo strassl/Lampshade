@@ -3,7 +3,7 @@
     <!-- About -->
     <string name="app_name">Lampshade</string>
     <string name="app_description">A TvTropes wrapper</string>
-    <string name="about_copyright">Copyright © 2012 Simon Strassl\n Released under the <a href="https://www.gnu.org/licenses/gpl.txt">GPL</a></string>
+    <string name="about_copyright">Copyright © 2012 Simon Strassl\nReleased under the <a href="https://www.gnu.org/licenses/gpl.txt">GPL</a></string>
     <string name="about_links">Source code available on <a href="https://github.com/prismsw/Lampshade">Github</a>\nWebsite at <a href="http://prismsw.eu">prismsw.eu</a></string>
     
     <string name="dialog_open">Open</string>

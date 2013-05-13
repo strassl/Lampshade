@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_description"
+        android:gravity="center"
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="@string/about_copyright"
+        android:gravity="center"
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
