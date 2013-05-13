@@ -85,14 +85,19 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	}
 
     @Override
-    public void onStart() {
-        super.onStart();
-        loadTropes(this.trueUrl);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadTropes(trueUrl);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         if(loadTask != null && !loadTask.isCancelled()) {
             loadTask.cancel(true);
         }
@@ -325,6 +330,11 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             return false;
         }
     }
+
+    public void hideLoadingCircle() {
+        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
+        rl.setVisibility(RelativeLayout.GONE);
+    }
 	
 	public void loadTropes(Uri url) {
 		loadTask = new LoadTropesTask(this);
@@ -360,8 +370,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 
         setShareIntent(trueUrl);
 
-        RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.rl_progress_wrapper);
-        rl.setVisibility(RelativeLayout.GONE);
+        hideLoadingCircle();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Boolean historyEnabled = preferences.getBoolean("preference_history_enable", true);
