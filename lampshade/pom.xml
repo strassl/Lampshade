@@ -17,25 +17,31 @@
         </repository> 
     </repositories> 
 
+    <properties>
+        <android.version>4.1.1.4</android.version>
+        <sherlock.version>4.2.0</sherlock.version>
+        <jsoup.version>1.7.2</jsoup.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>4.1.1.4</version>
+            <version>${android.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency> 
             <groupId>com.actionbarsherlock</groupId> 
             <artifactId>library</artifactId> 
-            <version>4.2.0</version> 
+            <version>${sherlock.version}</version> 
             <type>apklib</type> 
         </dependency> 
 
         <dependency> 
             <groupId>com.actionbarsherlock</groupId> 
             <artifactId>library</artifactId> 
-            <version>4.2.0</version> 
+            <version>${sherlock.version}</version> 
             <type>jar</type> 
             <scope>provided</scope> 
         </dependency> 
@@ -43,7 +49,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.7.2</version>
+            <version>${jsoup.version}</version>
         </dependency>
     </dependencies>
 
