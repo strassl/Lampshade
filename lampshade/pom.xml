@@ -61,7 +61,7 @@
                 <!-- See http://code.google.com/p/maven-android-plugin/ -->
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.6.1</version>
 
                 <configuration>
                     <sign>
@@ -76,6 +76,7 @@
                     <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <sdk>
+                        <path>/opt/android-sdk</path>
                         <platform>15</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
