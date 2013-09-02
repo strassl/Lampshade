@@ -103,7 +103,8 @@ public class IndexFragment extends TropesFragment {
 		protected Object doInBackground(Uri... params) {
 			try {
 				Uri url = params[0];
-				TropesIndex tropesIndex = new TropesIndex(url);
+				TropesIndex tropesIndex = new TropesIndex();
+                tropesIndex.loadArticle(url);
 				return tropesIndex;
 			} catch (Exception e) {
 				return e;

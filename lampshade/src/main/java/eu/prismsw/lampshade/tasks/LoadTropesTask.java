@@ -32,7 +32,8 @@ public class LoadTropesTask extends AsyncTask<Uri, Integer, Object> {
 	protected Object doInBackground(Uri... params) {
 		try {
 			Uri url = params[0];
-			TropesArticle article = new TropesArticle(url, articleSettings);
+			TropesArticle article = new TropesArticle();
+            article.loadArticle(url, articleSettings);
 			return article;
 		} catch (Exception e) {
 			return e;

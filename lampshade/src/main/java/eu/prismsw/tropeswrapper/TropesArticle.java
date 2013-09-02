@@ -24,17 +24,9 @@ public class TropesArticle {
 	
 	public TropesArticleSettings settings;
 	
-	public TropesArticle(Uri url) throws Exception {
-		loadArticle(url);
-	}
-	
-	public TropesArticle(Uri url, TropesArticleSettings settings) throws Exception {
-        loadArticle(url, settings);
-	}
-	
-	public TropesArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception {
-        loadArticle(html, articleUrl, settings, ressources);
-	}
+	public TropesArticle() {
+    }
+
 
 	public void parseArticle(Document doc, TropesArticleSettings settings) throws Exception {
 		String mainJS = loadTextFile(Uri.parse(MAIN_JS_URL));
