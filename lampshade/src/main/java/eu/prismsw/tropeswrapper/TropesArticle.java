@@ -30,12 +30,12 @@ public class TropesArticle {
 
 	public void parseArticle(Document doc, TropesArticleSettings settings) throws Exception {
 		String mainJS = loadTextFile(Uri.parse(MAIN_JS_URL));
-		TropesArticleRessources res = new TropesArticleRessources(mainJS);
+		TropesArticleResources res = new TropesArticleResources(mainJS);
 		parseArticle(doc, settings, res);
 	}
 	
 	/** Extracts the bits of information from the article and changes the style  **/
-	public void parseArticle(Document doc, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception {
+	public void parseArticle(Document doc, TropesArticleSettings settings, TropesArticleResources ressources) throws Exception {
 		this.settings = settings;
 		this.title = getTitle(doc);
 		this.content = getContent(doc);
@@ -69,7 +69,7 @@ public class TropesArticle {
         }
     }
 
-    public void loadArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception{
+    public void loadArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleResources ressources) throws Exception{
         Document doc = loadPage(html, articleUrl);
         parseArticle(doc, settings, ressources);
     }

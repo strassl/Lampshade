@@ -15,7 +15,7 @@ public class LampshadePreferenceActivity extends SherlockPreferenceActivity {
         
 		super.onCreate(savedInstanceState);
 		
-		// TODO Replace this with a more modern implementation
+		// TODO Replace this with a more modern implementation, as soon as Gingerbread goes out of style, that is
         addPreferencesFromResource(R.xml.preferences);
 	}
 	

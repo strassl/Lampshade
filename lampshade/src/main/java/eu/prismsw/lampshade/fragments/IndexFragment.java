@@ -14,13 +14,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
+import com.koushikdutta.async.future.Future;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
-import eu.prismsw.lampshade.listeners.OnLoadListener;
-import eu.prismsw.lampshade.tasks.LoadTropesTask;
-import eu.prismsw.tropeswrapper.TropesArticleInfo;
-import eu.prismsw.tropeswrapper.TropesIndex;
-import eu.prismsw.tropeswrapper.TropesLink;
+import eu.prismsw.tropeswrapper.*;
 
 public class IndexFragment extends TropesFragment {
 	
@@ -91,43 +91,36 @@ public class IndexFragment extends TropesFragment {
         articleInfo = new TropesArticleInfo(index.title, index.url, index.subpages);
     }
 
-
-    /** Loads an index in a different thread */
-	public class LoadIndexTask extends LoadTropesTask {
-		
-		public LoadIndexTask(OnLoadListener tLoadListener) {
-			super(tLoadListener);
-		}
-
-		@Override
-		protected Object doInBackground(Uri... params) {
-			try {
-				Uri url = params[0];
-				TropesIndex tropesIndex = new TropesIndex();
-                tropesIndex.loadArticle(url);
-				return tropesIndex;
-			} catch (Exception e) {
-				return e;
-			}
-		}
-		
-		@Override
-		protected void onPostExecute(Object result) {
-			
-			if(result instanceof TropesIndex) {
-                TropesIndex index = (TropesIndex) result;
-                tLoadListener.onLoadFinish(index);
-			}
-			else {
-				Exception e = (Exception) result;
-				tLoadListener.onLoadError();
-			}
-		}
-	}
-
 	@Override
 	public void loadTropes(Uri url) {
-		loadTask = new LoadIndexTask(this);
-        loadTask.execute(url);
+        Future<Response<String>> articleStr = Ion.with(getActivity(), url.toString())
+                .asString()
+                .withResponse()
+                .setCallback(new FutureCallback<Response<String>>() {
+                    @Override
+                    public void onCompleted(Exception e, Response<String> response) {
+                        if(e != null) {
+                            onLoadError();
+                        }
+                        else {
+                            Uri redirectUrl = Uri.parse(response.getRequest().getUri().toString());
+                            TropesArticle article = createIndex(response.getResult(), redirectUrl);
+                            onLoadFinish(article);
+                        }
+                    }
+                });
 	}
+
+    private TropesIndex createIndex(String html, Uri url) {
+        TropesArticleResources res = new TropesArticleResources(application.getMainJS());
+
+        TropesIndex index = new TropesIndex();
+        try {
+            index.loadArticle(html, url, createDefaultSettings(), res);
+            return index;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 }

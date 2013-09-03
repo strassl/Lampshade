@@ -24,7 +24,7 @@ public class TropesIndex extends TropesArticle {
     }
 
     @Override
-    public void loadArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleRessources ressources) throws Exception {
+    public void loadArticle(String html, Uri articleUrl, TropesArticleSettings settings, TropesArticleResources ressources) throws Exception {
         super.loadArticle(html, articleUrl, settings, ressources);
         tropes = parseTropeList(content, DEFAULT_SELECTOR);
     }

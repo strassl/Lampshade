@@ -31,11 +31,11 @@ import eu.prismsw.lampshade.listeners.OnLoadListener;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.lampshade.providers.ArticleProvider;
-import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tools.ListFunctions;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticle;
 import eu.prismsw.tropeswrapper.TropesArticleInfo;
+import eu.prismsw.tropeswrapper.TropesArticleSettings;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 import java.util.List;
@@ -51,8 +51,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     OnSaveListener saveListener;
     OnRemoveListener removeListener;
 
-    LoadTropesTask loadTask;
-	
+
 	TropesArticleInfo articleInfo;
 	Uri passedUrl;
 	Uri trueUrl;
@@ -98,9 +97,6 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     @Override
     public void onStop() {
         super.onStop();
-        if(loadTask != null && !loadTask.isCancelled()) {
-            loadTask.cancel(true);
-        }
     }
 
 
@@ -337,8 +333,6 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     }
 	
 	public void loadTropes(Uri url) {
-		loadTask = new LoadTropesTask(this);
-        loadTask.execute(url);
 	}
 
 	public Uri getTrueUrl() {
@@ -354,11 +348,28 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
 	}
 
     // For the time being we only pass these on to the activity
-    // Could be useful later though
 
     @Override
     public void onLoadStart() {
         loadListener.onLoadStart();
+    }
+
+    public TropesArticleSettings createDefaultSettings() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
+        Integer fontSize = preferences.getInt("preference_font_size", 12);
+        String fontSizeStr = fontSize.toString() + "pt";
+
+        TropesArticleSettings articleSettings;
+        if(((BaseActivity) getActivity()).isDarkTheme()) {
+            articleSettings = new TropesArticleSettings(true);
+        }
+        else {
+            articleSettings = new TropesArticleSettings(false);
+        }
+        articleSettings.fontSize = fontSizeStr;
+        articleSettings.toggleSpoilerOnHover = preferences.getBoolean("preference_spoiler_hover", false);
+
+        return articleSettings;
     }
 
     @Override
@@ -366,7 +377,6 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
         TropesArticle article = (TropesArticle) result;
         articleInfo = new TropesArticleInfo(article.title, article.url, article.subpages);
         trueUrl = articleInfo.url;
-        loadTask = null;
 
         setShareIntent(trueUrl);
 

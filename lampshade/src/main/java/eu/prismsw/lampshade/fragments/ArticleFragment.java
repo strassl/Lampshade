@@ -1,14 +1,12 @@
 package eu.prismsw.lampshade.fragments;
 
 import android.annotation.TargetApi;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -21,13 +19,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
+import com.koushikdutta.async.future.Future;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
-import eu.prismsw.lampshade.listeners.OnLoadListener;
-import eu.prismsw.lampshade.tasks.LoadTropesTask;
 import eu.prismsw.tools.android.UIFunctions;
 import eu.prismsw.tropeswrapper.TropesArticle;
-import eu.prismsw.tropeswrapper.TropesArticleSettings;
+import eu.prismsw.tropeswrapper.TropesArticleResources;
 
 /** Shows an TvTropes article in a WebView **/
 public class ArticleFragment extends TropesFragment {
@@ -170,47 +170,36 @@ public class ArticleFragment extends TropesFragment {
 
     }
 
-	public class LoadArticleTask extends LoadTropesTask {
-		
-		public LoadArticleTask(OnLoadListener tLoadListener) {
-			super(tLoadListener);
-		}
-		
-		public LoadArticleTask(OnLoadListener tLoadListener, TropesArticleSettings articleSettings) {
-			super(tLoadListener, articleSettings);
-		}
-		
-		@Override
-		protected void onPostExecute(Object result) {
-			if(result instanceof TropesArticle) {
-				TropesArticle article = (TropesArticle) result;
-
-                tLoadListener.onLoadFinish(article);
-			}
-			else {
-				Exception e = (Exception) result;
-				this.tLoadListener.onLoadError();
-			}
-		}
-	}
-	
 	public void loadTropes(Uri url) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
-		Integer fontSize = preferences.getInt("preference_font_size", 12);
-		String fontSizeStr = fontSize.toString() + "pt";
-		
-		TropesArticleSettings articleSettings;
-		if(((BaseActivity) getActivity()).isDarkTheme()) {
-			articleSettings = new TropesArticleSettings(true);
-		}
-		else {
-			articleSettings = new TropesArticleSettings(false);
-		}
-		articleSettings.fontSize = fontSizeStr;
-		articleSettings.toggleSpoilerOnHover = preferences.getBoolean("preference_spoiler_hover", false);
-		
-		
-		loadTask = new LoadArticleTask(this, articleSettings);
-        loadTask.execute(url);
+        Future<Response<String>> articleStr = Ion.with(getActivity(), url.toString())
+                .asString()
+                .withResponse()
+                .setCallback(new FutureCallback<Response<String>>() {
+                    @Override
+                    public void onCompleted(Exception e, Response<String> response) {
+                        if(e != null) {
+                            onLoadError();
+                        }
+                        else {
+                            Uri redirectUrl = Uri.parse(response.getRequest().getUri().toString());
+                            TropesArticle article = createArticle(response.getResult(), redirectUrl);
+                            onLoadFinish(article);
+                        }
+                    }
+                });
 	}
+
+
+    private TropesArticle createArticle(String html, Uri url) {
+        TropesArticleResources res = new TropesArticleResources(application.getMainJS());
+
+        TropesArticle article = new TropesArticle();
+        try {
+            article.loadArticle(html, url, createDefaultSettings(), res);
+            return article;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 }
