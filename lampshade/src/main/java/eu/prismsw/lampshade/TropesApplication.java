@@ -1,10 +1,9 @@
 package eu.prismsw.lampshade;
 
 import android.app.Application;
-import com.koushikdutta.async.future.Future;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-import eu.prismsw.tropeswrapper.TropesArticle;
+import org.apache.commons.io.IOUtils;
+
+import java.io.FileInputStream;
 
 
 /** Provides cross-activity data and functionality */
@@ -23,24 +22,29 @@ public class TropesApplication extends Application {
 
 	@Override
 	public void onCreate() {
-        loadMainJS();
+        readMainJS();
 	}
 
-    private void loadMainJS() {
-        Future<String> js = Ion.with(this, TropesArticle.MAIN_JS_URL).asString();
-        js.setCallback(new FutureCallback<String>() {
-            @Override
-            public void onCompleted(Exception e, String s) {
-                if (e != null)
-                    return;
-                mainJS = s;
-            }
-        });
+    private void readMainJS() {
+        try {
+            FileInputStream fis = openFileInput(MAIN_JS_FILE);
+            mainJS = IOUtils.toString(fis);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            mainJS = "";
+        }
+    }
+
+    public Boolean resourcesExist() {
+        if(mainJS == "")
+            return false;
+        return true;
     }
 
     public String getMainJS() {
         if(mainJS == "")
-            loadMainJS();
+            readMainJS();
         return mainJS;
     }
 }

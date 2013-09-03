@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import eu.prismsw.lampshade.fragments.SearchFragment;
+import eu.prismsw.lampshade.fragments.SyncDialogFragment;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** All other activities are accessed from this one */
@@ -38,6 +39,11 @@ public class MainActivity extends BaseActivity {
 				return false;
 			}
 		});
+
+        if(!application.resourcesExist()) {
+            SyncDialogFragment s = new SyncDialogFragment();
+            s.show(getSupportFragmentManager(), "sync_dialog");
+        }
     }
     
     @Override
