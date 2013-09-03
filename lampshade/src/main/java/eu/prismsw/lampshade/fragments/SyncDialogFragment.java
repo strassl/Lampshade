@@ -2,16 +2,19 @@ package eu.prismsw.lampshade.fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import eu.prismsw.lampshade.R;
+import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.tropeswrapper.TropesArticle;
+
+import java.io.FileOutputStream;
 
 public class SyncDialogFragment extends SherlockDialogFragment {
     Future<String> mainJS;
@@ -52,14 +55,22 @@ public class SyncDialogFragment extends SherlockDialogFragment {
                             @Override
                             public void onCompleted(Exception e, String s) {
                                 if(e != null) {
-                                    Toast.makeText(getActivity(), "Failed!", Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                    Toast.makeText(getActivity(), R.string.sync_failed, Toast.LENGTH_LONG).show();
                                 }
                                 else {
-                                    // TODO Debugging only, get rid of this
-                                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                                    AlertDialogFragment f = AlertDialogFragment.newInstance("MainJS", s);
-                                    f.show(fm, "result_sync");
+                                    try {
+                                        FileOutputStream fos = getActivity().openFileOutput(TropesApplication.MAIN_JS_FILE, Context.MODE_PRIVATE);
+                                        fos.write(s.getBytes());
+                                        fos.close();
+                                        Toast.makeText(getActivity(), R.string.sync_completed,Toast.LENGTH_SHORT).show();
+                                    }
+                                    catch (Exception ex) {
+                                        ex.printStackTrace();
+                                        Toast.makeText(getActivity(), R.string.sync_failed, Toast.LENGTH_LONG).show();
+                                    }
                                 }
+
                                 dismiss();
                             }
                         });

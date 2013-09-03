@@ -80,7 +80,9 @@
 
     <!-- Sync Fragment -->
     <string name="sync_title">Sync</string>
-	
+    <string name="sync_failed">Sync failed!</string>
+    <string name="sync_completed">Sync completed!</string>
+
 	<!-- Preferences -->
 	<string name="preference_category_visual">Visual</string>
 	<string name="preference_category_functionality">Functionality</string>
