@@ -10,7 +10,7 @@
     <string name="dialog_save">Save</string>
     <string name="dialog_copy">Copy</string>
     
-    <!-- Activty titles -->
+    <!-- Activity titles -->
     <string name="title_saved">Saved</string>
     <string name="title_recent">Recent</string>
     <string name="title_favorites">Favorites</string>
