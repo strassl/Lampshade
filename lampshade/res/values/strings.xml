@@ -72,11 +72,14 @@
 	
 	<!-- Index Fragment -->
 	<string name="index_as_article">Show article</string>
+
+    <!-- Sync Fragment -->
+    <string name="sync_title">Sync</string>
 	
 	<!-- Preferences -->
 	<string name="preference_category_visual">Visual</string>
 	<string name="preference_category_functionality">Functionality</string>
-	
+
 	<string name="preference_theme_title">Theme</string>
 	<string name="preference_theme_summary">Requires an application restart</string>
 	<string-array name="preference_theme_entries">
