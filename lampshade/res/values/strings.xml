@@ -18,7 +18,8 @@
     <string name="title_help">Help</string>
     <string name="title_preferences">Preferences</string>
 	<string name="title_search">Search:&#160;</string>
-    
+    <string name="title_debug">Debug</string>
+
     <!-- Main Activity -->
 	<string name="et_search">Search</string>
 	<string name="btn_random">Random</string>
@@ -29,6 +30,10 @@
 	<string name="show_recent">Recent</string>
 	<string name="show_favorites">Favorites</string>
 	<string name="show_preferences">Preferences</string>
+    <string name="show_debug">Debug</string>
+
+    <!-- Debug Activity -->
+    <string name="btn_sync">Sync</string>
 	
 	<!-- Misc -->
 	<string name="not_used">Here there be dragons!</string>

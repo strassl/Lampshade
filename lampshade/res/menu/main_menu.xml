@@ -16,4 +16,8 @@
     	  android:title="@string/show_about"
     	  android:showAsAction="never"
 	/>
+    <item android:id="@+id/show_debug"
+          android:title="@string/show_debug"
+          android:showAsAction="never"
+    />
 </menu>

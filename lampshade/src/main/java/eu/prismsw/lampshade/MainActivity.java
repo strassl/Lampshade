@@ -61,6 +61,9 @@ public class MainActivity extends BaseActivity {
 		} else if (item.getItemId() == R.id.show_recent) {
             startActivity(new Intent(this, RecentArticlesActivity.class));
 			return true;
+        } else if (item.getItemId() == R.id.show_debug) {
+            startActivity(new Intent(this, DebugActivity.class));
+            return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
