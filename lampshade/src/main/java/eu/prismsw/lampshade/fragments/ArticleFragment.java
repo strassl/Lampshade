@@ -111,6 +111,7 @@ public class ArticleFragment extends TropesFragment {
         WebView wv = (WebView) getView().findViewById(R.id.wv_content);
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setLoadsImagesAutomatically(true);
+        wv.getSettings().setDefaultTextEncodingName("utf-8");
         String html = article.content.html();
         wv.loadDataWithBaseURL("tvtropes.org", html, "text/html", "utf-8", null);
 

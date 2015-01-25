@@ -43,8 +43,9 @@ public class TropesArticle {
 		
 		inlineJS(this.content, ressources.mainJS);
         inlineJS(content, ressources.noteJS);
-		
-		manipulateStyle(this.content, settings);
+
+		manipulateStyle(content, settings);
+        wrapContent(content);
 	}
 
     //TODO Needs a cleaner and more general solution
@@ -149,7 +150,11 @@ public class TropesArticle {
 			throw new TropesArticleParseException("getContent");
 		}
 	}
-	
+
+    protected void wrapContent(Element content) {
+        content.prepend("<head><meta http-equiv='Content-Type' content='text/html' charset='UTF-8' /></head>");
+    }
+
 	/** Performs all the necessary actions to make the page look pretty */
 	protected void manipulateStyle(Element content, TropesArticleSettings settings) throws TropesArticleParseException {
 		ArrayList<String> selectors = new ArrayList<String>();

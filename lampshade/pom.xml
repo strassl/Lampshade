@@ -19,7 +19,8 @@
 
     <properties>
         <android.version>4.1.1.4</android.version>
-        <sherlock.version>4.2.0</sherlock.version>
+        <support.version>r7</support.version>
+        <sherlock.version>4.4.0</sherlock.version>
         <jsoup.version>1.7.2</jsoup.version>
         <ion.version>1.1.5</ion.version>
         <commons-io.version>1.3.2</commons-io.version>
@@ -33,16 +34,22 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>${support.version}</version>
+        </dependency>
+
         <dependency> 
             <groupId>com.actionbarsherlock</groupId> 
-            <artifactId>library</artifactId> 
+            <artifactId>actionbarsherlock</artifactId> 
             <version>${sherlock.version}</version> 
             <type>apklib</type> 
         </dependency> 
 
         <dependency> 
             <groupId>com.actionbarsherlock</groupId> 
-            <artifactId>library</artifactId> 
+            <artifactId>actionbarsherlock</artifactId> 
             <version>${sherlock.version}</version> 
             <type>jar</type> 
             <scope>provided</scope> 
@@ -73,9 +80,9 @@
         <plugins>
             <plugin>
                 <!-- See http://code.google.com/p/maven-android-plugin/ -->
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>4.1.0</version>
 
                 <configuration>
                     <sign>
