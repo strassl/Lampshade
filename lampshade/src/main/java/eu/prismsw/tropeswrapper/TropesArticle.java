@@ -130,9 +130,7 @@ public class TropesArticle {
 	/** Extracts the article's title from the document */
 	protected String getTitle(Document doc) throws TropesArticleParseException{
 		try {
-			Element wikibody = doc.getElementById("wikibody");
-			
-			Element title = wikibody.getElementById("wikititle").getElementsByClass("pagetitle").first().getElementsByTag("span").first();
+			Element title = doc.select("div.article_title h1").first();
 			return title.text();
 		}
 		catch (Exception e) {
@@ -143,8 +141,7 @@ public class TropesArticle {
 	/** Extracts the article's content from the document */
 	protected Element getContent(Document doc) throws TropesArticleParseException{
 		try {
-			Element wikibody = doc.getElementById("wikibody");
-			Element content = wikibody.getElementById("wikitext");
+			Element content = doc.select("div.main.Main").first();
 			
 			return content;
 		}
