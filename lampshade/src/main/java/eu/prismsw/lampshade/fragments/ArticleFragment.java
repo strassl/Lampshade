@@ -172,7 +172,8 @@ public class ArticleFragment extends TropesFragment {
     }
 
 	public void loadTropes(Uri url) {
-        Future<Response<String>> articleStr = Ion.with(getActivity(), url.toString())
+        Future<Response<String>> articleStr = Ion.with(getActivity())
+                .load(url.toString())
                 .asString()
                 .withResponse()
                 .setCallback(new FutureCallback<Response<String>>() {

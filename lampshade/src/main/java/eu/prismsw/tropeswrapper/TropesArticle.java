@@ -132,7 +132,7 @@ public class TropesArticle {
 	protected String getTitle(Document doc) throws TropesArticleParseException{
 		try {
 			Element title = doc.select("div.article_title h1").first();
-			return title.text();
+			return title.ownText();
 		}
 		catch (Exception e) {
 			throw new TropesArticleParseException("getTitle");
@@ -177,9 +177,7 @@ public class TropesArticle {
 	/** Extracts the subpages from the document */
 	protected List<TropesLink> getSubpages(Document doc) throws TropesArticleParseException{
 		try {
-			Element wikititle = doc.getElementById("wikititle");
-			Element buttons = wikititle.getElementsByClass("namespacebuttons").first();
-			Elements links = buttons.getElementsByTag("a");
+			Elements links = doc.select("div.subnav .subpage-icons > li:not(.create-subpage) a");
 			
 			ArrayList<TropesLink> subpages =  new ArrayList<TropesLink>();
 			

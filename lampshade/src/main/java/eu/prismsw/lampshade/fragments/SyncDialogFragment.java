@@ -48,7 +48,8 @@ public class SyncDialogFragment extends SherlockDialogFragment {
             @Override
             public void onShow(DialogInterface dialogInterface) {
                 ProgressDialog d = (ProgressDialog) getDialog();
-                mainJS = Ion.with(getActivity(), TropesArticle.MAIN_JS_URL)
+                mainJS = Ion.with(getActivity())
+                        .load(TropesArticle.MAIN_JS_URL)
                         .progressDialog(d)
                         .asString()
                         .setCallback(new FutureCallback<String>() {
