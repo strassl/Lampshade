@@ -1,8 +1,6 @@
 package eu.prismsw.lampshade.fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,18 +8,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.text.ClipboardManager;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.RelativeLayout;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
+import android.widget.ShareActionProvider;
 import eu.prismsw.lampshade.BaseActivity;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.TropesApplication;
@@ -41,7 +33,7 @@ import eu.prismsw.tropeswrapper.TropesHelper;
 import java.util.List;
 
 /** Contains common functionality for Fragments that show a TvTropes article. This Fragment is not supposed to be used, only its subclasses **/
-public class TropesFragment extends SherlockFragment implements OnLoadListener, OnSaveListener, OnRemoveListener {
+public class TropesFragment extends Fragment implements OnLoadListener, OnSaveListener, OnRemoveListener {
 	public static String PASSED_URL = "PASSED_URL";
 	public static String TRUE_URL = "TRUE_URL";
 	
@@ -103,7 +95,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Integer id = item.getItemId();
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
 
         if(!loadingIsFinished()) {
             return true;
@@ -191,7 +183,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
             shareProvider.setShareIntent(intent);
         }
         else {
-            android.util.Log.e("lampshade", "shareProvider is null");
+            Log.e("lampshade", "shareProvider is null");
         }
     }
 
@@ -251,7 +243,7 @@ public class TropesFragment extends SherlockFragment implements OnLoadListener, 
     }
 
     private void showInfoDialog() {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm = getActivity().getFragmentManager();
         DialogFragment dialog = createInfoDialog(articleInfo.title, trueUrl, passedUrl);
         dialog.show(fm, "dialog");
     }

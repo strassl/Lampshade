@@ -7,18 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
+import android.widget.ShareActionProvider;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -179,10 +174,9 @@ public class ArticleFragment extends TropesFragment {
                 .setCallback(new FutureCallback<Response<String>>() {
                     @Override
                     public void onCompleted(Exception e, Response<String> response) {
-                        if(e != null) {
+                        if (e != null) {
                             onLoadError();
-                        }
-                        else {
+                        } else {
                             Uri redirectUrl = Uri.parse(response.getRequest().getUri().toString());
                             TropesArticle article = createArticle(response.getResult(), redirectUrl);
                             onLoadFinish(article);

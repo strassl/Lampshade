@@ -5,8 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.view.MenuItem;
 import android.widget.TextView;
-import com.actionbarsherlock.view.MenuItem;
 
 public class AboutActivity extends BaseActivity {
 	@Override
@@ -14,8 +14,8 @@ public class AboutActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about_activity);
 		
-		getSupportActionBar().setHomeButtonEnabled(true);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
         addExtraInfo();
 		makeLinksClickable();
 	}

@@ -1,12 +1,11 @@
 package eu.prismsw.lampshade;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 import eu.prismsw.lampshade.fragments.SearchFragment;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
@@ -27,7 +26,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_activity);
 		
-		ActionBar ab = getSupportActionBar();
+		ActionBar ab = getActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
@@ -45,7 +44,7 @@ public class SearchActivity extends BaseActivity implements OnLoadListener, OnIn
 				if(savedInstanceState == null) {
 					this.fragment = SearchFragment.newInstance(this.fullQuery);
 						
-					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
+					getFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
 				}
 			}
 		}

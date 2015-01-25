@@ -1,12 +1,12 @@
 package eu.prismsw.lampshade.fragments;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -16,7 +16,7 @@ import eu.prismsw.tropeswrapper.TropesArticle;
 
 import java.io.FileOutputStream;
 
-public class SyncDialogFragment extends SherlockDialogFragment {
+public class SyncDialogFragment extends DialogFragment {
     Future<String> mainJS;
     ProgressDialog syncDialog;
 
@@ -38,12 +38,6 @@ public class SyncDialogFragment extends SherlockDialogFragment {
         dialog.setIndeterminate(false);
         dialog.setCancelable(true);
         dialog.setMax(100);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                mainJS.cancel(true);
-            }
-        });
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {

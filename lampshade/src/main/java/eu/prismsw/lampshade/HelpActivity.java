@@ -2,9 +2,9 @@ package eu.prismsw.lampshade;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.actionbarsherlock.view.MenuItem;
 
 public class HelpActivity extends BaseActivity {
 	
@@ -13,8 +13,8 @@ public class HelpActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_activity);
         
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         
         setUpWebview();
     }

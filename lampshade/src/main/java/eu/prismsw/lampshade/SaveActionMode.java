@@ -2,25 +2,25 @@ package eu.prismsw.lampshade;
 
 import android.content.ContentValues;
 import android.net.Uri;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.support.v4.app.FragmentActivity;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnSaveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Wraps an ActionMode for selected links (that can be saved) into a nice handy package **/
 public class SaveActionMode {
-	public SherlockFragmentActivity activity; 
+	public FragmentActivity activity;
 	
 	public ActionMode mActionMode;
 	public Uri selectedLink;
 
     public Uri contentUri;
 
-	public SaveActionMode(SherlockFragmentActivity activity, Uri contentUri) {
+	public SaveActionMode(FragmentActivity activity, Uri contentUri) {
 		this.activity = activity;
         this.contentUri = contentUri;
 	}

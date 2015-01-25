@@ -1,25 +1,25 @@
 package eu.prismsw.lampshade;
 
+import android.app.Activity;
 import android.net.Uri;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import eu.prismsw.lampshade.database.SavedArticlesHelper;
 import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Wraps an ActionMode for selected links (that can be removed) into a nice handy package **/
 public class RemoveActionMode {
-	public SherlockFragmentActivity activity; 
+	public Activity activity;
 	
 	public ActionMode mActionMode;
 	public Uri selectedUrl;
 
     public Uri contentUri;
 
-	public RemoveActionMode(SherlockFragmentActivity activity, Uri contentUri) {
+	public RemoveActionMode(Activity activity, Uri contentUri) {
 		this.activity = activity;
         this.contentUri = contentUri;
 	}

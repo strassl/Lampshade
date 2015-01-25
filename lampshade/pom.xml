@@ -6,21 +6,12 @@
 <groupId>eu.prismsw.lampshade</groupId>
     <artifactId>lampshade</artifactId>
     <name>Lampshade</name>
-    <version>1.3.2</version>
+    <version>1.3.3</version>
     <packaging>apk</packaging>
-
-
-    <repositories> 
-        <repository> 
-            <id>jakewharton-release</id> 
-            <url>http://r.jakewharton.com/maven/release/</url> 
-        </repository> 
-    </repositories> 
 
     <properties>
         <android.version>4.1.1.4</android.version>
         <support.version>r7</support.version>
-        <sherlock.version>4.4.0</sherlock.version>
         <jsoup.version>1.8.1</jsoup.version>
         <ion.version>2.0.5</ion.version>
         <commons-io.version>1.3.2</commons-io.version>
@@ -39,21 +30,6 @@
             <artifactId>support-v4</artifactId>
             <version>${support.version}</version>
         </dependency>
-
-        <dependency> 
-            <groupId>com.actionbarsherlock</groupId> 
-            <artifactId>actionbarsherlock</artifactId> 
-            <version>${sherlock.version}</version> 
-            <type>apklib</type> 
-        </dependency> 
-
-        <dependency> 
-            <groupId>com.actionbarsherlock</groupId> 
-            <artifactId>actionbarsherlock</artifactId> 
-            <version>${sherlock.version}</version> 
-            <type>jar</type> 
-            <scope>provided</scope> 
-        </dependency> 
 
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -99,7 +75,7 @@
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <sdk>
                         <path>/opt/android-sdk</path>
-                        <platform>15</platform>
+                        <platform>21</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>

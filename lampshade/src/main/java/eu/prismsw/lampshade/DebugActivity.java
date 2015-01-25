@@ -1,11 +1,11 @@
 package eu.prismsw.lampshade;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import eu.prismsw.lampshade.fragments.SyncDialogFragment;
 
-public class DebugActivity extends SherlockFragmentActivity {
+public class DebugActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +20,6 @@ public class DebugActivity extends SherlockFragmentActivity {
 
     public void sync() {
         SyncDialogFragment s = SyncDialogFragment.newInstance();
-        s.show(getSupportFragmentManager(), "sync_dialog");
+        s.show(getFragmentManager(), "sync_dialog");
     }
 }

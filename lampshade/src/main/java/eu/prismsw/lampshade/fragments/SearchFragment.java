@@ -1,8 +1,7 @@
 package eu.prismsw.lampshade.fragments;
 
-import java.util.List;
-
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,9 +12,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.actionbarsherlock.app.SherlockFragment;
-
 import eu.prismsw.googlewrapper.GoogleSearch;
 import eu.prismsw.googlewrapper.GoogleSearchResult;
 import eu.prismsw.lampshade.R;
@@ -23,8 +19,10 @@ import eu.prismsw.lampshade.TropesApplication;
 import eu.prismsw.lampshade.listeners.OnInteractionListener;
 import eu.prismsw.lampshade.listeners.OnLoadListener;
 
+import java.util.List;
+
 /** Shows the results of a search in a ListView **/
-public class SearchFragment extends SherlockFragment {
+public class SearchFragment extends DialogFragment {
 	public static final String QUERY_KEY = "QUERY";
 	
 	public String query;

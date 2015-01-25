@@ -2,10 +2,10 @@ package eu.prismsw.lampshade;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
-public class LampshadePreferenceActivity extends SherlockPreferenceActivity {
+public class LampshadePreferenceActivity extends PreferenceActivity {
 	TropesApplication application;
 	
 	@Override
@@ -24,10 +24,13 @@ public class LampshadePreferenceActivity extends SherlockPreferenceActivity {
         String theme = getThemeName();
 
         if(theme.equalsIgnoreCase("HoloDark")) {
-            setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
+            setTheme(R.style.LampshadeDark);
         }
         else if(theme.equalsIgnoreCase("HoloDarkActionBar")) {
-            setTheme(R.style.Theme_Sherlock_Light_DarkActionBar);
+            setTheme(R.style.LampshadeLightDarkActionBar);
+        }
+        else {
+            setTheme(R.style.LampshadeLight);
         }
     }
 

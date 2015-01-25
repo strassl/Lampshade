@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import eu.prismsw.tropeswrapper.TropesHelper;
 
 /** Contains some functionality (such as theme switching) that is universal for all activities. All other activities are supposed to be subclass of this class. **/
-public class BaseActivity extends SherlockFragmentActivity {
+public class BaseActivity extends FragmentActivity {
 	TropesApplication application;
 	
 	@Override

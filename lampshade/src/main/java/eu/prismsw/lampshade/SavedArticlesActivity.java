@@ -1,12 +1,12 @@
 package eu.prismsw.lampshade;
 
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
@@ -36,7 +36,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
             setContentView(R.layout.saved_articles_activity);
         }
 
-		ActionBar ab = getSupportActionBar();
+		ActionBar ab = getActionBar();
 		ab.setHomeButtonEnabled(true);
 		ab.setDisplayHomeAsUpEnabled(true);
 
@@ -51,7 +51,7 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     // The other activities have to override this to change the fragment type
     public void addFragments() {
         listFragment = SavedArticlesFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.list_container, listFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.list_container, listFragment).commit();
     }
 	
     @Override
@@ -84,14 +84,14 @@ public class SavedArticlesActivity extends BaseActivity implements OnLoadListene
     public void loadPage(Uri url) {
         if(TropesHelper.isTropesLink(url)) {
             if(isTablet()) {
-                SherlockFragment f;
+                Fragment f;
                 if(TropesHelper.isIndex(TropesHelper.titleFromUrl(url))) {
                     f = IndexFragment.newInstance(url);
                 }
                 else {
                     f = ArticleFragment.newInstance(url);
                 }
-                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction t = getFragmentManager().beginTransaction();
                 t.replace(R.id.article_container, f);
                 t.addToBackStack(null);
                 t.commit();

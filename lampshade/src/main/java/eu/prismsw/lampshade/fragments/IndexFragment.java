@@ -2,18 +2,13 @@ package eu.prismsw.lampshade.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
+import android.widget.ShareActionProvider;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -100,10 +95,9 @@ public class IndexFragment extends TropesFragment {
                 .setCallback(new FutureCallback<Response<String>>() {
                     @Override
                     public void onCompleted(Exception e, Response<String> response) {
-                        if(e != null) {
+                        if (e != null) {
                             onLoadError();
-                        }
-                        else {
+                        } else {
                             Uri redirectUrl = Uri.parse(response.getRequest().getUri().toString());
                             TropesArticle article = createIndex(response.getResult(), redirectUrl);
                             onLoadFinish(article);

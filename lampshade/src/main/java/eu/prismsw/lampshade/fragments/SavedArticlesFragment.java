@@ -1,6 +1,7 @@
 package eu.prismsw.lampshade.fragments;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockFragment;
 import eu.prismsw.lampshade.R;
 import eu.prismsw.lampshade.RemoveActionMode;
 import eu.prismsw.lampshade.TropesApplication;
@@ -25,7 +25,7 @@ import eu.prismsw.lampshade.listeners.OnRemoveListener;
 import eu.prismsw.lampshade.providers.ArticleProvider;
 
 
-public class SavedArticlesFragment extends SherlockFragment {
+public class SavedArticlesFragment extends DialogFragment {
     public RemoveActionMode removeActionMode;
 
     public TropesApplication application;
@@ -105,14 +105,14 @@ public class SavedArticlesFragment extends SherlockFragment {
             @Override
             public boolean onItemLongClick(AdapterView <?> parent, View view, int position, long id) {
                 ArticleItem item = new ArticleItem((Cursor) getListView().getAdapter().getItem(position));
-                new RemoveActionMode(getSherlockActivity(), contentUri).startActionMode(item.url);
+                new RemoveActionMode(getActivity(), contentUri).startActionMode(item.url);
                 return true;
             }
         });
     }
 
     public ListView getListView() {
-        ListView lv = (ListView) getSherlockActivity().findViewById(R.id.lv_saved_articles);
+        ListView lv = (ListView) getActivity().findViewById(R.id.lv_saved_articles);
         return lv;
     }
 }

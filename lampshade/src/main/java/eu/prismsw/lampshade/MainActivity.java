@@ -3,16 +3,10 @@ package eu.prismsw.lampshade;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import eu.prismsw.lampshade.fragments.SearchFragment;
 import eu.prismsw.lampshade.fragments.SyncDialogFragment;
 import eu.prismsw.tropeswrapper.TropesHelper;
@@ -42,13 +36,13 @@ public class MainActivity extends BaseActivity {
 
         if(!application.resourcesExist()) {
             SyncDialogFragment s = new SyncDialogFragment();
-            s.show(getSupportFragmentManager(), "sync_dialog");
+            s.show(getFragmentManager(), "sync_dialog");
         }
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = this.getSupportMenuInflater();
+    	MenuInflater inflater = this.getMenuInflater();
     	inflater.inflate(R.menu.main_menu, menu);
         return true;
     }

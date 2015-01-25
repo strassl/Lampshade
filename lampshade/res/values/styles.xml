@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="LampshadeLight" parent="Theme.Sherlock.Light">
+    <style name="LampshadeLight" parent="@android:style/Theme.Holo.Light">
         <item name="randomIcon">@drawable/ic_menu_random_light</item>
         <item name="saveIcon">@drawable/ic_menu_save_light</item>
         <item name="deleteIcon">@drawable/ic_menu_delete_light</item>
@@ -8,7 +8,7 @@
         <item name="unfavoriteIcon">@drawable/ic_menu_unfav_light</item>
     </style>
 
-    <style name="LampshadeLightDarkActionBar" parent="Theme.Sherlock.Light.DarkActionBar">
+    <style name="LampshadeLightDarkActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="randomIcon">@drawable/ic_menu_random_dark</item>
         <item name="saveIcon">@drawable/ic_menu_save_dark</item>
         <item name="deleteIcon">@drawable/ic_menu_delete_dark</item>
@@ -16,7 +16,7 @@
         <item name="unfavoriteIcon">@drawable/ic_menu_unfav_dark</item>
     </style>
 
-    <style name="LampshadeDark" parent="Theme.Sherlock">
+    <style name="LampshadeDark" parent="@android:style/Theme.Holo">
         <item name="randomIcon">@drawable/ic_menu_random_dark</item>
         <item name="saveIcon">@drawable/ic_menu_save_dark</item>
         <item name="deleteIcon">@drawable/ic_menu_delete_dark</item>

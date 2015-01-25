@@ -1,14 +1,13 @@
 package eu.prismsw.lampshade.fragments;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 
-public class AlertDialogFragment extends SherlockDialogFragment {
+public class AlertDialogFragment extends DialogFragment {
 	static final String KEY_TITLE = "title";
 	static final String KEY_CONTENT = "content";
 	String title;

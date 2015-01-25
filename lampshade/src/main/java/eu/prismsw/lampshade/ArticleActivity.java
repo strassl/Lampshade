@@ -1,14 +1,13 @@
 package eu.prismsw.lampshade;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import eu.prismsw.lampshade.database.ProviderHelper;
 import eu.prismsw.lampshade.fragments.ArticleFragment;
 import eu.prismsw.lampshade.fragments.IndexFragment;
@@ -43,7 +42,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		setContentView(R.layout.article_activity);
 		
 		// Prepare the ActionBar
-		ActionBar ab = getSupportActionBar();
+		ActionBar ab = getActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
 		
@@ -71,12 +70,12 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 				if(!loadAsArticle && TropesHelper.isIndex(TropesHelper.titleFromUrl(data))) {
 					this.fragment = IndexFragment.newInstance(this.passedUrl);
 					
-					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
+					getFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
 				}
 				else {
 					this.fragment = ArticleFragment.newInstance(this.passedUrl);
 					
-					getSupportFragmentManager().beginTransaction().add(android.R.id.content, (SherlockFragment) fragment).commit();
+					getFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
                 }
 			}
 		}
@@ -141,7 +140,7 @@ public class ArticleActivity extends BaseActivity implements OnLoadListener, OnI
 		this.articleInfo = info;
 		this.trueUrl = info.url;
 		
-		getSupportActionBar().setTitle(info.title);
+		getActionBar().setTitle(info.title);
 	}
 
 	@Override
