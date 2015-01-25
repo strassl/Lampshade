@@ -142,7 +142,7 @@ public class TropesArticle {
 	/** Extracts the article's content from the document */
 	protected Element getContent(Document doc) throws TropesArticleParseException{
 		try {
-			Element content = doc.select("div.main.Main").first();
+			Element content = doc.select("div#wikitext").first();
 			
 			return content;
 		}
