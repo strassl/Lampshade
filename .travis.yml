@@ -5,4 +5,4 @@ android:
         - android-21
         - build-tools-21.1.1
 
-script: mvn install
+script: cd lampshade && mvn install
