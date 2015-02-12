@@ -1,5 +1,6 @@
 Lampshade
 =========
+[![Build Status](https://travis-ci.org/strassl/Lampshade.svg?branch=master)](https://travis-ci.org/strassl/Lampshade)
 
 A TvTropes application for Android with a ~~horribly ugly~~ now actually quite nice main activity.
 [Screenshots](https://imgur.com/a/aDygm)
