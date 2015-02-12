@@ -74,7 +74,7 @@
                     <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <sdk>
-                        <path>/opt/android-sdk</path>
+                        <path>${env.ANDROID_HOME}</path>
                         <platform>21</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
