@@ -132,7 +132,7 @@ public class TropesArticle {
 	protected String getTitle(Document doc) throws TropesArticleParseException{
 		try {
 			Element title = doc.select("div.article_title h1").first();
-			return title.ownText();
+			return title.text();
 		}
 		catch (Exception e) {
 			throw new TropesArticleParseException("getTitle");
